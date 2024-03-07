@@ -30,7 +30,6 @@ namespace Player
         
         protected Vector3 _forwardVector = Vector3.forward;
         
-        
         [SerializeField] private Rigidbody _body;
 
         [SerializeField] private LayerMask _layerMask;
@@ -47,7 +46,6 @@ namespace Player
                 _jumpForce = 1.0f;
             }
 
-            //_body = GetComponent<Rigidbody>();
             Assert.IsNotNull(_body,"_body != null") ;
             Assert.IsNotNull(_forwardObject, "_forwardObject != null");
         }
@@ -76,6 +74,9 @@ namespace Player
                 Color new_color = UnityEngine.Random.ColorHSV(); 
                 ChangeColor(new_color);
             }
+            
+            
+            
             #endif // UNITY_EDITOR
             
             DoMouseRotation();
@@ -151,9 +152,10 @@ namespace Player
         }
 
 
-        bool IsGrounded()
+        private bool IsGrounded()
         {
             return Physics.CheckSphere(_groundCheckObject.position, 0.1f, _layerMask);
         }
+
     }
 }
