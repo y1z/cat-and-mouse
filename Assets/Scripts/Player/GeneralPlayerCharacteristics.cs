@@ -1,5 +1,6 @@
 ﻿using System;
 using FishNet.Object;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -33,6 +34,8 @@ namespace Player
         [SerializeField] private Rigidbody _body;
 
         [SerializeField] private LayerMask _layerMask;
+
+        private Role _role;
 
         protected void Awake()
         {
@@ -74,8 +77,6 @@ namespace Player
                 Color new_color = UnityEngine.Random.ColorHSV(); 
                 ChangeColor(new_color);
             }
-            
-            
             
             #endif // UNITY_EDITOR
             

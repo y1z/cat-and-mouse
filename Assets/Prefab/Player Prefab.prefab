@@ -304,4 +304,4 @@ MonoBehaviour:
   _body: {fileID: 8524332830327777415}
   _layerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
