@@ -8,15 +8,17 @@ namespace Player
     public sealed class MousePlayer : GeneralPlayerCharacteristics 
     {
 
-        private void Awake()
+        private new void Awake()
         {
             base.Awake();
         }
 
 
-        private void Start()
+        private new void Start()
         {
             base.Start();
+
+            ChangeColor(Globals.Globals.DEFAULT_MOUSE_COLOR);
 
 
 
