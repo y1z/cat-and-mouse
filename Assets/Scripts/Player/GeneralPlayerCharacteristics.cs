@@ -19,15 +19,24 @@ namespace Player
         public float _jumpForce;
         
         public float _rotationSpeed;
+        
         private Renderer _renderer;
+        
         [Tooltip("This object controls which way is forward for the player")]
         [SerializeField] private Transform _forwardObject;
+
+        [Tooltip("This object check if we are on the ground")]
+        [SerializeField] private Transform _groundCheckObject;
+        
         private Vector3 _forwardVector = Vector3.forward;
+        
+        
         [SerializeField] private Rigidbody _body;
+
+        [SerializeField] private LayerMask _layerMask;
 
         private void Awake()
         {
-            _renderer = GetComponent<Renderer>();
             if(Mathf.Abs(_movementSpeed) < float.Epsilon) 
             {
                 _movementSpeed = 1.0f;
@@ -46,6 +55,7 @@ namespace Player
         private void Start()
         {
             
+            _renderer = GetComponent<Renderer>();
         }
 
 
@@ -133,11 +143,17 @@ namespace Player
 
         private void DoPlayerJump()
         {
-            if (Input.GetButtonDown("Jump"))
+            if (Input.GetButtonDown("Jump") && IsGrounded())
             {
                _body.AddForce(Vector3.up * _jumpForce,ForceMode.Impulse); 
             }
             
+        }
+
+
+        bool IsGrounded()
+        {
+            return Physics.CheckSphere(_groundCheckObject.position, 0.1f, _layerMask);
         }
     }
 }
