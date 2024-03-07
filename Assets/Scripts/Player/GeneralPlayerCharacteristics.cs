@@ -20,7 +20,7 @@ namespace Player
         
         public float _rotationSpeed;
         
-        private Renderer _renderer;
+        protected Renderer _renderer;
         
         [Tooltip("This object controls which way is forward for the player")]
         [SerializeField] private Transform _forwardObject;
@@ -28,14 +28,14 @@ namespace Player
         [Tooltip("This object check if we are on the ground")]
         [SerializeField] private Transform _groundCheckObject;
         
-        private Vector3 _forwardVector = Vector3.forward;
+        protected Vector3 _forwardVector = Vector3.forward;
         
         
         [SerializeField] private Rigidbody _body;
 
         [SerializeField] private LayerMask _layerMask;
 
-        private void Awake()
+        protected void Awake()
         {
             if(Mathf.Abs(_movementSpeed) < float.Epsilon) 
             {
@@ -52,7 +52,7 @@ namespace Player
             Assert.IsNotNull(_forwardObject, "_forwardObject != null");
         }
 
-        private void Start()
+        protected void Start()
         {
             
             _renderer = GetComponent<Renderer>();
