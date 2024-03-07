@@ -1,7 +1,9 @@
-﻿namespace Globals
+﻿using UnityEngine;
+namespace Globals
 {
-    public class Globals
+    public static class Globals
     {
-        
+        public static Color DEFAULT_MOUSE_COLOR = UnityEngine.Color.yellow;
+
     }
 }
