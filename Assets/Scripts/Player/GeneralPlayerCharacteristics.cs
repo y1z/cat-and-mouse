@@ -158,5 +158,12 @@ namespace Player
             return Physics.CheckSphere(_groundCheckObject.position, 0.1f, _layerMask);
         }
 
+
+        public Transform ForwardObject
+        {
+            get { return _forwardObject; }
+        }
+
+        public Vector3 BackwardsVector => _forwardVector * -1;
     }
 }
