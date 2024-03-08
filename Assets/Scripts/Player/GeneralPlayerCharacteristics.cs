@@ -45,6 +45,10 @@ namespace Player
 
         private Role _role;
 
+
+        [SerializeField]
+        public UnityEngine.Camera _cam;
+
         protected void Awake()
         {
             if(Mathf.Abs(_movementSpeed) < float.Epsilon) 
@@ -70,9 +74,8 @@ namespace Player
 
         protected void Start()
         {
-            
             _renderer = GetComponent<Renderer>();
-           var temp = UnityEngine.Camera.main.GetComponent<FollowPlayerCam>();
+            var temp = _cam.GetComponent<FollowPlayerCam>();
             
            temp.InitCam(_backwardsPosition, _forwardPosition);
         }
@@ -161,11 +164,11 @@ namespace Player
             Vector3 final_movement = (foward_movement + side_movement);
 
             
-            transform.Translate ( Vector3.forward * (_movementSpeed * input_direction.y * Time.deltaTime), UnityEngine.Camera.main.transform );
+            transform.Translate ( Vector3.forward * (_movementSpeed * input_direction.y * Time.deltaTime), _cam.transform );
             
         }
 
-
+//_movementSpeed *
         private void DoPlayerJump()
         {
             if (Input.GetButtonDown("Jump") && IsGrounded())
