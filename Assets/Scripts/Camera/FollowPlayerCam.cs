@@ -18,7 +18,7 @@ namespace Camera
         private bool _isCameraInitalized = false;
 
 
-        private void FixedUpdate()
+        private void LateUpdate()
         {
             if (_isCameraInitalized)
             {
@@ -36,7 +36,7 @@ namespace Camera
         {
             _cameraTarget = cameraTarget;
             _lookTarget = lookTarget;
-
+            _isCameraInitalized = true;
         }
     }
 }

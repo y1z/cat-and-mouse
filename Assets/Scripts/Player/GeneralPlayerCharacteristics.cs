@@ -1,4 +1,5 @@
 ﻿using System;
+using Camera;
 using FishNet.Object;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -29,6 +30,13 @@ namespace Player
         [Tooltip("This object check if we are on the ground")]
         [SerializeField] private Transform _groundCheckObject;
         
+        [Tooltip("Constrols where the camera is located ")]
+        [SerializeField] private Transform _cameraPos;
+
+        [SerializeField] private Transform _forwardPosition;
+        
+        [SerializeField] private Transform _backwardsPosition;
+        
         protected Vector3 _forwardVector = Vector3.forward;
         
         [SerializeField] private Rigidbody _body;
@@ -49,6 +57,13 @@ namespace Player
                 _jumpForce = 1.0f;
             }
 
+            _forwardPosition.position = transform.position;
+            _forwardPosition.rotation = transform.rotation;
+
+
+            _backwardsPosition.position = transform.position;
+            _backwardsPosition.rotation = transform.rotation;
+
             Assert.IsNotNull(_body,"_body != null") ;
             Assert.IsNotNull(_forwardObject, "_forwardObject != null");
         }
@@ -57,6 +72,9 @@ namespace Player
         {
             
             _renderer = GetComponent<Renderer>();
+           var temp = UnityEngine.Camera.main.GetComponent<FollowPlayerCam>();
+            
+           temp.InitCam(_backwardsPosition, _forwardPosition);
         }
 
 
@@ -81,10 +99,14 @@ namespace Player
             #endif // UNITY_EDITOR
             
             DoMouseRotation();
-
-            DoPlayerMovement(); 
             
+            _forwardPosition.position = transform.position + (CalculateForward() * 5);
+            _backwardsPosition.position = transform.position + CalculateForward() * (10 * -1);
+
+            DoPlayerMovement();
+                
             DoPlayerJump();
+            
             
         }
 
@@ -108,7 +130,7 @@ namespace Player
         // Note: we ignore the y-axis because we don't need it for movement
         private Vector3 CalculateForward()
         {
-            Vector3 dist = _forwardObject.transform.position - transform.position;
+            Vector3 dist = (_forwardObject.transform.position - transform.position).normalized;
             
             return new Vector3(dist.x,0,dist.z);
         }
@@ -131,14 +153,15 @@ namespace Player
             input_direction.x = Input.GetAxis("Horizontal");
             input_direction.y = Input.GetAxis("Vertical");
 
-            Vector3 right = Vector3.Cross(Vector3.up, _forwardVector);
+            Vector3 right = Vector3.Cross(Vector3.up, _forwardVector).normalized;
 
             Vector3 side_movement = input_direction.x * right;
             Vector3 foward_movement = input_direction.y * _forwardVector;
             
-            Vector3 final_movement = foward_movement + side_movement;
+            Vector3 final_movement = (foward_movement + side_movement);
 
-            transform.Translate(final_movement * (_movementSpeed * Time.deltaTime));
+            
+            transform.Translate ( Vector3.forward * (_movementSpeed * input_direction.y * Time.deltaTime), UnityEngine.Camera.main.transform );
             
         }
 
@@ -147,7 +170,7 @@ namespace Player
         {
             if (Input.GetButtonDown("Jump") && IsGrounded())
             {
-               _body.AddForce(Vector3.up * _jumpForce,ForceMode.Impulse); 
+                _body.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
             }
             
         }
