@@ -10,8 +10,8 @@ using UnityEngine;
             {
                 return;
             }
+            
+            gameObject.SetActive(true);
 
-            Camera cam = GetComponent<Camera>();
-            cam.enabled = true;
         }
     }
