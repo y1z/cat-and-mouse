@@ -1,6 +1,5 @@
 ﻿using System;
 using FishNet.Object;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -65,15 +64,18 @@ using UnityEngine.Assertions;
            temp.InitCam( _cameraPos,  _forwardObject);
         }
 
+        public override void OnStartClient()
+        {
+            base.OnStartClient();
+            
+        }
+
 
         private void Update()
         {
-            
             if (!base.IsOwner)
-            {
                 return;
-            }
-
+            
             
             #if UNITY_EDITOR 
             

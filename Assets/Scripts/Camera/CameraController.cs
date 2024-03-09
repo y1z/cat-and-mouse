@@ -6,9 +6,12 @@ using UnityEngine;
         public override void OnStartClient()
         {
             base.OnStartNetwork();
-            if (!base.IsOwnereeeee)
+            if (!base.IsOwner)
             {
                 return;
             }
+
+            Camera cam = GetComponent<Camera>();
+            cam.enabled = true;
         }
     }

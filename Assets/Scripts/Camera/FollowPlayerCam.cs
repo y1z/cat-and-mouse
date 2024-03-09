@@ -1,7 +1,8 @@
 ﻿using System;
 using UnityEngine;
+using FishNet.Object;
 
-    public class FollowPlayerCam : MonoBehaviour 
+    public class FollowPlayerCam :  NetworkBehaviour
     {
         [Tooltip("Controls where the camera is located ")]
         [SerializeField] private Transform _cameraTarget;
@@ -15,9 +16,12 @@ using UnityEngine;
         
         private bool _isCameraInitalized = false;
 
-
         private void LateUpdate()
         {
+
+            if (!base.IsOwner)
+                return;
+            
             if (_isCameraInitalized)
             {
                 Vector3 dPos = _cameraTarget.position + distance;
