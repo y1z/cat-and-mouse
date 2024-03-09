@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Camera
-{
     public class FollowPlayerCam : MonoBehaviour 
     {
         [Tooltip("Controls where the camera is located ")]
@@ -39,4 +37,3 @@ namespace Camera
             _isCameraInitalized = true;
         }
     }
-}

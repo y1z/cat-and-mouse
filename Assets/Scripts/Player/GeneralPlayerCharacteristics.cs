@@ -1,13 +1,9 @@
 ﻿using System;
-using Camera;
 using FishNet.Object;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-
-namespace Player
-{
     /**
      * This class controls the general characteristics for each type of player
      * entity in this project.
@@ -32,10 +28,6 @@ namespace Player
         
         [Tooltip("Constrols where the camera is located ")]
         [SerializeField] private Transform _cameraPos;
-
-        [SerializeField] private Transform _forwardPosition;
-        
-        [SerializeField] private Transform _backwardsPosition;
         
         protected Vector3 _forwardVector = Vector3.forward;
         
@@ -61,13 +53,6 @@ namespace Player
                 _jumpForce = 1.0f;
             }
 
-            _forwardPosition.position = transform.position;
-            _forwardPosition.rotation = transform.rotation;
-
-
-            _backwardsPosition.position = transform.position;
-            _backwardsPosition.rotation = transform.rotation;
-
             Assert.IsNotNull(_body,"_body != null") ;
             Assert.IsNotNull(_forwardObject, "_forwardObject != null");
         }
@@ -77,7 +62,7 @@ namespace Player
             _renderer = GetComponent<Renderer>();
             var temp = _cam.GetComponent<FollowPlayerCam>();
             
-           temp.InitCam(_backwardsPosition, _forwardPosition);
+           temp.InitCam( _cameraPos,  _forwardObject);
         }
 
 
@@ -103,9 +88,6 @@ namespace Player
             
             DoMouseRotation();
             
-            _forwardPosition.position = transform.position + (CalculateForward() * 5);
-            _backwardsPosition.position = transform.position + CalculateForward() * (10 * -1);
-
             DoPlayerMovement();
                 
             DoPlayerJump();
@@ -192,4 +174,3 @@ namespace Player
 
         public Vector3 BackwardsVector => _forwardVector * -1;
     }
-}

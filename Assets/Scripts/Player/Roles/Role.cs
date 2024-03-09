@@ -1,7 +1,4 @@
-﻿namespace Player
-{
-    
-    /**
+﻿    /**
      * Controls what roles each player take 
      */
     public abstract class Role
@@ -29,4 +26,3 @@
         public abstract bool OnEnd(GeneralPlayerCharacteristics player);
 
     }
-}

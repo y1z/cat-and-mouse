@@ -1,7 +1,4 @@
-﻿namespace Player
-{
-    public sealed class Player : GeneralPlayerCharacteristics
+﻿    public sealed class Player : GeneralPlayerCharacteristics
     {
         
     }
-}

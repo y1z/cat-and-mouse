@@ -2,9 +2,7 @@
 using FishNet.Object;
 using UnityEngine;
 
-namespace Camera
-{
-    public class SmoothCameraFollow : NetworkBehaviour
+    public class SmoothCameraFollow : MonoBehaviour 
     {
 
         private Vector3 _offset;
@@ -26,7 +24,7 @@ namespace Camera
                 Vector3.SmoothDamp(transform.position, targetPosition, ref _currentVelocity, _smoothTime);
         }
 
-        public void InitCameraOnPlayer(Player.Player player, float distance_from_target)
+        public void InitCameraOnPlayer(Player player, float distance_from_target)
         {
             _target = player.ForwardObject;
             Vector3 player_position = player.transform.position;
@@ -43,4 +41,3 @@ namespace Camera
         }
         
     }
-}
