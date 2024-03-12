@@ -12,8 +12,18 @@ public class BasicMovementScript : NetworkBehaviour
     float _movementSpeed;
 
     private Renderer _renderer;
-    // Start is called before the first frame update
+    
+    [Tooltip("Controls how fast the character rotates in the x and y axis")]
+    [SerializeField]
+    private Vector2 _rotationSpeed;
 
+    [SerializeField]
+    private Camera _cam_ref;
+
+
+    [SerializeField] private Vector2 _rotations = Vector2.zero;
+    
+    
     private void Awake()
     {
         _renderer = GetComponent<Renderer>();
@@ -21,6 +31,16 @@ public class BasicMovementScript : NetworkBehaviour
         if ( Mathf.Abs(_movementSpeed ) < float.Epsilon)
         {
             _movementSpeed = 1.0f;
+        }
+
+        if (Mathf.Abs(_rotationSpeed.x) < float.Epsilon)
+        {
+            _rotationSpeed.x = 1.0f;
+        }
+        
+        if (Mathf.Abs(_rotationSpeed.y) < float.Epsilon)
+        {
+            _rotationSpeed.x = 1.0f;
         }
         
     }
@@ -62,7 +82,29 @@ public class BasicMovementScript : NetworkBehaviour
         input_direction.x = Input.GetAxis("Horizontal");
         input_direction.y = Input.GetAxis("Vertical");
 
-        transform.Translate(input_direction * (_movementSpeed * Time.deltaTime) );
+        Vector3 forward_dir = transform.forward;
+        Vector3 side_dir = transform.right;
+
+        Vector3 forward_movement = input_direction.y * new Vector3(forward_dir.x, 0, forward_dir.z).normalized;
+        Vector3 side_movement = input_direction.x * new Vector3( side_dir.x,0,side_dir.z).normalized ;
+
+        Vector3 final_movement = forward_movement + side_movement;
+        transform.Translate(final_movement * (_movementSpeed * Time.deltaTime) );
+        // Get the mouse delta. This is not in the range -1...1
+        float mouse_x = _rotationSpeed.x * Input.GetAxis("Mouse X") * Time.deltaTime;
+        
+        float mouse_y = _rotationSpeed.y * Input.GetAxis("Mouse Y") * Time.deltaTime;
+        //float v = _rotationSpeed * Input.GetAxis("Mouse Y") * 0;
+
+        _rotations.y += mouse_x;
+        _rotations.x -= mouse_y;
+
+        if (Input.GetKey(KeyCode.R))
+        {
+            transform.Rotate(Vector3.up,1.0f);
+        }
+        
+        
     }
 
     
@@ -74,9 +116,9 @@ public class BasicMovementScript : NetworkBehaviour
     }
 
     [ObserversRpc]
+    //[ObserversRpc(RunLocally = true)]
     void CambiarDeColorRPC(Color new_color)
     {
-        
         _renderer.material.color = new_color;
     }
 }

@@ -36,10 +36,6 @@ using UnityEngine.Assertions;
 
         private Role _role;
 
-
-        [SerializeField]
-        public UnityEngine.Camera _cam;
-
         protected void Awake()
         {
             if(Mathf.Abs(_movementSpeed) < float.Epsilon) 
@@ -59,9 +55,6 @@ using UnityEngine.Assertions;
         protected void Start()
         {
             _renderer = GetComponent<Renderer>();
-            var temp = _cam.GetComponent<FollowPlayerCam>();
-            
-           temp.InitCam( _cameraPos,  _forwardObject);
         }
 
         public override void OnStartClient()
@@ -148,7 +141,9 @@ using UnityEngine.Assertions;
             Vector3 final_movement = (foward_movement + side_movement);
 
             
-            transform.Translate ( Vector3.forward * (_movementSpeed * input_direction.y * Time.deltaTime), _cam.transform );
+            transform.Translate( final_movement * (_movementSpeed * Time.deltaTime));
+            
+            //transform.Translate ( final_movement * (_movementSpeed * Time.deltaTime), _cam.transform );
             
         }
 
