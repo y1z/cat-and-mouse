@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 541754590111396136}
   m_Layer: 6
   m_Name: 1x1 plane
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

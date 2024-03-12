@@ -4,7 +4,7 @@ using Cinemachine;
 
     public class CameraController : NetworkBehaviour
     {
-        [SerializeField] private CinemachineVirtualCamera _cinemachine;
+        [SerializeField] private CinemachineFreeLook _cinemachine;
         public override void OnStartClient()
         {
             base.OnStartClient();
@@ -14,7 +14,7 @@ using Cinemachine;
             }
 
             Camera c = GetComponentInChildren<Camera>();
-            _cinemachine = c.GetComponent<CinemachineVirtualCamera>();
+            _cinemachine = c.GetComponent<CinemachineFreeLook>();
             _cinemachine.Follow = transform;
             _cinemachine.LookAt  = transform;
             

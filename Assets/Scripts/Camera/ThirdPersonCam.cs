@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class ThirdPersonCam : MonoBehaviour
 {
@@ -14,6 +16,18 @@ public class ThirdPersonCam : MonoBehaviour
     private Rigidbody _body;
 
     public float _rotationSpeed;
+
+    [SerializeField] private Camera _camera;
+
+    [SerializeField] private CinemachineFreeLook _cinemachine;
+    public void Start()
+    {
+        _camera = GetComponent<Camera>();
+        Assert.IsNotNull(_camera,"_camera != null");
+        _cinemachine = _camera.GetComponent<CinemachineFreeLook>();
+        _cinemachine.Follow = player;
+        _cinemachine.LookAt = player;
+    }
 
 
     public void Update()
