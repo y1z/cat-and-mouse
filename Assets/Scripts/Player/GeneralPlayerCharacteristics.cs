@@ -81,9 +81,9 @@ using UnityEngine.Assertions;
             
             #endif // UNITY_EDITOR
             
-            DoMouseRotation();
+            //DoMouseRotation();
             
-            DoPlayerMovement();
+            //DoPlayerMovement();
                 
             DoPlayerJump();
             
@@ -115,6 +115,7 @@ using UnityEngine.Assertions;
             return new Vector3(dist.x,0,dist.z);
         }
 
+        // TODO : Remove function from script
         private void DoMouseRotation()
         {
             
@@ -125,6 +126,8 @@ using UnityEngine.Assertions;
             transform.Rotate(v, h, 0);
         }
 
+        
+        // TODO : Remove function from script
         private void DoPlayerMovement()
         {
             _forwardVector = CalculateForward();
