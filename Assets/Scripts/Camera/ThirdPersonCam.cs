@@ -2,10 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using FishNet;
+using FishNet.Object;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public class ThirdPersonCam : MonoBehaviour
+public class ThirdPersonCam : NetworkBehaviour 
 {
     [Header("References")]
     public Transform orientation;
@@ -22,11 +24,25 @@ public class ThirdPersonCam : MonoBehaviour
     [SerializeField] private CinemachineFreeLook _cinemachine;
     public void Start()
     {
+    }
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        if (!base.Owner.IsLocalClient)
+        {
+            return;
+        }
+        
         _camera = GetComponent<Camera>();
         Assert.IsNotNull(_camera,"_camera != null");
+        _camera.gameObject.SetActive(true);
+        
         _cinemachine = _camera.GetComponent<CinemachineFreeLook>();
         _cinemachine.Follow = player;
         _cinemachine.LookAt = player;
+        
+        //InstanceFinder.NetworkManager.spawns
     }
 
 

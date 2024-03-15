@@ -1,10 +1,11 @@
 ﻿using System;
+using FishNet.Object;
 using UnityEngine;
 
 
 
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour 
 {
     [Header("Movement")]
     public float movementSpeed;
@@ -28,6 +29,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if (!base.IsOwner)
+        {
+            return;
+        }
         UpdateInput();
         
     }

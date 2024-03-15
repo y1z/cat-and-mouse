@@ -1,5 +1,9 @@
 ﻿using System;
+using FishNet;
+
+using FishNet.Component.Spawning;
 using FishNet.Object;
+using FishNet.Object.Synchronizing;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -36,6 +40,8 @@ using UnityEngine.Assertions;
 
         private Role _role;
 
+
+        [SyncVar] private Vector3 _playerPosition;
         protected void Awake()
         {
             if(Mathf.Abs(_movementSpeed) < float.Epsilon) 
@@ -54,7 +60,36 @@ using UnityEngine.Assertions;
 
         protected void Start()
         {
+
+            if (!base.Owner.IsLocalClient)
+            {
+                return;
+            }
+
+            _playerPosition = transform.position;
             _renderer = GetComponent<Renderer>();
+
+            Transform[] valid_spawn_points = InstanceFinder.NetworkManager.GetComponent<PlayerSpawner>().Spawns;
+
+            Vector3 player_position = transform.position;
+            bool is_in_spawn_point = false;
+            foreach (var spawn_point in valid_spawn_points)
+            {
+                if (Vector3.Distance(player_position, spawn_point.position) <=
+                    Globals.DEFAULT_MAX_INITIAL_DISTANCE_FROM_SPAWN)
+                {
+                    is_in_spawn_point = true;
+                }
+
+            }
+
+            if (!is_in_spawn_point)
+            {
+               var spawn_point_index = UnityEngine.Random.Range(0, valid_spawn_points.Length - 1);
+               transform.position = valid_spawn_points[spawn_point_index].position;
+               print("SET PLAYER SPAWN POINT MANUALLY ");
+            }
+            
         }
 
         public override void OnStartClient()
@@ -81,13 +116,10 @@ using UnityEngine.Assertions;
             
             #endif // UNITY_EDITOR
             
-            //DoMouseRotation();
-            
-            //DoPlayerMovement();
-                
             DoPlayerJump();
-            
-            
+
+            _playerPosition = transform.position;
+
         }
 
 
@@ -114,43 +146,8 @@ using UnityEngine.Assertions;
             
             return new Vector3(dist.x,0,dist.z);
         }
-
-        // TODO : Remove function from script
-        private void DoMouseRotation()
-        {
-            
-            // Get the mouse delta. This is not in the range -1...1
-            float h = _rotationSpeed * Input.GetAxis("Mouse X");
-            float v = _rotationSpeed * Input.GetAxis("Mouse Y") * 0;
-
-            transform.Rotate(v, h, 0);
-        }
-
         
-        // TODO : Remove function from script
-        private void DoPlayerMovement()
-        {
-            _forwardVector = CalculateForward();
 
-            Vector3 input_direction = Vector3.zero;
-            input_direction.x = Input.GetAxis("Horizontal");
-            input_direction.y = Input.GetAxis("Vertical");
-
-            Vector3 right = Vector3.Cross(Vector3.up, _forwardVector).normalized;
-
-            Vector3 side_movement = input_direction.x * right;
-            Vector3 foward_movement = input_direction.y * _forwardVector;
-            
-            Vector3 final_movement = (foward_movement + side_movement);
-
-            
-            transform.Translate( final_movement * (_movementSpeed * Time.deltaTime));
-            
-            //transform.Translate ( final_movement * (_movementSpeed * Time.deltaTime), _cam.transform );
-            
-        }
-
-//_movementSpeed *
         private void DoPlayerJump()
         {
             if (Input.GetButtonDown("Jump") && IsGrounded())
