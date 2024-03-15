@@ -13,18 +13,14 @@ using UnityEngine.Assertions;
      */
     public class GeneralPlayerCharacteristics : NetworkBehaviour
     {
-        [Tooltip("Controls how fast the entity moves")]
-        public float _movementSpeed = 0;
 
         [Tooltip("Controls how heigh the entity jumps")]
         public float _jumpForce;
         
-        public float _rotationSpeed;
-        
         protected Renderer _renderer;
         
-        [Tooltip("This object controls which way is forward for the player")]
-        [SerializeField] private Transform _forwardObject;
+        //[Tooltip("This object controls which way is forward for the player")]
+        //[SerializeField] private Transform _forwardObject;
 
         [Tooltip("This object check if we are on the ground")]
         [SerializeField] private Transform _groundCheckObject;
@@ -44,10 +40,6 @@ using UnityEngine.Assertions;
         [SyncVar] private Vector3 _playerPosition;
         protected void Awake()
         {
-            if(Mathf.Abs(_movementSpeed) < float.Epsilon) 
-            {
-                _movementSpeed = 1.0f;
-            }
 
             if (Mathf.Abs(_jumpForce) < float.Epsilon)
             {
@@ -55,7 +47,7 @@ using UnityEngine.Assertions;
             }
 
             Assert.IsNotNull(_body,"_body != null") ;
-            Assert.IsNotNull(_forwardObject, "_forwardObject != null");
+            //Assert.IsNotNull(_forwardObject, "_forwardObject != null");
         }
 
         protected void Start()
@@ -137,17 +129,6 @@ using UnityEngine.Assertions;
             _renderer.material.color = new_color;
         }
 
-
-        //Calculates what forward is the character
-        // Note: we ignore the y-axis because we don't need it for movement
-        private Vector3 CalculateForward()
-        {
-            Vector3 dist = (_forwardObject.transform.position - transform.position).normalized;
-            
-            return new Vector3(dist.x,0,dist.z);
-        }
-        
-
         private void DoPlayerJump()
         {
             if (Input.GetButtonDown("Jump") && IsGrounded())
@@ -164,10 +145,10 @@ using UnityEngine.Assertions;
         }
 
 
-        public Transform ForwardObject
+        /*public Transform ForwardObject
         {
             get { return _forwardObject; }
-        }
+        }*/
 
         public Vector3 BackwardsVector => _forwardVector * -1;
     }

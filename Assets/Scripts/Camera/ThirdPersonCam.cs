@@ -41,7 +41,10 @@ public class ThirdPersonCam : NetworkBehaviour
         _cinemachine = _camera.GetComponent<CinemachineFreeLook>();
         _cinemachine.Follow = player;
         _cinemachine.LookAt = player;
-        
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         //InstanceFinder.NetworkManager.spawns
     }
 
@@ -63,6 +66,5 @@ public class ThirdPersonCam : NetworkBehaviour
         {
             playerObject.forward = Vector3.Slerp(player.forward, input_dir.normalized, _rotationSpeed * Time.deltaTime);
         }
-        
     }
 }

@@ -1,29 +1,36 @@
 ﻿using System;
+using FishNet;
 using FishNet.Object;
 using UnityEngine;
 
 
 
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerMovement : NetworkBehaviour 
+public class PlayerMovement : NetworkBehaviour
 {
-    [Header("Movement")]
+
+    [Tooltip("Controls how fast the characters moves")] [Header("Movement")]
     public float movementSpeed;
+    [Tooltip("Controls the orientation of our movement")]
+    [SerializeField] private Transform orientation;
 
-    public Transform orientation;
+    private Vector2 _input;
 
-    private Vector2 input;
+    public UnityEngine.Vector3 _moveDirection;
 
-    private Vector3 move_direction;
+    [SerializeField] private Rigidbody _body;
 
-    private Rigidbody _body;
 
+    private void Awake()
+    {
+        _body = GetComponent<Rigidbody>();
+        _moveDirection = new Vector3(0, 0, 0);
+        _body.freezeRotation = true;
+    }
 
     private void Start()
     {
-        _body = GetComponent<Rigidbody>();
-
-        _body.freezeRotation = true;
+        
     }
 
 
@@ -39,22 +46,21 @@ public class PlayerMovement : NetworkBehaviour
 
     private void FixedUpdate()
     {
-        MovePlayer();
+        
+        _moveDirection = orientation.forward * _input.y + orientation.right * _input.x;
+
+        _body.AddForce(_moveDirection.normalized * movementSpeed, ForceMode.Force);
+        //MovePlayer();
     }
 
     private void UpdateInput()
     {
-       input.x =  Input.GetAxis("Horizontal");
-       input.y = Input.GetAxis("Vertical");
+       _input.x = Input.GetAxis("Horizontal");
+       _input.y = Input.GetAxis("Vertical");
     }
 
     private void MovePlayer()
     {
-        move_direction = orientation.forward * input.y + orientation.right * input.x;
-        
-        
-        _body.AddForce(move_direction.normalized * movementSpeed, ForceMode.Force);
-        
     }
     
 }
