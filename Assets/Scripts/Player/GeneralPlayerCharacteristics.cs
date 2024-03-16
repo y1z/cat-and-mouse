@@ -102,9 +102,17 @@ using UnityEngine.Assertions;
                 ChangeColor(new_color);
             }
 
-            if (Input.GetKeyDown(KeyCode.O))
+            if (Input.GetKeyDown(KeyCode.O) && _role == null)
             {
                 _role = new MouseRole();
+                _role.OnInit(this);
+            }
+
+            if (Input.GetKeyDown(KeyCode.P) && _role == null)
+            {
+                _role = new CatRole();
+                _role.OnInit(this);
+
             }
             
             #endif // UNITY_EDITOR

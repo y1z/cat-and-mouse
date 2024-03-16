@@ -4,21 +4,44 @@ using System.Collections.Generic;
 using FishNet;
 using UnityEngine;
 
+/**
+ *  Used to keep track of which role the player currently is and helps change the role when necessary 
+ */
 public sealed class RoleController : MonoBehaviour
 {
 
     private IRole _role;
-    // Start is called before the first frame update
-    void Start()
-    {
-        _role.GetType();
+    
+   [SerializeField] private bool _isInitialized = false;
 
-    }
+   [SerializeField] private GeneralPlayerCharacteristics _player_ref;
+    
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if (!_isInitialized)
+        {
+            return;
+        }
+
+        _role.OnUpdate(_player_ref);
+
+
+    }
+    
+    public bool Initialize(GeneralPlayerCharacteristics player, IRole starting_role)
+    {
+        _player_ref = player;
+        _role = starting_role;
+        _isInitialized = true;
+        return _isInitialized;
+    }
+
+    public void UnInitialize()
+    {
+        _role = null;
+        _player_ref = null;
+        _isInitialized = false;
     }
 
     public string getRoleName()

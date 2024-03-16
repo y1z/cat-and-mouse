@@ -1,4 +1,4 @@
-﻿    public sealed class MouseRole: IRole
+﻿    public sealed class MouseRole : IRole
     {
 
         bool IRole.OnInit(GeneralPlayerCharacteristics player)
