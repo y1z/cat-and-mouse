@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using Vector2 =  UnityEngine.Vector2;
 
-    public class NetworkRigidbodyV1 : NetworkBehaviour
+    public sealed class NetworkRigidbodyV1 : NetworkBehaviour
     {
         public Vector2 Direction;
         public float force;

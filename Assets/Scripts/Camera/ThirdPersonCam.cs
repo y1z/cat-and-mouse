@@ -7,7 +7,7 @@ using FishNet.Object;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public class ThirdPersonCam : NetworkBehaviour 
+public sealed class ThirdPersonCam : NetworkBehaviour 
 {
     [Header("References")]
     public Transform orientation;

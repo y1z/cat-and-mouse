@@ -5,7 +5,7 @@ using FishNet;
 using FishNet.Object;
 using UnityEngine;
 
-public class NetworkRigibodyV2 : NetworkBehaviour
+public sealed class NetworkRigibodyV2 : NetworkBehaviour
 {
     
     public Vector2 Direction;

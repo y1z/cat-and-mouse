@@ -3,7 +3,7 @@ using UnityEngine;
 
 
 [RequireComponent(typeof(Rigidbody))]
-public class BetterJump : MonoBehaviour
+public sealed class  BetterJump : MonoBehaviour
 {
     [SerializeField] private float fall_multiplier;
     [SerializeField] private float low_jump_multiplier;

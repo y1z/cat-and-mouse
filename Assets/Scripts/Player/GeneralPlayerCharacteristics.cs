@@ -34,8 +34,6 @@ using UnityEngine.Assertions;
 
         private IRole _role;
 
-
-        [SyncVar] private Vector3 _playerPosition;
         protected void Awake()
         {
 
@@ -58,7 +56,6 @@ using UnityEngine.Assertions;
                 return;
             }
 
-            _playerPosition = transform.position;
             _renderer = GetComponent<Renderer>();
 
             Transform[] valid_spawn_points = InstanceFinder.NetworkManager.GetComponent<PlayerSpawner>().Spawns;
@@ -79,7 +76,6 @@ using UnityEngine.Assertions;
             {
                var spawn_point_index = UnityEngine.Random.Range(0, valid_spawn_points.Length - 1);
                transform.position = valid_spawn_points[spawn_point_index].position;
-               print("SET PLAYER SPAWN POINT MANUALLY ");
             }
             
         }
@@ -112,14 +108,11 @@ using UnityEngine.Assertions;
             }
             
             #endif // UNITY_EDITOR
-            
+
+            //InstanceFinder.ServerManager.Clients;
             
             DoPlayerJump();
             
-
-            
-            _playerPosition = transform.position;
-
         }
 
 

@@ -5,7 +5,7 @@ using UnityEngine;
 using FishNet.Object;
 using Random = UnityEngine.Random;
 
-public class BasicMovementScript : NetworkBehaviour 
+public sealed class BasicMovementScript : NetworkBehaviour 
 {
     
     [SerializeField]

@@ -2,7 +2,7 @@
 using UnityEngine;
 using FishNet.Object;
 
-    public class FollowPlayerCam :  NetworkBehaviour
+    public sealed class FollowPlayerCam :  NetworkBehaviour
     {
         [Tooltip("Controls where the camera is located ")]
         [SerializeField] private Transform _cameraTarget;
