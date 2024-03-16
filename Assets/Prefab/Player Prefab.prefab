@@ -991,6 +991,8 @@ MonoBehaviour:
   orientation: {fileID: 8698892174270032360}
   _moveDirection: {x: 0, y: 0, z: 0}
   _body: {fileID: 0}
+  _defaultDrag: 0
+  _minimumDrag: 1
 --- !u!114 &9200245269091728667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1052,7 +1054,7 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 1
 --- !u!136 &840888491812237182

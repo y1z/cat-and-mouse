@@ -1,6 +1,7 @@
 ﻿using System;
 using FishNet;
 using FishNet.Object;
+using Unity.Mathematics;
 using UnityEngine;
 
 
@@ -16,21 +17,21 @@ public class PlayerMovement : NetworkBehaviour
 
     private Vector2 _input;
 
-    public UnityEngine.Vector3 _moveDirection;
+    public Vector3 _moveDirection;
 
     [SerializeField] private Rigidbody _body;
 
+    [SerializeField] private float _defaultDrag;
 
-    private void Awake()
-    {
-        _body = GetComponent<Rigidbody>();
-        _moveDirection = new Vector3(0, 0, 0);
-        _body.freezeRotation = true;
-    }
+    [SerializeField] private float _minimumDrag;
 
     private void Start()
     {
         
+        _body = GetComponent<Rigidbody>();
+        _moveDirection = new Vector3(0, 0, 0);
+        _body.freezeRotation = true;
+        _defaultDrag = _body.drag;
     }
 
 
@@ -55,8 +56,13 @@ public class PlayerMovement : NetworkBehaviour
 
     private void UpdateInput()
     {
-       _input.x = Input.GetAxis("Horizontal");
-       _input.y = Input.GetAxis("Vertical");
+       _input.x = Input.GetAxisRaw("Horizontal");
+       _input.y = Input.GetAxisRaw("Vertical");
+
+       if (MathF.Abs(_input.x) < float.Epsilon && MathF.Abs(_input.y) < float.Epsilon)
+       {
+           _body.drag = Mathf.Clamp(_body.velocity.magnitude, _minimumDrag, float.MaxValue  ) ;
+       }
     }
 
     private void MovePlayer()

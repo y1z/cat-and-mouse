@@ -66,5 +66,14 @@ public class ThirdPersonCam : NetworkBehaviour
         {
             playerObject.forward = Vector3.Slerp(player.forward, input_dir.normalized, _rotationSpeed * Time.deltaTime);
         }
+
+    #if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.Mouse2))
+        {
+        }
+        
+    #endif
+        
     }
+    
 }

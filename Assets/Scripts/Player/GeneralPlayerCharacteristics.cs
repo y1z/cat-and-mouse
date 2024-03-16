@@ -28,13 +28,11 @@ using UnityEngine.Assertions;
         [Tooltip("Constrols where the camera is located ")]
         [SerializeField] private Transform _cameraPos;
         
-        protected Vector3 _forwardVector = Vector3.forward;
-        
         [SerializeField] private Rigidbody _body;
 
         [SerializeField] private LayerMask _layerMask;
 
-        private Role _role;
+        private IRole _role;
 
 
         [SyncVar] private Vector3 _playerPosition;
@@ -46,8 +44,10 @@ using UnityEngine.Assertions;
                 _jumpForce = 1.0f;
             }
 
+            _role = null;
+
+            _renderer = GetComponent<Renderer>();
             Assert.IsNotNull(_body,"_body != null") ;
-            //Assert.IsNotNull(_forwardObject, "_forwardObject != null");
         }
 
         protected void Start()
@@ -105,18 +105,26 @@ using UnityEngine.Assertions;
                 Color new_color = UnityEngine.Random.ColorHSV(); 
                 ChangeColor(new_color);
             }
+
+            if (Input.GetKeyDown(KeyCode.O))
+            {
+                _role = new MouseRole();
+            }
             
             #endif // UNITY_EDITOR
             
+            
             DoPlayerJump();
+            
 
+            
             _playerPosition = transform.position;
 
         }
 
 
         [ServerRpc]
-        protected void ChangeColor(Color new_color)
+        public void ChangeColor(Color new_color)
         {
            ChangeColorRPC(new_color); 
         }
@@ -138,17 +146,19 @@ using UnityEngine.Assertions;
             
         }
 
+        private void DoPlayerRole()
+        {
+            if (_role != null)
+            {
+                _role.OnUpdate(this);
+            }
+            
+        }
+
 
         private bool IsGrounded()
         {
             return Physics.CheckSphere(_groundCheckObject.position, 0.1f, _layerMask);
         }
 
-
-        /*public Transform ForwardObject
-        {
-            get { return _forwardObject; }
-        }*/
-
-        public Vector3 BackwardsVector => _forwardVector * -1;
     }
