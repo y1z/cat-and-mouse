@@ -1,4 +1,4 @@
-﻿    public class CatRole : IRole
+﻿    public sealed class CatRole : IRole
     {
         public bool OnInit(GeneralPlayerCharacteristics player)
         {
