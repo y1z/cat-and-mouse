@@ -70,8 +70,21 @@ public class ThirdPersonCam : NetworkBehaviour
     #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Mouse2))
         {
+            switch (Cursor.lockState)
+            {
+                case CursorLockMode.Locked:
+                    Cursor.lockState = CursorLockMode.None;
+                    break;
+                case CursorLockMode.None:
+                    Cursor.lockState = CursorLockMode.Locked;
+                    break;
+                default:
+                    Cursor.lockState = CursorLockMode.None;
+                    break;
+            }
+            
+            
         }
-        
     #endif
         
     }
