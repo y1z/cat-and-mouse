@@ -19,12 +19,6 @@ using UnityEngine.Assertions;
         
         protected Renderer _renderer;
         
-        //[Tooltip("This object controls which way is forward for the player")]
-        //[SerializeField] private Transform _forwardObject;
-
-        [Tooltip("This object check if we are on the ground")]
-        [SerializeField] private Transform _groundCheckObject;
-        
         [Tooltip("Constrols where the camera is located ")]
         [SerializeField] private Transform _cameraPos;
         
@@ -32,7 +26,10 @@ using UnityEngine.Assertions;
 
         [SerializeField] private LayerMask _layerMask;
 
-        private IRole _role;
+        [SerializeField] private RoleController _roleController;
+
+        private GroundCheck _groundCheck;
+
 
         protected void Awake()
         {
@@ -42,13 +39,12 @@ using UnityEngine.Assertions;
                 _jumpForce = 1.0f;
             }
 
-            _role = null;
 
             _renderer = GetComponent<Renderer>();
             Assert.IsNotNull(_body,"_body != null") ;
         }
 
-        protected void Start()
+        private void Start()
         {
 
             if (!base.Owner.IsLocalClient)
@@ -57,21 +53,12 @@ using UnityEngine.Assertions;
             }
 
             _renderer = GetComponent<Renderer>();
-
+            _roleController = GetComponent<RoleController>();
+            _groundCheck = GetComponent<GroundCheck>();
+            
             Transform[] valid_spawn_points = InstanceFinder.NetworkManager.GetComponent<PlayerSpawner>().Spawns;
-
-            Vector3 player_position = transform.position;
-            bool is_in_spawn_point = false;
-            foreach (var spawn_point in valid_spawn_points)
-            {
-                if (Vector3.Distance(player_position, spawn_point.position) <=
-                    Globals.DEFAULT_MAX_INITIAL_DISTANCE_FROM_SPAWN)
-                {
-                    is_in_spawn_point = true;
-                }
-
-            }
-
+            bool is_in_spawn_point = isPlayerInSpawn(valid_spawn_points);
+            
             if (!is_in_spawn_point)
             {
                var spawn_point_index = UnityEngine.Random.Range(0, valid_spawn_points.Length - 1);
@@ -102,22 +89,22 @@ using UnityEngine.Assertions;
                 ChangeColor(new_color);
             }
 
-            if (Input.GetKeyDown(KeyCode.O) && _role == null)
+            if (Input.GetKeyDown(KeyCode.O))
             {
-                _role = new MouseRole();
-                _role.OnInit(this);
+                var temp = new MouseRole();
+                _roleController.Initialize(this, temp);
             }
 
-            if (Input.GetKeyDown(KeyCode.P) && _role == null)
+            if (Input.GetKeyDown(KeyCode.P))
             {
-                _role = new CatRole();
-                _role.OnInit(this);
+                var temp = new CatRole();
+                _roleController.Initialize(this, temp);
 
             }
             
             #endif // UNITY_EDITOR
-
-            //InstanceFinder.ServerManager.Clients;
+            
+            
             
             DoPlayerJump();
             
@@ -140,26 +127,31 @@ using UnityEngine.Assertions;
 
         private void DoPlayerJump()
         {
-            if (Input.GetButtonDown("Jump") && IsGrounded())
+            if (Input.GetButtonDown("Jump") && _groundCheck.IsGrounded)
             {
                 _body.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
             }
             
         }
 
-        private void DoPlayerRole()
+
+        private bool isPlayerInSpawn(Transform[] valid_spawn_points)
         {
-            if (_role != null)
-            {
-                _role.OnUpdate(this);
-            }
+            Vector3 player_position = transform.position;
+            bool result = false;
             
-        }
+            foreach (var spawn_point in valid_spawn_points)
+            {
+                if (Vector3.Distance(player_position, spawn_point.position) <=
+                    Globals.DEFAULT_MAX_INITIAL_DISTANCE_FROM_SPAWN)
+                {
+                    result = true;
+                }
+            }
 
-
-        private bool IsGrounded()
-        {
-            return Physics.CheckSphere(_groundCheckObject.position, 0.1f, _layerMask);
+            return result;
         }
 
     }
+    
+    

@@ -889,6 +889,7 @@ GameObject:
   - component: {fileID: 9200245269091728667}
   - component: {fileID: -3912274991577368952}
   - component: {fileID: 4808412865512884713}
+  - component: {fileID: 2122605220625004940}
   - component: {fileID: 8524332830327777415}
   - component: {fileID: 840888491812237182}
   - component: {fileID: 2209050743684622611}
@@ -1016,6 +1017,7 @@ MonoBehaviour:
   _layerMask:
     serializedVersion: 2
     m_Bits: 64
+  _roleController: {fileID: 0}
 --- !u!114 &-3912274991577368952
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1042,6 +1044,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfabeeb6ffa3c4042ac3683ac50ef2dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isInitialized: 0
+  _player_ref: {fileID: 0}
+--- !u!114 &2122605220625004940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6790717159753128343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f634ddd86a904a4abf104a2e3571959, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _groundCheckObject: {fileID: 900798499786212301}
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!54 &8524332830327777415
 Rigidbody:
   m_ObjectHideFlags: 0

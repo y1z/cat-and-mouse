@@ -4,8 +4,6 @@ using FishNet.Object;
 using Unity.Mathematics;
 using UnityEngine;
 
-
-
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : NetworkBehaviour
 {
@@ -25,6 +23,8 @@ public class PlayerMovement : NetworkBehaviour
 
     [SerializeField] private float _minimumDrag;
 
+    private GroundCheck _groundCheck;
+
     private void Start()
     {
         
@@ -32,6 +32,7 @@ public class PlayerMovement : NetworkBehaviour
         _moveDirection = new Vector3(0, 0, 0);
         _body.freezeRotation = true;
         _defaultDrag = _body.drag;
+        _groundCheck = GetComponent<GroundCheck>();
     }
 
 
@@ -59,14 +60,17 @@ public class PlayerMovement : NetworkBehaviour
        _input.x = Input.GetAxisRaw("Horizontal");
        _input.y = Input.GetAxisRaw("Vertical");
 
-       if (MathF.Abs(_input.x) < float.Epsilon && MathF.Abs(_input.y) < float.Epsilon)
+       bool is_moving = MathF.Abs(_input.x) < float.Epsilon && MathF.Abs(_input.y) < float.Epsilon;
+       bool is_grounded = _groundCheck.IsGrounded;
+
+       if (is_moving && is_grounded && _body.velocity.magnitude > 1.0f)
        {
            _body.drag = Mathf.Clamp(_body.velocity.magnitude, _minimumDrag, float.MaxValue  ) ;
        }
-    }
-
-    private void MovePlayer()
-    {
+       else if( is_grounded)
+       {
+           _body.drag = _defaultDrag;
+       }
     }
     
 }
