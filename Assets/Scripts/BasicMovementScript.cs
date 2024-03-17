@@ -90,11 +90,10 @@ public sealed class BasicMovementScript : NetworkBehaviour
 
         Vector3 final_movement = forward_movement + side_movement;
         transform.Translate(final_movement * (_movementSpeed * Time.deltaTime) );
-        // Get the mouse delta. This is not in the range -1...1
+        
         float mouse_x = _rotationSpeed.x * Input.GetAxis("Mouse X") * Time.deltaTime;
         
         float mouse_y = _rotationSpeed.y * Input.GetAxis("Mouse Y") * Time.deltaTime;
-        //float v = _rotationSpeed * Input.GetAxis("Mouse Y") * 0;
 
         _rotations.y += mouse_x;
         _rotations.x -= mouse_y;
