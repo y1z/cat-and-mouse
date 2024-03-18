@@ -26,6 +26,10 @@ public sealed class RoleController : MonoBehaviour
 
         _role.OnUpdate(_player_ref);
 
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                _role.DoRoleSpecialAction(_player_ref);
+            }
 
     }
     
@@ -34,6 +38,7 @@ public sealed class RoleController : MonoBehaviour
         _player_ref = player;
         _role = starting_role;
         _isInitialized = true;
+        _role.OnInit(player);
         return _isInitialized;
     }
 

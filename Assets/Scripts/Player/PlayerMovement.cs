@@ -1,7 +1,6 @@
 ﻿using System;
 using FishNet;
 using FishNet.Object;
-using Unity.Mathematics;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -48,11 +47,8 @@ public class PlayerMovement : NetworkBehaviour
 
     private void FixedUpdate()
     {
-        
         _moveDirection = orientation.forward * _input.y + orientation.right * _input.x;
-
         _body.AddForce(_moveDirection.normalized * movementSpeed, ForceMode.Force);
-        //MovePlayer();
     }
 
     private void UpdateInput()

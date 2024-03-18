@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Reflection;
 using FishNet;
 
 using FishNet.Component.Spawning;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -11,6 +13,7 @@ using UnityEngine.Assertions;
      * This class controls the general characteristics for each type of player
      * entity in this project.
      */
+    [RequireComponent(typeof(Rigidbody))]
     public class GeneralPlayerCharacteristics : NetworkBehaviour
     {
 
@@ -19,18 +22,27 @@ using UnityEngine.Assertions;
         
         protected Renderer _renderer;
         
-        [Tooltip("Constrols where the camera is located ")]
-        [SerializeField] private Transform _cameraPos;
-        
         [SerializeField] private Rigidbody _body;
-
-        [SerializeField] private LayerMask _layerMask;
 
         [SerializeField] private RoleController _roleController;
 
         private GroundCheck _groundCheck;
 
+        [SerializeField] private Transform _orientation;
 
+        [Tooltip("Attach an object with a sphere collider ")] [SerializeField]
+        private Transform _sphereColliderObj;
+
+        public SphereCollider _sphereCollider;
+
+        [Tooltip("A reference to the players camera")]
+        [SerializeField] private Camera _camera;
+
+        public  float height;
+        
+        // TODO : REMOVE IN THE FUTURE OFTER TESTING
+        [SerializeField] private float _temp_dist_of_ray = 10.0f;
+        
         protected void Awake()
         {
 
@@ -41,7 +53,12 @@ using UnityEngine.Assertions;
 
 
             _renderer = GetComponent<Renderer>();
+            _sphereCollider = _sphereColliderObj.GetComponent<SphereCollider>();
+            Vector3 size = _body.GetComponent<CapsuleCollider>().bounds.size;
+            height = size.y;
             Assert.IsNotNull(_body,"_body != null") ;
+            Assert.IsNotNull(_sphereCollider,"_sphereCollider should NOT be null") ;
+            Assert.IsNotNull(_sphereColliderObj,"_sphereColliderObj should NOT be null") ;
         }
 
         private void Start()
@@ -51,6 +68,7 @@ using UnityEngine.Assertions;
             {
                 return;
             }
+            Assert.IsNotNull(_orientation, "Orientation should NOT be null"); 
 
             _renderer = GetComponent<Renderer>();
             _roleController = GetComponent<RoleController>();
@@ -80,8 +98,7 @@ using UnityEngine.Assertions;
                 return;
             
             
-            #if UNITY_EDITOR 
-            
+        #if UNITY_EDITOR 
 
             if (Input.GetKeyDown(KeyCode.C))
             {
@@ -99,13 +116,10 @@ using UnityEngine.Assertions;
             {
                 var temp = new CatRole();
                 _roleController.Initialize(this, temp);
-
             }
             
-            #endif // UNITY_EDITOR
-            
-            
-            
+        #endif // UNITY_EDITOR
+
             DoPlayerJump();
             
         }
@@ -151,6 +165,25 @@ using UnityEngine.Assertions;
 
             return result;
         }
+
+        // TODO : DELETE THIS FUNCION LATER 
+        
+        [ServerRpc]
+        public void testFunction()
+        {
+            Debug.Log("excuted testfunction");
+        }
+
+        [ObserversRpc]
+        private void testFunctionRPC()
+        {
+            Destroy(gameObject);
+        }
+
+
+        public Transform Orientation => _orientation;
+
+        public Transform CameraTranform => _camera.transform;
 
     }
     
