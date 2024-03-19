@@ -193,11 +193,7 @@ using UnityEngine.Assertions;
 
         }
 
-
-        public Transform Orientation => _orientation;
-
         public Transform CameraTranform => _camera.transform;
-
     }
     
     

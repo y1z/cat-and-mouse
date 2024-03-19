@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
 
     void UpdatePlayerCount()
     {
-        _playerCount = InstanceFinder.NetworkManager.ServerManager.Clients.Count;
+        //_playerCount = InstanceFinder.NetworkManager.ServerManager.Clients.Count;
     }
     
     

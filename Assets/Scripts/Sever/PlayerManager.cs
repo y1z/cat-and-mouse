@@ -31,6 +31,9 @@ namespace Sever
             if (!base.IsServer)
                 return;
 
+            // TODO : CHANGE DICTIONARY TO USE 'NetworkConnection ' instead of index
+            //var a = base.NetworkObject.LocalConnection;
+
             PlayerData player_data = playersData[player_id];
             player_data.health -= damage;
             print("Player " + player_id.ToString() + " was damaged" + damage.ToString()  );
