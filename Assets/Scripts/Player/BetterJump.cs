@@ -20,7 +20,7 @@ public sealed class  BetterJump : MonoBehaviour
     {
         if (_body.velocity.y < 0.0f)
         {
-            print("chaging velocity ");
+            //print("chaging velocity ");
             _body.velocity += Vector3.up * (Physics.gravity.y * (fall_multiplier - 1) * Time.deltaTime);
         }
 

@@ -5,6 +5,7 @@ using FishNet;
 using FishNet.Component.Spawning;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
+using Sever;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -39,9 +40,10 @@ using UnityEngine.Assertions;
         [SerializeField] private Camera _camera;
 
         public  float height;
-        
-        // TODO : REMOVE IN THE FUTURE OFTER TESTING
-        [SerializeField] private float _temp_dist_of_ray = 10.0f;
+
+
+        [SyncVar(OnChange = nameof(OnChange_health))]
+        public float health = 100.0f;
         
         protected void Awake()
         {
@@ -50,7 +52,6 @@ using UnityEngine.Assertions;
             {
                 _jumpForce = 1.0f;
             }
-
 
             _renderer = GetComponent<Renderer>();
             _sphereCollider = _sphereColliderObj.GetComponent<SphereCollider>();
@@ -63,7 +64,18 @@ using UnityEngine.Assertions;
 
         private void Start()
         {
+            
+        }
 
+        public override void OnStartClient()
+        {
+            base.OnStartClient();
+
+            if (base.IsServer)
+            {
+                PlayerManager.instance.playersData.Add(gameObject.GetInstanceID(), new PlayerData(){health = 1.0f}  );
+            }
+            
             if (!base.Owner.IsLocalClient)
             {
                 return;
@@ -82,13 +94,6 @@ using UnityEngine.Assertions;
                var spawn_point_index = UnityEngine.Random.Range(0, valid_spawn_points.Length - 1);
                transform.position = valid_spawn_points[spawn_point_index].position;
             }
-            
-        }
-
-        public override void OnStartClient()
-        {
-            base.OnStartClient();
-            
         }
 
 
@@ -168,16 +173,24 @@ using UnityEngine.Assertions;
 
         // TODO : DELETE THIS FUNCION LATER 
         
-        [ServerRpc]
+        [ServerRpc(RequireOwnership = false)]
         public void testFunction()
         {
             Debug.Log("excuted testfunction");
+            health -= 5;
         }
 
         [ObserversRpc]
         private void testFunctionRPC()
         {
-            Destroy(gameObject);
+            
+        }
+
+        private void OnChange_health(float prev, float next, bool as_server)
+        {
+
+            Debug.Log("prev = " + prev + "\n" + "next = " + next);
+
         }
 
 
