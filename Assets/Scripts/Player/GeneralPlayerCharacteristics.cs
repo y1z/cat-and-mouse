@@ -74,7 +74,7 @@ using UnityEngine.Assertions;
 
             if (base.IsServer)
             {
-                PlayerManager.instance.playersData.Add(gameObject.GetInstanceID(), new PlayerData(){health = 1.0f}  );
+                //PlayerManager.instance.playersData.Add(gameObject.GetInstanceID(), new PlayerData(){health = 1.0f}  );
                 PlayerManager.instance._players.Add(base.Owner ,new PlayerData() {health = Globals.DEFAULT_PLAYER_HEALTH });
             }
             

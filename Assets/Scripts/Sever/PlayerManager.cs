@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using FishNet;
 using FishNet.Object;
 using FishNet.Connection;
@@ -17,11 +18,13 @@ namespace Sever
         
         public static PlayerManager instance;
         
-        // keeps track 
-        public Dictionary<int, PlayerData> playersData = new Dictionary<int, PlayerData>();
 
+        // used to keep track of  stats for the players
         [SyncObject] 
         public readonly SyncDictionary<NetworkConnection, PlayerData> _players = new SyncDictionary<NetworkConnection, PlayerData>();
+
+
+        private List<NetworkConnection> _toBeRemovedConnections = new List<NetworkConnection>();
 
         public void Awake()
         {
@@ -29,7 +32,35 @@ namespace Sever
             _players.OnChange += _players_OnChange;
 
         }
-        
+
+        private void Update()
+        {
+            if (!base.IsServer)
+            {
+                return;
+            }
+
+
+            foreach (var key_and_value in _players)
+            {
+                if (!key_and_value.Key.IsActive)
+                {
+                    continue;
+                }
+                _toBeRemovedConnections.Add(key_and_value.Key);
+            }
+
+            if (_toBeRemovedConnections.Count > 0)
+            {
+                foreach (var connection in _toBeRemovedConnections)
+                {
+                    _players.Remove(connection);
+                }
+                _toBeRemovedConnections.Clear();
+            }
+
+        }
+
 
         public void DamagePlayer(int player_id, int attacker_id, float damage)
         {
@@ -38,7 +69,9 @@ namespace Sever
 
             // TODO : CHANGE DICTIONARY TO USE 'NetworkConnection ' instead of index
             //var a = base.NetworkObject.LocalConnection;
+            
 
+            /*
             PlayerData player_data = playersData[player_id];
             player_data.health -= damage;
             print("Player " + player_id.ToString() + " was damaged" + damage.ToString()  );
@@ -47,6 +80,7 @@ namespace Sever
             {
                PlayerKilled(player_id,attacker_id); 
             }
+            */
 
         }
 
@@ -70,6 +104,7 @@ namespace Sever
             break;
             //Removes key.
                 case SyncDictionaryOperation.Remove:
+                    print("remove total obj = " + _players.Count);
             break;
             //Sets key to a new value.
                 case SyncDictionaryOperation.Set:
