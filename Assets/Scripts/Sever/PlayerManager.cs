@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using FishNet;
 using FishNet.Object;
 using FishNet.Connection;
+using FishNet.Object.Synchronizing;
 using UnityEngine;
 
 namespace Sever
@@ -19,10 +20,14 @@ namespace Sever
         // keeps track 
         public Dictionary<int, PlayerData> playersData = new Dictionary<int, PlayerData>();
 
+        [SyncObject] 
+        public readonly SyncDictionary<NetworkConnection, PlayerData> _players = new SyncDictionary<NetworkConnection, PlayerData>();
 
         public void Awake()
         {
             instance = this;
+            _players.OnChange += _players_OnChange;
+
         }
         
 
@@ -46,9 +51,37 @@ namespace Sever
         }
 
 
+        // TODO : REMOVE FUNCTION
         private void PlayerKilled(int player_id, int attacker_id)
         {
             print("Player " + player_id.ToString() + " was killed by " + attacker_id.ToString());
+        }
+        
+        //SyncDictionaries also include the asServer parameter.
+        private void _players_OnChange(SyncDictionaryOperation op, NetworkConnection key, PlayerData value, bool asServer)
+        {
+
+            switch (op)
+            {
+              //Adds key with value.
+                case SyncDictionaryOperation.Add:
+                    
+                    print("add op\nkey =" + key.ClientId + "\nvalue = " + value);
+            break;
+            //Removes key.
+                case SyncDictionaryOperation.Remove:
+            break;
+            //Sets key to a new value.
+                case SyncDictionaryOperation.Set:
+            break;
+            //Clears the dictionary.
+                case SyncDictionaryOperation.Clear:
+            break;
+            //Like SyncList, indicates all operations are complete.
+                case SyncDictionaryOperation.Complete:
+            break;
+            }
+            
         }
 
 
