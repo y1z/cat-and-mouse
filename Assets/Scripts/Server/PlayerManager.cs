@@ -5,10 +5,13 @@ using System.Linq;
 using FishNet;
 using FishNet.Object;
 using FishNet.Connection;
+using FishNet.Managing;
+using FishNet.Managing.Client;
 using FishNet.Object.Synchronizing;
 using UnityEngine;
 
-namespace Sever
+// server 
+namespace Server
 {
     /**
      * Keeps track of all relevant data of the players of the game 
@@ -26,12 +29,22 @@ namespace Sever
 
         private List<NetworkConnection> _toBeRemovedConnections = new List<NetworkConnection>();
 
+        private ClientManager _clientManager;
+
+        private WaitForSecondsRealtime _secondsRealtime;
+
         public void Awake()
         {
             instance = this;
             _players.OnChange += _players_OnChange;
 
+            _secondsRealtime = new WaitForSecondsRealtime(1.0f);
+
+            _clientManager = InstanceFinder.ClientManager;
+            StartCoroutine(checkIfPlayersAreStillConnected(_secondsRealtime));
+
         }
+        
 
         private void Update()
         {
@@ -40,27 +53,41 @@ namespace Sever
                 return;
             }
 
+            
 
-            foreach (var key_and_value in _players)
-            {
-                if (!key_and_value.Key.IsActive)
-                {
-                    continue;
-                }
-                _toBeRemovedConnections.Add(key_and_value.Key);
-            }
-
-            if (_toBeRemovedConnections.Count > 0)
-            {
-                foreach (var connection in _toBeRemovedConnections)
-                {
-                    _players.Remove(connection);
-                }
-                _toBeRemovedConnections.Clear();
-            }
 
         }
 
+        IEnumerator checkIfPlayersAreStillConnected(WaitForSecondsRealtime seconds)
+        {
+
+            if (!base.IsServer)
+                yield break ;
+            
+            while (true)
+            {
+                foreach (var key_and_value in _players)
+                {
+                    if(_clientManager.Clients.ContainsValue(key_and_value.Key))
+                    {
+                        continue;
+                    }
+                    _toBeRemovedConnections.Add(key_and_value.Key);
+                }
+
+                if (_toBeRemovedConnections.Count > 0)
+                {
+                    foreach (var connection in _toBeRemovedConnections)
+                    {
+                        _players.Remove(connection);
+                    }
+                    _toBeRemovedConnections.Clear();
+                }
+                    
+                yield return  seconds;
+            }
+
+        }
 
         public void DamagePlayer(int player_id, int attacker_id, float damage)
         {
@@ -108,12 +135,16 @@ namespace Sever
             break;
             //Sets key to a new value.
                 case SyncDictionaryOperation.Set:
+                    print("new key set =" + key);
             break;
             //Clears the dictionary.
                 case SyncDictionaryOperation.Clear:
+                    print("Dictionary cleared");
             break;
             //Like SyncList, indicates all operations are complete.
                 case SyncDictionaryOperation.Complete:
+                    
+                    print("Dictionary Complete");
             break;
             }
             
