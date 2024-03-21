@@ -43,7 +43,7 @@
                 {
                     if (collider.CompareTag("Player"))
                     {
-                        collider.GetComponent<GeneralPlayerCharacteristics>().testFunction();
+                        collider.GetComponent<GeneralPlayerCharacteristics>().takeDamage(Globals.DEFAULT_PLAYER_DAMAGE);
                     }
                 }
         }

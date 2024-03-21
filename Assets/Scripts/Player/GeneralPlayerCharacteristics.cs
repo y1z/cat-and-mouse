@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Reflection;
 using FishNet;
-
 using FishNet.Component.Spawning;
 using FishNet.Connection;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
-using Sever;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
-
+using Managers;
     /**
      * This class controls the general characteristics for each type of player
      * entity in this project.
@@ -173,14 +171,17 @@ using UnityEngine.Assertions;
             return result;
         }
 
-        // TODO : DELETE THIS FUNCION LATER 
         
         [ServerRpc(RequireOwnership = false)]
-        public void testFunction()
+        public void takeDamage(float damage_amount)
         {
-            Debug.Log("excuted testfunction");
-            health -= 5;
-        }
+            health -= damage_amount ;
+            if (health <= 0.0f)
+            {
+               print("player died"); 
+            }
+        } 
+        
 
         [ObserversRpc]
         private void testFunctionRPC()

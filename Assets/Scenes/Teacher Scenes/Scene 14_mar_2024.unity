@@ -301,6 +301,14 @@ PrefabInstance:
       value: 3308451007299310691
       objectReference: {fileID: 0}
     - target: {fileID: -7853672159905966170, guid: 6fb1bcfbbbcc3084a8070453f84099af, type: 3}
+      propertyPath: _networkBehaviours.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7853672159905966170, guid: 6fb1bcfbbbcc3084a8070453f84099af, type: 3}
+      propertyPath: _networkBehaviours.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: -7853672159905966170, guid: 6fb1bcfbbbcc3084a8070453f84099af, type: 3}
       propertyPath: SerializedTransformProperties.Position.x
       value: -27.04
       objectReference: {fileID: 0}
@@ -417,15 +425,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 897262490}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f67173bdcaf9fe24ea8d585423d4cecb, type: 3}
+  m_Script: {fileID: 11500000, guid: e3ae4bade2a65334197c79f4207eef4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 0
+  _componentIndexCache: 255
   _addedNetworkObject: {fileID: 897262491}
-  _networkObjectCache: {fileID: 897262491}
+  _networkObjectCache: {fileID: 0}
   Direction: {x: 5, y: 5}
   force: 1.5
   startPos: {x: 0, y: 0}
+  prefab: {fileID: 0}
+  predictionManager: {fileID: 0}
+  _reconcilationData:
+    position: {x: 0, y: 0}
+    velocidad: {x: 0, y: 0}
+    tick: 0
 --- !u!1 &1006060778
 GameObject:
   m_ObjectHideFlags: 0

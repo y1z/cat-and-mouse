@@ -11,7 +11,7 @@ using FishNet.Object.Synchronizing;
 using UnityEngine;
 
 // server 
-namespace Server
+namespace Managers
 {
     /**
      * Keeps track of all relevant data of the players of the game 
