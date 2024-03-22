@@ -16,17 +16,15 @@ namespace Managers
     /**
      * Keeps track of all relevant data of the players of the game 
      */
-    public class PlayerManager : NetworkBehaviour
+    public class  PlayerManager : NetworkBehaviour
     {
-        
         public static PlayerManager instance;
-        
 
         // used to keep track of  stats for the players
         [SyncObject] 
         public readonly SyncDictionary<NetworkConnection, PlayerData> _players = new SyncDictionary<NetworkConnection, PlayerData>();
 
-
+        //contains 
         private List<NetworkConnection> _toBeRemovedConnections = new List<NetworkConnection>();
 
         private ClientManager _clientManager;
@@ -41,7 +39,7 @@ namespace Managers
             _secondsRealtime = new WaitForSecondsRealtime(1.0f);
 
             _clientManager = InstanceFinder.ClientManager;
-            StartCoroutine(checkIfPlayersAreStillConnected(_secondsRealtime));
+            //StartCoroutine(checkIfPlayersAreStillConnected(_secondsRealtime));
 
         }
         
@@ -53,8 +51,20 @@ namespace Managers
                 return;
             }
 
-            
+            #if UNITY_EDITOR
+            var clinet_count = _clientManager.Clients.Count;
+            if (clinet_count> 1)
+            {
+                string all_ids = "";
+                foreach (var client in _clientManager.Clients)
+                {
+                    all_ids += client.Key.ToString() + ",";
 
+                }
+
+                print(all_ids);
+            }
+            #endif
 
         }
 
@@ -89,36 +99,38 @@ namespace Managers
 
         }
 
-        public void DamagePlayer(int player_id, int attacker_id, float damage)
+
+        /// <summary>
+        /// Called with one player damaged another 
+        /// </summary>
+        /// <param name="attacking_player"> The player doing the damage</param>
+        /// <param name="victim_player"> the player receiving the damage</param>
+        public void PlayerDamage(GeneralPlayer attacking_player, GeneralPlayer victim_player, float damage_amount)
         {
             if (!base.IsServer)
                 return;
 
-            // TODO : CHANGE DICTIONARY TO USE 'NetworkConnection ' instead of index
-            //var a = base.NetworkObject.LocalConnection;
-            
-
-            /*
-            PlayerData player_data = playersData[player_id];
-            player_data.health -= damage;
-            print("Player " + player_id.ToString() + " was damaged" + damage.ToString()  );
-
-            if (player_data.health < 1)
+            foreach (var network_connection in _players.Keys)
             {
-               PlayerKilled(player_id,attacker_id); 
+                if (network_connection == victim_player.Connection)
+                {
+                    //victim_player.takeDamage();
+
+
+                    break;
+                }
+                
             }
-            */
 
-        }
+                 
+            //attacking_player;
 
-
-        // TODO : REMOVE FUNCTION
-        private void PlayerKilled(int player_id, int attacker_id)
-        {
-            print("Player " + player_id.ToString() + " was killed by " + attacker_id.ToString());
         }
         
-        //SyncDictionaries also include the asServer parameter.
+        /// <summary>
+        /// function that is called when _players variable is modified 
+        /// https://fish-networking.gitbook.io/docs/manual/guides/synchronizing/attributes#syncvar
+        /// </summary>
         private void _players_OnChange(SyncDictionaryOperation op, NetworkConnection key, PlayerData value, bool asServer)
         {
 
@@ -136,6 +148,7 @@ namespace Managers
             //Sets key to a new value.
                 case SyncDictionaryOperation.Set:
                     print("new key set =" + key);
+                    print("new value set =" + value.health);
             break;
             //Clears the dictionary.
                 case SyncDictionaryOperation.Clear:
@@ -150,6 +163,61 @@ namespace Managers
             
         }
 
+        /// <summary>
+        /// Finds what the servers registers as the players health 
+        /// </summary>
+        /// <param name="player_connection"></param>
+        /// <returns></returns>
+        public float FindPlayerHealth(NetworkConnection player_connection)
+        {
+            float result = 0.0f;
+            var player = FindPlayer(player_connection);
+            if (player.Item2 != null)
+            {
+                result = player.Item2.health;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="player_connection"></param>
+        /// <returns>A pair that contains the player networkconnection and data</returns>
+        public (NetworkConnection, PlayerData) FindPlayer(NetworkConnection player_connection)
+        {
+            NetworkConnection nc = null;
+            PlayerData player_data = null;
+                
+            foreach (var player in _players)
+            {
+                if (player.Key == player_connection)
+                {
+                    nc = player.Key;
+                    player_data = player.Value;
+                }
+                
+            }
+
+            return (nc, player_data);
+        }
+
+        [ServerRpc (RequireOwnership = false)]
+        public void AddHealthToPlayer(NetworkConnection player_connection,float health_to_add)
+        {
+            var player = FindPlayer(player_connection);
+            player.Item2.health += health_to_add;
+            _players[player.Item1] = new  PlayerData(){health = player.Item2.health  };
+        }
+
+        public void SetPlayerHealth( GeneralPlayer player, float health)
+        {
+            var player_dict = FindPlayer(player.Connection);
+
+           player_dict.Item2.health = health;
+           player.health = player_dict.Item2.health;
+
+        }
 
     }
 }

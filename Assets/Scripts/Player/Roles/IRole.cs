@@ -9,25 +9,25 @@
         /// </summary>
         /// <param name="player"></param>
         /// <returns></returns>
-        public bool OnInit(GeneralPlayerCharacteristics player);
+        public bool OnInit(GeneralPlayer player);
         /// <summary>
         /// What the role does every Update
         /// </summary>
         /// <param name="player"></param>
         /// <returns></returns>
-        public bool OnUpdate(GeneralPlayerCharacteristics player);
+        public bool OnUpdate(GeneralPlayer player);
         
         /// <summary>
         /// Does action only the role can do 
         /// </summary>
         /// <param name="player"></param>
         /// <returns></returns>
-        public void DoRoleSpecialAction(GeneralPlayerCharacteristics player );
+        public void DoRoleSpecialAction(GeneralPlayer player );
         /// <summary>
         /// What happen when the role ends 
         /// </summary>
         /// <param name="player"></param>
         /// <returns></returns>
-        public bool OnEnd(GeneralPlayerCharacteristics player);
+        public bool OnEnd(GeneralPlayer player);
 
     }

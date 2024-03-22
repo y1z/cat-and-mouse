@@ -1,25 +1,25 @@
 ﻿    public sealed class MouseRole : IRole
     {
 
-        bool IRole.OnInit(GeneralPlayerCharacteristics player)
+        bool IRole.OnInit(GeneralPlayer player)
         {
             player.ChangeColor( Globals.DEFAULT_MOUSE_COLOR);
             return true;
         }
 
-         bool IRole.OnUpdate(GeneralPlayerCharacteristics player)
+         bool IRole.OnUpdate(GeneralPlayer player)
         {
 
 
             return true;
         }
 
-         void IRole.DoRoleSpecialAction(GeneralPlayerCharacteristics player)
+         void IRole.DoRoleSpecialAction(GeneralPlayer player)
         {
             //throw new System.NotImplementedException();
         }
 
-         bool IRole.OnEnd(GeneralPlayerCharacteristics player)
+         bool IRole.OnEnd(GeneralPlayer player)
         {
             return true;
         }

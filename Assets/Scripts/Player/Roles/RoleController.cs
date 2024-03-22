@@ -14,7 +14,7 @@ public sealed class RoleController : MonoBehaviour
     
    [SerializeField] private bool _isInitialized = false;
 
-   [SerializeField] private GeneralPlayerCharacteristics _player_ref;
+   [SerializeField] private GeneralPlayer _player_ref;
     
 
     void Update()
@@ -33,7 +33,7 @@ public sealed class RoleController : MonoBehaviour
 
     }
     
-    public bool Initialize(GeneralPlayerCharacteristics player, IRole starting_role)
+    public bool Initialize(GeneralPlayer player, IRole starting_role)
     {
         _player_ref = player;
         _role = starting_role;

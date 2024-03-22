@@ -14,24 +14,24 @@ using Managers;
      * entity in this project.
      */
     [RequireComponent(typeof(Rigidbody))]
-    public class GeneralPlayerCharacteristics : NetworkBehaviour
+    public class GeneralPlayer : NetworkBehaviour
     {
 
         [Tooltip("Controls how heigh the entity jumps")]
-        public float _jumpForce;
+        [SerializeField] protected float _jumpForce;
         
         protected Renderer _renderer;
         
-        [SerializeField] private Rigidbody _body;
+        [SerializeField] protected Rigidbody _body;
 
-        [SerializeField] private RoleController _roleController;
+        [SerializeField] protected RoleController _roleController;
 
-        private GroundCheck _groundCheck;
+        protected GroundCheck _groundCheck;
 
-        [SerializeField] private Transform _orientation;
+        [SerializeField] protected Transform _orientation;
 
         [Tooltip("Attach an object with a sphere collider ")] [SerializeField]
-        private Transform _sphereColliderObj;
+        protected Transform _sphereColliderObj;
 
         public SphereCollider _sphereCollider;
 
@@ -39,7 +39,6 @@ using Managers;
         [SerializeField] private Camera _camera;
 
         public  float height;
-
 
         [SyncVar(OnChange = nameof(OnChange_health))]
         public float health = 100.0f;
@@ -80,8 +79,9 @@ using Managers;
             {
                 return;
             }
-            Assert.IsNotNull(_orientation, "Orientation should NOT be null"); 
+            Assert.IsNotNull(_orientation, "Orientation should NOT be null");
 
+             //var a = GetComponent < NetworkObject>();
             _renderer = GetComponent<Renderer>();
             _roleController = GetComponent<RoleController>();
             _groundCheck = GetComponent<GroundCheck>();
@@ -123,8 +123,9 @@ using Managers;
                 _roleController.Initialize(this, temp);
             }
             
+            print("player health = " + health);
         #endif // UNITY_EDITOR
-
+            
             DoPlayerJump();
             
         }
@@ -170,16 +171,12 @@ using Managers;
 
             return result;
         }
+        
 
         
         [ServerRpc(RequireOwnership = false)]
         public void takeDamage(float damage_amount)
         {
-            health -= damage_amount ;
-            if (health <= 0.0f)
-            {
-               print("player died"); 
-            }
         } 
         
 
@@ -189,12 +186,17 @@ using Managers;
             
         }
 
-        private void OnChange_health(float prev, float next, bool as_server)
+        void OnChange_health(float prev, float next, bool as_server)
         {
 
-            Debug.Log("prev = " + prev + "\n" + "next = " + next);
-
+            #if UNITY_EDITOR 
+            print("player health = " + next);
+            
+            #endif
+            
         }
+
+        public NetworkConnection Connection => base.Owner;
 
         public Transform CameraTranform => _camera.transform;
     }
