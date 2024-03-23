@@ -81,7 +81,6 @@ using Managers;
             }
             Assert.IsNotNull(_orientation, "Orientation should NOT be null");
 
-             //var a = GetComponent < NetworkObject>();
             _renderer = GetComponent<Renderer>();
             _roleController = GetComponent<RoleController>();
             _groundCheck = GetComponent<GroundCheck>();
@@ -172,20 +171,6 @@ using Managers;
             return result;
         }
         
-
-        
-        [ServerRpc(RequireOwnership = false)]
-        public void takeDamage(float damage_amount)
-        {
-        } 
-        
-
-        [ObserversRpc]
-        private void testFunctionRPC()
-        {
-            
-        }
-
         void OnChange_health(float prev, float next, bool as_server)
         {
 
@@ -193,7 +178,6 @@ using Managers;
             print("player health = " + next);
             
             #endif
-            
         }
 
         public NetworkConnection Connection => base.Owner;

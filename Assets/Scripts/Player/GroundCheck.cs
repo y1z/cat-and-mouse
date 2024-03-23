@@ -13,6 +13,7 @@ public sealed class GroundCheck : MonoBehaviour
     [Tooltip("Set it to the 'ground' layer or make a 'ground' layer to set it to ")] [SerializeField]
     private LayerMask _layerMask;
     
+    // tells you if you are grounded
     public bool IsGrounded { get; private set; }
 
     private void Start()

@@ -10,6 +10,7 @@
 
         public const float DEFAULT_PLAYER_DAMAGE = DEFAULT_PLAYER_HEALTH * .25f;
 
+        public const int DEFAULT_MINIMUM_PLAYERS = 3;
 
         //public static MouseRole DEFAULT_MOUSE_ROLE = new MouseRole();
         //public static CatRole DEFAULT_CAT_ROLE = new CatRole();

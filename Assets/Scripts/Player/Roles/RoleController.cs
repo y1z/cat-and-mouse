@@ -26,7 +26,7 @@ public sealed class RoleController : MonoBehaviour
 
         _role.OnUpdate(_player_ref);
 
-            if (Input.GetKeyDown(KeyCode.F))
+            if (Input.GetButtonDown("Fire1"))
             {
                 _role.DoRoleSpecialAction(_player_ref);
             }

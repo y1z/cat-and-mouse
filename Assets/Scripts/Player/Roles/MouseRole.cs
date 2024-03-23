@@ -1,4 +1,6 @@
-﻿    public sealed class MouseRole : IRole
+﻿    using UnityEngine;
+
+    public sealed class MouseRole : IRole
     {
 
         bool IRole.OnInit(GeneralPlayer player)
@@ -7,19 +9,20 @@
             return true;
         }
 
-         bool IRole.OnUpdate(GeneralPlayer player)
+        bool IRole.OnUpdate(GeneralPlayer player)
         {
 
 
             return true;
         }
 
-         void IRole.DoRoleSpecialAction(GeneralPlayer player)
+        void IRole.DoRoleSpecialAction(GeneralPlayer player)
         {
-            //throw new System.NotImplementedException();
+            Rigidbody rigidbody = player.GetComponent<Rigidbody>();
+            Debug.Log(rigidbody.position);
         }
 
-         bool IRole.OnEnd(GeneralPlayer player)
+        bool IRole.OnEnd(GeneralPlayer player)
         {
             return true;
         }
