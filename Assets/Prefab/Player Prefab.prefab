@@ -1090,7 +1090,7 @@ MonoBehaviour:
   _moveDirection: {x: 0, y: 0, z: 0}
   _body: {fileID: 0}
   _defaultDrag: 0
-  _minimumDrag: 1
+  _minimumDrag: 2
 --- !u!114 &9200245269091728667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1113,7 +1113,8 @@ MonoBehaviour:
   _sphereColliderObj: {fileID: 922193361103196921}
   _sphereCollider: {fileID: 0}
   _camera: {fileID: 6385845721195824233}
-  _temp_dist_of_ray: 2
+  height: 0
+  health: 100
 --- !u!114 &-3912274991577368952
 MonoBehaviour:
   m_ObjectHideFlags: 0
