@@ -1,4 +1,5 @@
-﻿    using UnityEngine;
+﻿    using FishNet.Demo.AdditiveScenes;
+    using UnityEngine;
 
     public sealed class MouseRole : IRole
     {
@@ -18,8 +19,9 @@
 
         void IRole.DoRoleSpecialAction(GeneralPlayer player)
         {
-            Rigidbody rigidbody = player.GetComponent<Rigidbody>();
-            Debug.Log(rigidbody.position);
+            PlayerDash pm = player.GetComponent<PlayerDash>();
+            pm.Dash();
+            Debug.Log("mouse Role");
         }
 
         bool IRole.OnEnd(GeneralPlayer player)

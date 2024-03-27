@@ -29,7 +29,7 @@ public sealed class CatRole : IRole
         Vector3 offset = new Vector3(0, player.height * 0.5f, 0);
         
         Ray ray = new Ray(player_pos + (offset * 0.5f),
-            player.CameraTranform.forward * dist_from_player);
+            player.CameraTransform.forward * dist_from_player);
 
         /*Debug.DrawRay(player_pos + (offset * 0.5f),
             player.CameraTranform.forward * dist_from_player, Color.red, 3.0f);

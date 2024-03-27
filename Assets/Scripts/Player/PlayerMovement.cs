@@ -4,17 +4,20 @@ using FishNet.Object;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerMovement : NetworkBehaviour
+public sealed class PlayerMovement : NetworkBehaviour
 {
 
     [Tooltip("Controls how fast the characters moves")] [Header("Movement")]
     public float movementSpeed;
+    public float dashSpeed;
+    
     [Tooltip("Controls the orientation of our movement")]
     [SerializeField] private Transform orientation;
 
+    // Stores the vertical and horizontal input of the character
     private Vector2 _input;
 
-    public Vector3 _moveDirection;
+    public Vector3 moveDirection;
 
     [SerializeField] private Rigidbody _body;
 
@@ -25,12 +28,15 @@ public class PlayerMovement : NetworkBehaviour
 
    // A reference to the script that check if the character is on the ground  
     private GroundCheck _groundCheck;
+    
+    // keept track of the currently running corutine
+    private Coroutine _coroutine;
 
     private void Start()
     {
         _body = GetComponent<Rigidbody>();
         _groundCheck = GetComponent<GroundCheck>();
-        _moveDirection = new Vector3(0, 0, 0);
+        moveDirection = new Vector3(0, 0, 0);
         _body.freezeRotation = true;
         _defaultDrag = _body.drag;
     }
@@ -48,8 +54,8 @@ public class PlayerMovement : NetworkBehaviour
 
     private void FixedUpdate()
     {
-        _moveDirection = orientation.forward * _input.y + orientation.right * _input.x;
-        _body.AddForce(_moveDirection.normalized * movementSpeed, ForceMode.Force);
+        moveDirection = orientation.forward * _input.y + orientation.right * _input.x;
+        _body.AddForce(moveDirection.normalized * movementSpeed, ForceMode.Force);
     }
 
     private void UpdateInput()
@@ -68,6 +74,13 @@ public class PlayerMovement : NetworkBehaviour
        {
            _body.drag = _defaultDrag;
        }
+    }
+
+
+    public void Dash()
+    {
+        _body.AddForce(moveDirection.normalized * dashSpeed , ForceMode.Impulse );
+        _body.drag = _defaultDrag;
     }
     
 }

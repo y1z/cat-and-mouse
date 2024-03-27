@@ -986,6 +986,7 @@ GameObject:
   - component: {fileID: -3912274991577368952}
   - component: {fileID: 4808412865512884713}
   - component: {fileID: 2122605220625004940}
+  - component: {fileID: -1729567931654427972}
   - component: {fileID: 8524332830327777415}
   - component: {fileID: 840888491812237182}
   - component: {fileID: 2209050743684622611}
@@ -1086,8 +1087,9 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 2209050743684622611}
   _networkObjectCache: {fileID: 2209050743684622611}
   movementSpeed: 20
+  dashSpeed: 20
   orientation: {fileID: 8698892174270032360}
-  _moveDirection: {x: 0, y: 0, z: 0}
+  moveDirection: {x: 0, y: 0, z: 0}
   _body: {fileID: 0}
   _defaultDrag: 0
   _minimumDrag: 2
@@ -1128,7 +1130,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fall_multiplier: 3.4
-  low_jump_multiplier: 1.5
 --- !u!114 &4808412865512884713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1159,6 +1160,20 @@ MonoBehaviour:
   _layerMask:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &-1729567931654427972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6790717159753128343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ad53f6517830a8439b553382d703814, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dashForce: 50
+  dashTime: 1
 --- !u!54 &8524332830327777415
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1240,7 +1255,7 @@ MonoBehaviour:
   _initializeOrder: 0
   _defaultDespawnType: 0
   NetworkObserver: {fileID: 0}
-  <PrefabId>k__BackingField: 3
+  <PrefabId>k__BackingField: 4
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
@@ -1276,7 +1291,7 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 2209050743684622611}
   _networkObjectCache: {fileID: 2209050743684622611}
   _componentConfiguration: 0
-  _synchronizeParent: 0
+  _synchronizeParent: 1
   _packing:
     Position: 1
     Rotation: 1

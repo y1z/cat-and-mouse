@@ -9,7 +9,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Managers;
-    /**
+using Random = UnityEngine.Random;
+
+/**
      * This class controls the general characteristics for each type of player
      * entity in this project.
      */
@@ -121,6 +123,11 @@ using Managers;
                 var temp = new CatRole();
                 _roleController.Initialize(this, temp);
             }
+
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                moveToSpawnPoint();
+            }
             
             print("player health = " + health);
         #endif // UNITY_EDITOR
@@ -170,9 +177,39 @@ using Managers;
 
             return result;
         }
+
+        [ObserversRpc(RunLocally = true)]
+        private void moveToSpawnPoint()
+        {
+            //if (!base.IsServer)
+                //return;
+            moveToSpawnPointRPC();
+        }
+        
+        //[ServerRpc(RequireOwnership = false)]
+        private void moveToSpawnPointRPC()
+        {
+            //if (!base.IsServer)
+             //   return;
+            Transform[] valid_spawn_points = InstanceFinder.NetworkManager.GetComponent<PlayerSpawner>().Spawns;
+            int total_spawn_points = valid_spawn_points.Length;
+            var spawn_point_index = UnityEngine.Random.Range(0, total_spawn_points);
+            transform.position = valid_spawn_points[spawn_point_index].position;
+            //_body.transform.Translate(valid_spawn_points[spawn_point_index].position);
+            #if UNITY_EDITOR
+            print("player move to spawn point");
+            #endif 
+            
+        }
         
         void OnChange_health(float prev, float next, bool as_server)
         {
+
+            if (next < 0.01f)
+            {
+                moveToSpawnPoint();
+                PlayerManager.instance.SetPlayerHealth(this,Globals.DEFAULT_PLAYER_HEALTH);
+            }
 
             #if UNITY_EDITOR 
             print("player health = " + next);
@@ -182,7 +219,7 @@ using Managers;
 
         public NetworkConnection Connection => base.Owner;
 
-        public Transform CameraTranform => _camera.transform;
+        public Transform CameraTransform => _camera.transform;
     }
     
     
