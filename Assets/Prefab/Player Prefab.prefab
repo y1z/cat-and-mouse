@@ -1174,6 +1174,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dashForce: 50
   dashTime: 1
+  dashCooldown: 5
 --- !u!54 &8524332830327777415
 Rigidbody:
   m_ObjectHideFlags: 0

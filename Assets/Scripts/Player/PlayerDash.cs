@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using FishNet;
 
 /// <summary>
 ///  Controls how the player dashes 
@@ -14,6 +15,11 @@ public sealed class PlayerDash : MonoBehaviour
     [Header("Dash variables")]
     public float dashForce;
     public float dashTime;
+    public float dashCooldown;
+
+
+    // keeps tracks of the times between cool down 
+    [SerializeField] private float currentDashCooldown;
 
     private GeneralPlayer _player;
     
@@ -30,22 +36,27 @@ public sealed class PlayerDash : MonoBehaviour
         _player = GetComponent<GeneralPlayer>();
         _body = GetComponent<Rigidbody>();
         _playerMovement = GetComponent<PlayerMovement>();
+        currentDashCooldown = dashCooldown;
         Assert.IsNotNull(_player);
         Assert.IsNotNull(_body);
         Assert.IsNotNull(_playerMovement);
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
+        float tickDelta = (float)InstanceFinder.TimeManager.TickDelta ;
         
+
+        currentDashCooldown += tickDelta;
     }
 
     public void Dash()
     {
         WaitForSeconds seconds = new WaitForSeconds(dashTime);
-        if (!IsDashing)
+        bool is_cooldown_finished = currentDashCooldown >= dashCooldown;
+        if (!IsDashing && is_cooldown_finished)
         {
+            currentDashCooldown = 0.0f;
             StartCoroutine(DoDash(seconds));
         }
 
