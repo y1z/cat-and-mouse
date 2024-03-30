@@ -95,6 +95,8 @@ using Random = UnityEngine.Random;
                var spawn_point_index = UnityEngine.Random.Range(0, valid_spawn_points.Length - 1);
                transform.position = valid_spawn_points[spawn_point_index].position;
             }
+
+            _roleController.Initialize(this, new UndecidedRole());
         }
 
 
@@ -217,10 +219,15 @@ using Random = UnityEngine.Random;
             #endif
         }
 
-        bool isCurrentRoleCat()
+        public bool canCurrentRoleCollect()
         {
-            //this._roleController.getRoleName()
-            return false;
+            bool result = false;
+            if (_roleController.Permissons == RolePermissons.CAN_COLLECT_CHEESE)
+            {
+                result = true;
+            }
+
+            return result;
         }
 
         public NetworkConnection Connection => base.Owner;
