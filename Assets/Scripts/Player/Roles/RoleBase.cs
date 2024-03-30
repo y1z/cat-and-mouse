@@ -13,7 +13,7 @@ public enum RolePermissons : byte
      */
 public abstract class RoleBase
 {
-    protected RolePermissons _rolePermissons ;
+    protected RolePermissons _rolePermissons = RolePermissons.NONE;
 
     /// <summary>
     /// Does anything necessary for the role to be initialized
@@ -42,4 +42,9 @@ public abstract class RoleBase
     /// <param name="player"></param>
     /// <returns></returns>
     public abstract bool OnEnd(GeneralPlayer player);
+
+    /// <summary>
+    /// Returns what the current role of the player allows them to do 
+    /// </summary>
+    public RolePermissons Permissons => _rolePermissons;
 }

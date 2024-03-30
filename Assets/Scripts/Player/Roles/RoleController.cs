@@ -12,14 +12,18 @@ public sealed class RoleController : MonoBehaviour
 
     private RoleBase _roleBase;
     
-   [SerializeField] private bool _isInitialized = false;
+    public bool IsInitialized { get; private set; } 
 
    [SerializeField] private GeneralPlayer _player_ref;
-    
 
-    void Update()
+   private void Start()
+   {
+       IsInitialized = false;
+   }
+
+   void Update()
     {
-        if (!_isInitialized)
+        if (!IsInitialized)
         {
             return;
         }
@@ -37,16 +41,17 @@ public sealed class RoleController : MonoBehaviour
     {
         _player_ref = player;
         _roleBase = startingRoleBase;
-        _isInitialized = true;
-        _roleBase.OnInit(player);
-        return _isInitialized;
+        IsInitialized = true;
+        // initialized 
+        bool isRoleInitalized = _roleBase.OnInit(player);
+        return IsInitialized && isRoleInitalized;
     }
 
     public void UnInitialize()
     {
         _roleBase = null;
         _player_ref = null;
-        _isInitialized = false;
+        IsInitialized= false;
     }
 
     public string getRoleName()
@@ -54,6 +59,7 @@ public sealed class RoleController : MonoBehaviour
         return _roleBase.GetType().ToString();
     }
 
+    public RolePermissons Permissons => _roleBase.Permissons;
 
     public void SetRole(RoleBase newRoleBase)
     {
