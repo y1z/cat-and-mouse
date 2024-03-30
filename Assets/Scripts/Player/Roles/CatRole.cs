@@ -4,24 +4,25 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using Managers;
 
-public sealed class CatRole : IRole
+public sealed class CatRole : RoleBase
 {
-    public bool OnInit(GeneralPlayer player)
+    public override bool OnInit(GeneralPlayer player)
     {
        player.ChangeColor(Globals.DEFAULT_CAT_COLOR);
+       _rolePermissons = RolePermissons.ATTACK_OTHER_PLAYERS;
        
        return true;
     }
     
 
-    public bool OnUpdate(GeneralPlayer player)
+    public override bool OnUpdate(GeneralPlayer player)
     {
 
 
         return true;
     }
 
-    public void DoRoleSpecialAction(GeneralPlayer player)
+    public override void DoRoleSpecialAction(GeneralPlayer player)
     {
         const float dist_from_player = 2.0f;
         
@@ -57,7 +58,7 @@ public sealed class CatRole : IRole
             }
     }
 
-    public bool OnEnd(GeneralPlayer player)
+    public override bool OnEnd(GeneralPlayer player)
     {
         return true;
     }

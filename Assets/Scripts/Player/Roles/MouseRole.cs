@@ -1,30 +1,30 @@
 ﻿    using FishNet.Demo.AdditiveScenes;
     using UnityEngine;
 
-    public sealed class MouseRole : IRole
+    public sealed class MouseRole : RoleBase
     {
-
-        bool IRole.OnInit(GeneralPlayer player)
+        public override bool OnInit(GeneralPlayer player)
         {
             player.ChangeColor( Globals.DEFAULT_MOUSE_COLOR);
+            _rolePermissons = RolePermissons.CAN_COLLECT_CHEESE;
             return true;
         }
 
-        bool IRole.OnUpdate(GeneralPlayer player)
+        public override bool OnUpdate(GeneralPlayer player)
         {
 
 
             return true;
         }
 
-        void IRole.DoRoleSpecialAction(GeneralPlayer player)
+        public override void DoRoleSpecialAction(GeneralPlayer player)
         {
             PlayerDash pm = player.GetComponent<PlayerDash>();
             pm.Dash();
             Debug.Log("mouse Role");
         }
 
-        bool IRole.OnEnd(GeneralPlayer player)
+        public override bool OnEnd(GeneralPlayer player)
         {
             return true;
         }

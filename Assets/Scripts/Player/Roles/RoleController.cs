@@ -10,7 +10,7 @@ using UnityEngine;
 public sealed class RoleController : MonoBehaviour
 {
 
-    private IRole _role;
+    private RoleBase _roleBase;
     
    [SerializeField] private bool _isInitialized = false;
 
@@ -24,39 +24,39 @@ public sealed class RoleController : MonoBehaviour
             return;
         }
 
-        _role.OnUpdate(_player_ref);
+        _roleBase.OnUpdate(_player_ref);
 
             if (Input.GetButtonDown("Fire1"))
             {
-                _role.DoRoleSpecialAction(_player_ref);
+                _roleBase.DoRoleSpecialAction(_player_ref);
             }
 
     }
     
-    public bool Initialize(GeneralPlayer player, IRole starting_role)
+    public bool Initialize(GeneralPlayer player, RoleBase startingRoleBase)
     {
         _player_ref = player;
-        _role = starting_role;
+        _roleBase = startingRoleBase;
         _isInitialized = true;
-        _role.OnInit(player);
+        _roleBase.OnInit(player);
         return _isInitialized;
     }
 
     public void UnInitialize()
     {
-        _role = null;
+        _roleBase = null;
         _player_ref = null;
         _isInitialized = false;
     }
 
     public string getRoleName()
     {
-        return _role.GetType().ToString();
+        return _roleBase.GetType().ToString();
     }
 
 
-    public void SetRole(IRole new_role)
+    public void SetRole(RoleBase newRoleBase)
     {
-        _role = new_role;
+        _roleBase = newRoleBase;
     }
 }

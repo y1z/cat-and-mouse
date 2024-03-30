@@ -217,6 +217,12 @@ using Random = UnityEngine.Random;
             #endif
         }
 
+        bool isCurrentRoleCat()
+        {
+            //this._roleController.getRoleName()
+            return false;
+        }
+
         public NetworkConnection Connection => base.Owner;
 
         public Transform CameraTransform => _camera.transform;
