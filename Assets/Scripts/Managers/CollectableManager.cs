@@ -1,43 +1,38 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Collectables;
+using FishNet;
+using FishNet.Object;
 using UnityEngine;
+using UnityEngine.Assertions;
 
-public sealed class CollectableManager : MonoBehaviour
+public sealed class CollectableManager : NetworkBehaviour 
 {
     
     public static CollectableManager instance;
+
+    public CollectableSpawner spawner;
     
     private List<CollectableBase> _collectables = new List<CollectableBase>();
 
     private int totalCollected = 0;
-    // Start is called before the first frame update
     void Awake()
     {
         instance = this;
+        
+        Assert.IsNotNull(spawner ,"Please assign an instance of " +nameof(CollectableSpawner) + "\nto spawner variable");
     }
 
 
     private void Start()
     {
-       GetEveryCollectable(); 
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        foreach (var collectable in _collectables)
-        {
-            if (collectable.isCollected)
-            {
-                collectable.gameObject.SetActive(false);
-                collectable.isCollected = false;
-                totalCollected += 1;
-            }
-            
-        }
-
+        //CheckEveryCollectable();
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.K))
         {
@@ -48,6 +43,7 @@ public sealed class CollectableManager : MonoBehaviour
     }
 
 
+    [ServerRpc(RequireOwnership = false)]
     public void GetEveryCollectable()
     {
        GameObject[] objects = GameObject.FindGameObjectsWithTag("Collectable");
@@ -61,6 +57,24 @@ public sealed class CollectableManager : MonoBehaviour
 
        }
         
-       Debug.Log("Collectables found = " + _collectables.Count);
+       //Debug.Log("Collectables found = " + _collectables.Count);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void CheckEveryCollectable()
+    {
+        if (!base.IsServer)
+            return;
+        
+        foreach (var collectable in _collectables)
+        {
+            if (collectable.isCollected)
+            {
+                collectable.isCollected = false;
+                InstanceFinder.ServerManager.Despawn(collectable.gameObject);
+                totalCollected += 1;
+            }
+            
+        }
     }
 }

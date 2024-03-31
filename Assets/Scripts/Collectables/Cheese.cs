@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using FishNet;
+using FishNet.Object;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -10,15 +11,12 @@ public sealed class Cheese : CollectableBase
     [SerializeField] [Tooltip("The collider for the cheese")]
     private SphereCollider _Collider;
 
-    private LayerMask _mask;
-    
-    void Start()
+    private void Start()
     {
         if (_Collider == null)
         {
             _Collider = GetComponent<SphereCollider>();
         }
-        _mask = Globals.PLAYER_MASK;
         Assert.IsNotNull(_Collider);
     }
 
@@ -27,17 +25,30 @@ public sealed class Cheese : CollectableBase
         
         if (other.TryGetComponent(out GeneralPlayer player))
         {
-            bool get_collected = player.canCurrentRoleCollect();
-            if (get_collected)
-            {
-                Collect(player);
-            }
+            DisappearObject(player);
         }
         
     }
 
-    public override void Collect(GeneralPlayer player)
+    [ServerRpc(RequireOwnership = false)]
+    private void DisappearObject(GeneralPlayer player)
     {
-        base.Collect(player);
+        DisappearObjectRPC(player);
     }
+
+    [ObserversRpc]
+    private void DisappearObjectRPC(GeneralPlayer player)
+    {
+            bool get_collected = player.CanCurrentRoleCollect();
+            if (get_collected)
+            {
+                print("In method = " + nameof(OnTriggerEnter));
+                
+               // gameObject.SetActive(false);
+                //Collect(player);
+                CollectableManager.instance.spawner.DespawnCollectable(this.NetworkObject);
+            }
+    }
+    
+    
 }

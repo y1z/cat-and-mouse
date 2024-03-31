@@ -5,7 +5,6 @@ using FishNet.Component.Spawning;
 using FishNet.Connection;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Managers;
@@ -56,6 +55,9 @@ using Random = UnityEngine.Random;
             _renderer = GetComponent<Renderer>();
             _sphereCollider = _sphereColliderObj.GetComponent<SphereCollider>();
             Vector3 size = _body.GetComponent<CapsuleCollider>().bounds.size;
+            _roleController = GetComponent<RoleController>();
+            _groundCheck = GetComponent<GroundCheck>();
+            _roleController.Initialize(this, new UndecidedRole());
             height = size.y;
             Assert.IsNotNull(_body,"_body != null") ;
             Assert.IsNotNull(_sphereCollider,"_sphereCollider should NOT be null") ;
@@ -81,14 +83,12 @@ using Random = UnityEngine.Random;
             {
                 return;
             }
-            Assert.IsNotNull(_orientation, "Orientation should NOT be null");
+            //Assert.IsNotNull(_orientation, "Orientation should NOT be null");
 
-            _renderer = GetComponent<Renderer>();
-            _roleController = GetComponent<RoleController>();
-            _groundCheck = GetComponent<GroundCheck>();
+            //_renderer = GetComponent<Renderer>();
             
             Transform[] valid_spawn_points = InstanceFinder.NetworkManager.GetComponent<PlayerSpawner>().Spawns;
-            bool is_in_spawn_point = isPlayerInSpawn(valid_spawn_points);
+            bool is_in_spawn_point = IsPlayerInSpawn(valid_spawn_points);
             
             if (!is_in_spawn_point)
             {
@@ -96,7 +96,6 @@ using Random = UnityEngine.Random;
                transform.position = valid_spawn_points[spawn_point_index].position;
             }
 
-            _roleController.Initialize(this, new UndecidedRole());
         }
 
 
@@ -128,7 +127,7 @@ using Random = UnityEngine.Random;
 
             if (Input.GetKeyDown(KeyCode.L))
             {
-                moveToSpawnPoint();
+                //CollectableManager.instance.GetEveryCollectable();
             }
             
             print("player health = " + health);
@@ -163,7 +162,7 @@ using Random = UnityEngine.Random;
         }
 
 
-        private bool isPlayerInSpawn(Transform[] valid_spawn_points)
+        private bool IsPlayerInSpawn(Transform[] valid_spawn_points)
         {
             Vector3 player_position = transform.position;
             bool result = false;
@@ -181,15 +180,15 @@ using Random = UnityEngine.Random;
         }
 
         [ObserversRpc(RunLocally = true)]
-        private void moveToSpawnPoint()
+        private void MoveToSpawnPoint()
         {
             //if (!base.IsServer)
                 //return;
-            moveToSpawnPointRPC();
+            MoveToSpawnPointRPC();
         }
         
         //[ServerRpc(RequireOwnership = false)]
-        private void moveToSpawnPointRPC()
+        private void MoveToSpawnPointRPC()
         {
             //if (!base.IsServer)
              //   return;
@@ -209,7 +208,7 @@ using Random = UnityEngine.Random;
 
             if (next < 0.01f)
             {
-                moveToSpawnPoint();
+                MoveToSpawnPoint();
                 PlayerManager.instance.SetPlayerHealth(this,Globals.DEFAULT_PLAYER_HEALTH);
             }
 
@@ -219,10 +218,11 @@ using Random = UnityEngine.Random;
             #endif
         }
 
-        public bool canCurrentRoleCollect()
+        public bool CanCurrentRoleCollect()
         {
             bool result = false;
-            if (_roleController.Permissons == RolePermissons.CAN_COLLECT_CHEESE)
+            int bitmask = (byte)_roleController.Permissons & (byte)RolePermissons.CAN_COLLECT_CHEESE;
+            if (bitmask > 0)
             {
                 result = true;
             }
