@@ -21,12 +21,20 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
-       UpdatePlayerCount(); 
+       UpdatePlayerCount();
+       var clients = InstanceFinder.NetworkManager.ServerManager.Clients;
+       //Debug.Log("player count = " + _playerCount);
+       string result = "";
+       foreach (var client in clients)
+       {
+           result += $" {client}, ";
+       }
+       Debug.Log(result,this);
     }
 
     void UpdatePlayerCount()
     {
-        //_playerCount = InstanceFinder.NetworkManager.ServerManager.Clients.Count;
+        _playerCount = InstanceFinder.NetworkManager.ServerManager.Clients.Count;
     }
     
     

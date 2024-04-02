@@ -42,10 +42,11 @@ public sealed class Cheese : CollectableBase
             bool get_collected = player.CanCurrentRoleCollect();
             if (get_collected)
             {
-                print("In method = " + nameof(OnTriggerEnter));
+            #if  UNITY_EDITOR
+                string debug_string = Utility.Utility.addColorToString("In method = " + nameof(OnTriggerEnter),Color.yellow);
+                Debug.Log(debug_string, this);
+            #endif
                 
-               // gameObject.SetActive(false);
-                //Collect(player);
                 CollectableManager.instance.spawner.DespawnCollectable(this.NetworkObject);
             }
     }

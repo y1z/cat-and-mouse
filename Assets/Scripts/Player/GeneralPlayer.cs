@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using Managers;
 using Random = UnityEngine.Random;
+using util = Utility;
 
 /**
      * This class controls the general characteristics for each type of player
@@ -107,12 +108,6 @@ using Random = UnityEngine.Random;
             
         #if UNITY_EDITOR 
 
-            if (Input.GetKeyDown(KeyCode.C))
-            {
-                Color new_color = UnityEngine.Random.ColorHSV(); 
-                ChangeColor(new_color);
-            }
-
             if (Input.GetKeyDown(KeyCode.O))
             {
                 var temp = new MouseRole();
@@ -129,8 +124,7 @@ using Random = UnityEngine.Random;
             {
                 //CollectableManager.instance.GetEveryCollectable();
             }
-            
-            print("player health = " + health);
+
         #endif // UNITY_EDITOR
             
             DoPlayerJump();

@@ -76,11 +76,4 @@ public sealed class PlayerMovement : NetworkBehaviour
        }
     }
 
-
-    public void Dash()
-    {
-        _body.AddForce(moveDirection.normalized * dashSpeed , ForceMode.Impulse );
-        _body.drag = _defaultDrag;
-    }
-    
 }
