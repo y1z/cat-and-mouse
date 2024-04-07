@@ -43,7 +43,7 @@ public sealed class Cheese : CollectableBase
             if (get_collected)
             {
             #if  UNITY_EDITOR
-                string debug_string = Utility.Utility.addColorToString("In method = " + nameof(OnTriggerEnter),Color.yellow);
+                string debug_string = Utility.StringUtil.addColorToString("In method = " + nameof(OnTriggerEnter),Color.yellow);
                 Debug.Log(debug_string, this);
             #endif
                 

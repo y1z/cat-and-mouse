@@ -8,7 +8,6 @@ using FishNet.Object.Synchronizing;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Managers;
-using Random = UnityEngine.Random;
 using util = Utility;
 
 /**

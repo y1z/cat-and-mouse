@@ -3,7 +3,7 @@ using Color = UnityEngine.Color;
 
 namespace Utility
 {
-    public static class Utility
+    public static class StringUtil
     {
 
         public static string addSizeTagToString(string input, int size)

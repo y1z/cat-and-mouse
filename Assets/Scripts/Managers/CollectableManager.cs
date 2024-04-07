@@ -12,7 +12,6 @@ public sealed class CollectableManager : NetworkBehaviour
     
     public static CollectableManager instance;
 
-    public CollectableSpawner spawner;
     
     private List<CollectableBase> _collectables = new List<CollectableBase>();
 
