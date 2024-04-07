@@ -12,6 +12,9 @@ public sealed class CollectableManager : NetworkBehaviour
     
     public static CollectableManager instance;
 
+    /// <summary>
+    /// Takes care of spawning and despawning collectables 
+    /// </summary>
     public CollectableSpawner spawner;
     
     private List<CollectableBase> _collectables = new List<CollectableBase>();
@@ -24,12 +27,6 @@ public sealed class CollectableManager : NetworkBehaviour
         Assert.IsNotNull(spawner ,"Please assign an instance of " +nameof(CollectableSpawner) + "\nto spawner variable");
     }
 
-
-    private void Start()
-    {
-    }
-
-    // Update is called once per frame
     void Update()
     {
         //CheckEveryCollectable();
@@ -77,4 +74,9 @@ public sealed class CollectableManager : NetworkBehaviour
             
         }
     }
+
+
+
+
+    public int CollectableCount => spawner.CollectableCount;
 }

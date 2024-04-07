@@ -1868,6 +1868,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 026cc7c5269ec8a43b82d18808c0a702, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _howManyTimesPerSecondUseUpdateLoop: 10
 --- !u!114 &1191628968
 MonoBehaviour:
   m_ObjectHideFlags: 0

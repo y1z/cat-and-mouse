@@ -4,7 +4,7 @@ using FishNet;
 using FishNet.Connection;
 using FishNet.Object;
 using UnityEngine;
-using Object = System.Object;
+using Utility;
 
 namespace Collectables
 {
@@ -55,7 +55,7 @@ namespace Collectables
               _spawnedObjects.Add(spawn_object);
               serverManager.Spawn(spawn_object);
             }
-           CollectableManager.instance.GetEveryCollectable(); 
+           //CollectableManager.instance.GetEveryCollectable(); 
             
         }
 
@@ -85,9 +85,22 @@ namespace Collectables
             var serverManager = InstanceFinder.ServerManager;
 
             serverManager.Despawn(object_to_despawn);
-            _spawnedObjects.Remove(object_to_despawn.gameObject);
-
+            bool is_obj_remove = _spawnedObjects.Remove(object_to_despawn.gameObject);
+            
+        #if UNITY_EDITOR
+            if (!is_obj_remove)
+            {
+                string message = StringUtil.addColorToString("Object was not removed", Color.red);
+                Debug.Log(message);
+            }
+        #endif
+            
             DespawnedCollectablesCount += 1;
         }
+
+        /// <summary>
+        /// Returns how many objects are spawned in
+        /// </summary>
+        public int CollectableCount => _spawnedObjects.Count;
     }
 }
