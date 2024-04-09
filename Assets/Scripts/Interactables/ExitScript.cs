@@ -1,16 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using FishNet.Object;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider))]
-public class ExitScript : MonoBehaviour
+public class ExitScript : NetworkBehaviour
 {
     private SceneLoaderScript _loaderScript;
-    private Coroutine _coroutine = null;
     private Collider _collider = null;
     
-    [Tooltip("how many time per second to update the Update Loop")]
+    [Tooltip("how many time per second to update the Update Loop")] [Range(0.0f,10.0f)]
     [SerializeField] private float _howManyTimesPerSecondUseUpdateLoop;
     
     void Awake()
@@ -21,6 +21,8 @@ public class ExitScript : MonoBehaviour
     {
         _loaderScript = GetComponent<SceneLoaderScript>();
         _collider = GetComponent<Collider>();
+        Debug.Assert(_loaderScript != null, "_loaderScript != null");
+        Debug.Assert(_collider != null, "_collider != null");
 
         if (_howManyTimesPerSecondUseUpdateLoop < float.Epsilon)
         {
@@ -30,7 +32,7 @@ public class ExitScript : MonoBehaviour
         float final_seconds = 1.0f / _howManyTimesPerSecondUseUpdateLoop;
         
         WaitForSeconds seconds = new WaitForSeconds(final_seconds);
-        _coroutine = StartCoroutine(UpdateLoop(seconds));
+        StartCoroutine(UpdateLoop(seconds));
         
     }
 
@@ -51,13 +53,6 @@ public class ExitScript : MonoBehaviour
 
             yield return seconds;
         }
-        
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
         
         
     }

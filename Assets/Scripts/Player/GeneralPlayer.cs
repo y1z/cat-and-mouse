@@ -87,6 +87,7 @@ using util = Utility;
 
             //_renderer = GetComponent<Renderer>();
             
+            /*
             Transform[] valid_spawn_points = InstanceFinder.NetworkManager.GetComponent<PlayerSpawner>().Spawns;
             bool is_in_spawn_point = IsPlayerInSpawn(valid_spawn_points);
             
@@ -95,6 +96,7 @@ using util = Utility;
                var spawn_point_index = UnityEngine.Random.Range(0, valid_spawn_points.Length - 1);
                transform.position = valid_spawn_points[spawn_point_index].position;
             }
+            */
 
         }
 

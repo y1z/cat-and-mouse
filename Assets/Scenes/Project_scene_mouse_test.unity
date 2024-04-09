@@ -1763,6 +1763,7 @@ GameObject:
   - component: {fileID: 1191628963}
   - component: {fileID: 1191628968}
   - component: {fileID: 1191628967}
+  - component: {fileID: 1191628969}
   m_Layer: 0
   m_Name: Exit
   m_TagString: Untagged
@@ -1849,13 +1850,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1191628962}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.7270302, z: -0, w: 0.68660545}
-  m_LocalPosition: {x: 20, y: 1.9973984, z: 23.8}
-  m_LocalScale: {x: 3, y: 4, z: 1}
+  m_LocalRotation: {x: -0, y: 0.25881907, z: -0, w: 0.9659258}
+  m_LocalPosition: {x: -19.7, y: 1.9973984, z: -17}
+  m_LocalScale: {x: 10.3524, y: 4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 93.276, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 30, z: 0}
 --- !u!114 &1191628967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1868,7 +1869,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 026cc7c5269ec8a43b82d18808c0a702, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _howManyTimesPerSecondUseUpdateLoop: 10
+  _componentIndexCache: 0
+  _addedNetworkObject: {fileID: 1191628969}
+  _networkObjectCache: {fileID: 1191628969}
+  _howManyTimesPerSecondUseUpdateLoop: 4
 --- !u!114 &1191628968
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1882,6 +1886,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneName: Error_scene
+--- !u!114 &1191628969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1191628962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <IsNested>k__BackingField: 0
+  <ComponentIndex>k__BackingField: 0
+  <PredictedSpawn>k__BackingField: {fileID: 0}
+  _networkBehaviours:
+  - {fileID: 1191628967}
+  <ParentNetworkObject>k__BackingField: {fileID: 0}
+  <ChildNetworkObjects>k__BackingField: []
+  SerializedTransformProperties:
+    Position: {x: -19.7, y: 1.9973984, z: -17}
+    Rotation: {x: -0, y: 0.25881907, z: -0, w: 0.9659258}
+    LocalScale: {x: 10.3524, y: 4, z: 1}
+  _isNetworked: 1
+  _isGlobal: 0
+  _initializeOrder: 0
+  _defaultDespawnType: 0
+  NetworkObserver: {fileID: 0}
+  <PrefabId>k__BackingField: 0
+  <SpawnableCollectionId>k__BackingField: 0
+  _scenePathHash: 2394813241
+  <SceneId>k__BackingField: 10285644552257162753
+  <AssetPathHash>k__BackingField: 0
 --- !u!1 &1256736620
 GameObject:
   m_ObjectHideFlags: 0
