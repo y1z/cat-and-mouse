@@ -6,13 +6,13 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public sealed class PlayerMovement : NetworkBehaviour
 {
-
     [Tooltip("Controls how fast the characters moves")] [Header("Movement")]
     public float movementSpeed;
+
     public float dashSpeed;
-    
-    [Tooltip("Controls the orientation of our movement")]
-    [SerializeField] private Transform orientation;
+
+    [Tooltip("Controls the orientation of our movement")] [SerializeField]
+    private Transform orientation;
 
     // Stores the vertical and horizontal input of the character
     private Vector2 _input;
@@ -23,12 +23,12 @@ public sealed class PlayerMovement : NetworkBehaviour
 
     [SerializeField] private float _defaultDrag;
 
-    [Tooltip("The minimal amount of drag of the character")]
-    [SerializeField] private float _minimumDrag;
+    [Tooltip("The minimal amount of drag of the character")] [SerializeField]
+    private float _minimumDrag;
 
-   // A reference to the script that check if the character is on the ground  
+    // A reference to the script that check if the character is on the ground  
     private GroundCheck _groundCheck;
-    
+
     // keept track of the currently running corutine
     private Coroutine _coroutine;
 
@@ -48,8 +48,8 @@ public sealed class PlayerMovement : NetworkBehaviour
         {
             return;
         }
+
         UpdateInput();
-        
     }
 
     private void FixedUpdate()
@@ -60,20 +60,19 @@ public sealed class PlayerMovement : NetworkBehaviour
 
     private void UpdateInput()
     {
-       _input.x = Input.GetAxisRaw("Horizontal");
-       _input.y = Input.GetAxisRaw("Vertical");
+        _input.x = Input.GetAxisRaw("Horizontal");
+        _input.y = Input.GetAxisRaw("Vertical");
 
-       bool is_moving = MathF.Abs(_input.x) < float.Epsilon && MathF.Abs(_input.y) < float.Epsilon;
-       bool is_grounded = _groundCheck.IsGrounded;
+        bool is_moving = MathF.Abs(_input.x) < float.Epsilon && MathF.Abs(_input.y) < float.Epsilon;
+        bool is_grounded = _groundCheck.IsGrounded;
 
-       if (is_moving && is_grounded && _body.velocity.magnitude > 0.4f)
-       {
-           _body.drag = Mathf.Clamp(_body.velocity.magnitude, _minimumDrag, float.MaxValue  ) ;
-       }
-       else if(is_grounded)
-       {
-           _body.drag = _defaultDrag;
-       }
+        if (is_moving && is_grounded && _body.velocity.magnitude > 0.4f)
+        {
+            _body.drag = Mathf.Clamp(_body.velocity.magnitude, _minimumDrag, float.MaxValue);
+        }
+        else if (is_grounded)
+        {
+            _body.drag = _defaultDrag;
+        }
     }
-
 }

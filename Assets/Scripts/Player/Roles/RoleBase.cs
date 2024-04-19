@@ -1,5 +1,7 @@
 ﻿    
 
+using UnityEngine;
+
 public enum RolePermissons : byte
 {
     NONE =                 0b00_00_00_00,
@@ -11,7 +13,7 @@ public enum RolePermissons : byte
 /**
      * Controls what roles each player take 
      */
-public abstract class RoleBase
+public abstract class RoleBase 
 {
     protected RolePermissons _rolePermissons = RolePermissons.NONE;
 

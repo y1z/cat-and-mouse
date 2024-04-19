@@ -9,10 +9,10 @@ public class ExitScript : NetworkBehaviour
 {
     private SceneLoaderScript _loaderScript;
     private Collider _collider = null;
-    
-    [Tooltip("how many time per second to update the Update Loop")] [Range(0.0f,10.0f)]
-    [SerializeField] private float _howManyTimesPerSecondUseUpdateLoop;
-    
+
+    [Tooltip("how many time per second to update the Update Loop")] [Range(0.0f, 10.0f)] [SerializeField]
+    private float _howManyTimesPerSecondUseUpdateLoop;
+
     void Awake()
     {
     }
@@ -28,12 +28,11 @@ public class ExitScript : NetworkBehaviour
         {
             _howManyTimesPerSecondUseUpdateLoop = 3.0f;
         }
-        
+
         float final_seconds = 1.0f / _howManyTimesPerSecondUseUpdateLoop;
-        
+
         WaitForSeconds seconds = new WaitForSeconds(final_seconds);
         StartCoroutine(UpdateLoop(seconds));
-        
     }
 
     IEnumerator UpdateLoop(WaitForSeconds seconds)
@@ -53,15 +52,13 @@ public class ExitScript : NetworkBehaviour
 
             yield return seconds;
         }
-        
-        
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-           _loaderScript.loadScene();
+            _loaderScript.loadScene();
         }
     }
 }
