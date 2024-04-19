@@ -8,13 +8,11 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class SceneLoaderScript : MonoBehaviour
 {
-
     public string sceneName;
 
     // Update is called once per frame
     void Update()
     {
-        
     }
 
     // scene 

@@ -9,7 +9,6 @@ using UnityEngine;
 
 public class NetworkRigibodyV4 : NetworkBehaviour
 {
-    
     public Vector2 Direction;
     public float force;
 
@@ -21,9 +20,8 @@ public class NetworkRigibodyV4 : NetworkBehaviour
     public PredictionManager predictionManager;
 
     // SendRate : how often (in seconds) does the variable get updated
-    [SyncVar(SendRate = 1f)] 
-    private ReconcilationData _reconcilationData;
-    
+    [SyncVar(SendRate = 1f)] private ReconcilationData _reconcilationData;
+
     //float timeToSend
 
 
@@ -34,10 +32,10 @@ public class NetworkRigibodyV4 : NetworkBehaviour
 
         if (next == null)
             return;
-        
+
         // Es la misma logica que DispaarRPC
         float passedTime = (float)base.TimeManager.TimePassed(next.tick);
-        
+
         float stepInterval = Time.fixedDeltaTime;
         // cuantos Frames de fisica vamos a calcular 
         int steps = (int)(passedTime / stepInterval);
@@ -47,8 +45,6 @@ public class NetworkRigibodyV4 : NetworkBehaviour
 
         _rb2d.position = finalpos;
         _rb2d.velocity = velocity;
-        
-
     }
 
     private void Start()
@@ -72,7 +68,7 @@ public class NetworkRigibodyV4 : NetworkBehaviour
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            ReiniciarRPC(); 
+            ReiniciarRPC();
         }
 
         _reconcilationData = new ReconcilationData()
@@ -86,17 +82,16 @@ public class NetworkRigibodyV4 : NetworkBehaviour
     }
 
     [ObserversRpc()]
-
     void DisparaRpc(uint _serverTick)
     {
         float passedTime = (float)base.TimeManager.TimePassed(_serverTick);
-        
+
         float stepInterval = 0.02f;
 
         // cuantos Frames de fisica vamos a calcular 
         int steps = (int)(passedTime / stepInterval);
-        
-        float vel = force * stepInterval ;
+
+        float vel = force * stepInterval;
 
         (Vector2 finalpos, Vector2 velocity) = predictionManager.Predict(gameObject, force * Direction, steps);
 
@@ -111,7 +106,6 @@ public class NetworkRigibodyV4 : NetworkBehaviour
         _rb2d.position = startPos;
         _rb2d.velocity = Vector2.zero;
         _rb2d.angularVelocity = 0f;
-
     }
 
     [System.Serializable]
@@ -120,7 +114,5 @@ public class NetworkRigibodyV4 : NetworkBehaviour
         public Vector2 position;
         public Vector2 velocidad;
         public uint tick;
-
     }
-    
 }

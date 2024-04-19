@@ -7,7 +7,6 @@ using UnityEngine;
 
 public sealed class NetworkRigibodyV3 : NetworkBehaviour
 {
-    
     public Vector2 Direction;
     public float force;
 
@@ -40,22 +39,21 @@ public sealed class NetworkRigibodyV3 : NetworkBehaviour
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            ReiniciarRPC(); 
+            ReiniciarRPC();
         }
     }
 
     [ObserversRpc()]
-
     void DisparaRpc(uint _serverTick)
     {
         float passedTime = (float)base.TimeManager.TimePassed(_serverTick);
-        
+
         float stepInterval = 0.02f;
 
         // cuantos Frames de fisica vamos a calcular 
         int steps = (int)(passedTime / stepInterval);
-        
-        float vel = force * stepInterval ;
+
+        float vel = force * stepInterval;
 
         (Vector2 finalpos, Vector2 velocity) = predictionManager.Predict(gameObject, force * Direction, steps);
 
@@ -70,7 +68,5 @@ public sealed class NetworkRigibodyV3 : NetworkBehaviour
         _rb2d.position = startPos;
         _rb2d.velocity = Vector2.zero;
         _rb2d.angularVelocity = 0f;
-
     }
-    
 }

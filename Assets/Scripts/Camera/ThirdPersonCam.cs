@@ -7,21 +7,20 @@ using FishNet.Object;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public sealed class ThirdPersonCam : NetworkBehaviour 
+public sealed class ThirdPersonCam : NetworkBehaviour
 {
-    [Header("References")]
-    public Transform orientation;
+    [Header("References")] public Transform orientation;
     public Transform player;
     public Transform playerObject;
-    
-    [SerializeField]
-    private Rigidbody _body;
+
+    [SerializeField] private Rigidbody _body;
 
     public float _rotationSpeed;
 
     [SerializeField] private Camera _camera;
 
     [SerializeField] private CinemachineFreeLook _cinemachine;
+
     public void Start()
     {
     }
@@ -33,11 +32,11 @@ public sealed class ThirdPersonCam : NetworkBehaviour
         {
             return;
         }
-        
+
         _camera = GetComponent<Camera>();
-        Assert.IsNotNull(_camera,"_camera != null");
+        Assert.IsNotNull(_camera, "_camera != null");
         _camera.gameObject.SetActive(true);
-        
+
         _cinemachine = _camera.GetComponent<CinemachineFreeLook>();
         _cinemachine.Follow = player;
         _cinemachine.LookAt = player;
@@ -51,9 +50,8 @@ public sealed class ThirdPersonCam : NetworkBehaviour
 
     public void Update()
     {
-
-        Vector3 position = transform.position; 
-        Vector3 viewDir = player.position - new Vector3(position.x,player.position.y, position.z);
+        Vector3 position = transform.position;
+        Vector3 viewDir = player.position - new Vector3(position.x, player.position.y, position.z);
         orientation.forward = viewDir.normalized;
 
 
@@ -67,7 +65,7 @@ public sealed class ThirdPersonCam : NetworkBehaviour
             playerObject.forward = Vector3.Slerp(player.forward, input_dir.normalized, _rotationSpeed * Time.deltaTime);
         }
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Mouse2))
         {
             switch (Cursor.lockState)
@@ -82,11 +80,7 @@ public sealed class ThirdPersonCam : NetworkBehaviour
                     Cursor.lockState = CursorLockMode.None;
                     break;
             }
-            
-            
         }
-    #endif
-        
+#endif
     }
-    
 }

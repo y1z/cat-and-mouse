@@ -31,7 +31,7 @@ public class PredictionManager : MonoBehaviour
         if (currentPhysicsScene.IsValid())
         {
             // the main scene physics will act as they normally do.
-            currentPhysicsScene.Simulate(Time.fixedDeltaTime); 
+            currentPhysicsScene.Simulate(Time.fixedDeltaTime);
         }
     }
 

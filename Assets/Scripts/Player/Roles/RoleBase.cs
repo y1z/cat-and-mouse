@@ -1,19 +1,17 @@
-﻿    
-
-using UnityEngine;
+﻿using UnityEngine;
 
 public enum RolePermissons : byte
 {
-    NONE =                 0b00_00_00_00,
+    NONE = 0b00_00_00_00,
     ATTACK_OTHER_PLAYERS = 0b00_00_00_01,
-    CAN_COLLECT_CHEESE =   0b00_00_00_10,
+    CAN_COLLECT_CHEESE = 0b00_00_00_10,
     ALL_PERMISSONS = ATTACK_OTHER_PLAYERS | CAN_COLLECT_CHEESE,
 }
 
 /**
      * Controls what roles each player take 
      */
-public abstract class RoleBase 
+public abstract class RoleBase
 {
     protected RolePermissons _rolePermissons = RolePermissons.NONE;
 

@@ -5,7 +5,6 @@ namespace Utility
 {
     public static class StringUtil
     {
-
         public static string addSizeTagToString(string input, int size)
         {
             string str_size = size.ToString();
@@ -19,6 +18,5 @@ namespace Utility
 
             return $"<color=#{color_str}> {input} </color>";
         }
-        
     }
 }

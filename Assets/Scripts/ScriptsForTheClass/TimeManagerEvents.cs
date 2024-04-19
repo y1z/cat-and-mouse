@@ -7,6 +7,7 @@ using FishNet;
 public class TimeManagerEvents : MonoBehaviour
 {
     private Queue<Vector3> historialPosiciones = new Queue<Vector3>(10);
+
     void Start()
     {
         // si el script es de monobehaviour 
@@ -38,27 +39,22 @@ public class TimeManagerEvents : MonoBehaviour
         {
             historialPosiciones.Dequeue();
         }
-        
     }
 
     void OnPostTick()
     {
-        
     }
 
     void OnPreTick()
     {
-        
     }
 
     void OnUpdate()
     {
-        
     }
 
     void OnFixedUpdate()
     {
-        
     }
 
     void OnLateUpdate()
@@ -68,18 +64,13 @@ public class TimeManagerEvents : MonoBehaviour
 
     void OnPostPhysicsSimulation(float dt)
     {
-        
     }
 
     void OnPrePhysicisSimulation(float dt)
     {
-        
     }
 
     void OnRoundTripTimeUpdate(float dt)
     {
-        
     }
-
 }
-

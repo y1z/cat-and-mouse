@@ -1,5 +1,4 @@
-﻿    
-using UnityEngine;
+﻿using UnityEngine;
 
 /**
  * Keeps track of all reverential data from the player

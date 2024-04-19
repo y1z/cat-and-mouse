@@ -10,16 +10,17 @@ namespace Collectables
 {
     public sealed class CollectableSpawner : NetworkBehaviour
     {
-        
-        [Header("Spawner variables")]
-        [SerializeField] private GameObject _prefab;
+        [Header("Spawner variables")] [SerializeField]
+        private GameObject _prefab;
+
         [SerializeField] private List<Transform> _SpawnLocations;
-        [Tooltip("This is the transform that will be the parent for all object collectables")]
-        [SerializeField] private Transform _parentTransform;
+
+        [Tooltip("This is the transform that will be the parent for all object collectables")] [SerializeField]
+        private Transform _parentTransform;
 
         private List<GameObject> _spawnedObjects = new List<GameObject>();
 
-        public int DespawnedCollectablesCount {get; private set;}
+        public int DespawnedCollectablesCount { get; private set; }
 
         private void Start()
         {
@@ -51,12 +52,12 @@ namespace Collectables
             var serverManager = InstanceFinder.ServerManager;
             foreach (var location in _SpawnLocations)
             {
-              GameObject spawn_object = Instantiate(_prefab, location.position, Quaternion.identity, _parentTransform);
-              _spawnedObjects.Add(spawn_object);
-              serverManager.Spawn(spawn_object);
+                GameObject spawn_object =
+                    Instantiate(_prefab, location.position, Quaternion.identity, _parentTransform);
+                _spawnedObjects.Add(spawn_object);
+                serverManager.Spawn(spawn_object);
             }
-           //CollectableManager.instance.GetEveryCollectable(); 
-            
+            //CollectableManager.instance.GetEveryCollectable(); 
         }
 
 
@@ -75,7 +76,7 @@ namespace Collectables
             {
                 serverManager.Despawn(objs);
             }
-            
+
             _spawnedObjects.Clear();
         }
 
@@ -86,15 +87,15 @@ namespace Collectables
 
             serverManager.Despawn(object_to_despawn);
             bool is_obj_remove = _spawnedObjects.Remove(object_to_despawn.gameObject);
-            
-        #if UNITY_EDITOR
+
+#if UNITY_EDITOR
             if (!is_obj_remove)
             {
                 string message = StringUtil.addColorToString("Object was not removed", Color.red);
                 Debug.Log(message);
             }
-        #endif
-            
+#endif
+
             DespawnedCollectablesCount += 1;
         }
 

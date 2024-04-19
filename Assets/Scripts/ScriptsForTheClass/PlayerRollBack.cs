@@ -12,7 +12,6 @@ public class PlayerRollBack : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -21,7 +20,6 @@ public class PlayerRollBack : NetworkBehaviour
         if (base.IsOwner == false)
         {
             return;
-
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -31,9 +29,7 @@ public class PlayerRollBack : NetworkBehaviour
             FireServerRPC(ray.origin, ray.direction, pt);
             // hacemos el mismo raycast que el ervidor, solo para cuestiones de feedback visuales y audiotivas
             // poner el marcador de x de impacto, reprodu ir sonido de impato, reproducir particulares de sangre
-
         }
-        
     }
 
 
@@ -43,8 +39,8 @@ public class PlayerRollBack : NetworkBehaviour
         PreciseTick tick)
     {
         //mueve los colisionadores a donde estaban en el tick indicado
-        base.RollbackManager.Rollback(tick,RollbackPhysicsType.Physics);
-        
+        base.RollbackManager.Rollback(tick, RollbackPhysicsType.Physics);
+
         RaycastHit hit;
         if (Physics.Raycast(position, direction, out hit))
         {
@@ -55,12 +51,8 @@ public class PlayerRollBack : NetworkBehaviour
         {
             Debug.Log($"le dio a nada");
         }
-        
+
         //Regresa colisionadores a su posicion actual en tiempo
         base.RollbackManager.Return();
-        
     }
-    
-    
-    
 }

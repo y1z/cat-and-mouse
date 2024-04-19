@@ -17,17 +17,16 @@ public sealed class Cheese : CollectableBase
         {
             _Collider = GetComponent<SphereCollider>();
         }
+
         Assert.IsNotNull(_Collider);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        
         if (other.TryGetComponent(out GeneralPlayer player))
         {
             DisappearObject(player);
         }
-        
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -39,17 +38,16 @@ public sealed class Cheese : CollectableBase
     [ObserversRpc]
     private void DisappearObjectRPC(GeneralPlayer player)
     {
-            bool get_collected = player.CanCurrentRoleCollect();
-            if (get_collected)
-            {
-            #if  UNITY_EDITOR
-                string debug_string = Utility.StringUtil.addColorToString("In method = " + nameof(OnTriggerEnter),Color.yellow);
-                Debug.Log(debug_string, this);
-            #endif
-                
-                CollectableManager.instance.spawner.DespawnCollectable(this.NetworkObject);
-            }
+        bool get_collected = player.CanCurrentRoleCollect();
+        if (get_collected)
+        {
+#if UNITY_EDITOR
+            string debug_string =
+                Utility.StringUtil.addColorToString("In method = " + nameof(OnTriggerEnter), Color.yellow);
+            Debug.Log(debug_string, this);
+#endif
+
+            CollectableManager.instance.spawner.DespawnCollectable(this.NetworkObject);
+        }
     }
-    
-    
 }

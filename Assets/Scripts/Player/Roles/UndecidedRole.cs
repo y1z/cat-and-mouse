@@ -5,9 +5,8 @@ using UnityEngine;
 /// <summary>
 /// This is the role for player who have not been assigned a role 
 /// </summary>
-public sealed class UndecidedRole : RoleBase 
+public sealed class UndecidedRole : RoleBase
 {
-
     public override bool OnInit(GeneralPlayer player)
     {
         _rolePermissons = RolePermissons.NONE;

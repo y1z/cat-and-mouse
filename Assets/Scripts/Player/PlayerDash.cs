@@ -11,9 +11,7 @@ using FishNet;
 [RequireComponent(typeof(Rigidbody))]
 public sealed class PlayerDash : MonoBehaviour
 {
-
-    [Header("Dash variables")]
-    public float dashForce;
+    [Header("Dash variables")] public float dashForce;
     public float dashTime;
     public float dashCooldown;
 
@@ -22,13 +20,13 @@ public sealed class PlayerDash : MonoBehaviour
     [SerializeField] private float currentDashCooldown;
 
     private GeneralPlayer _player;
-    
+
     public bool IsDashing { get; private set; }
 
     private Coroutine _coroutine;
     private PlayerMovement _playerMovement;
     private Rigidbody _body;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,11 +39,11 @@ public sealed class PlayerDash : MonoBehaviour
         Assert.IsNotNull(_body);
         Assert.IsNotNull(_playerMovement);
     }
-    
+
     void Update()
     {
-        float tickDelta = (float)InstanceFinder.TimeManager.TickDelta ;
-        
+        float tickDelta = (float)InstanceFinder.TimeManager.TickDelta;
+
 
         currentDashCooldown += tickDelta;
     }
@@ -59,10 +57,9 @@ public sealed class PlayerDash : MonoBehaviour
             currentDashCooldown = 0.0f;
             StartCoroutine(DoDash(seconds));
         }
-
     }
 
-    private IEnumerator DoDash( WaitForSeconds seconds)
+    private IEnumerator DoDash(WaitForSeconds seconds)
     {
         IsDashing = true;
         bool original_gravity = _body.useGravity;
@@ -73,9 +70,9 @@ public sealed class PlayerDash : MonoBehaviour
         _body.velocity = move_dir_without_y * dashForce;
 
 
-       yield return seconds;
-       IsDashing = false;
-       _body.useGravity = original_gravity;
-       yield return null;
+        yield return seconds;
+        IsDashing = false;
+        _body.useGravity = original_gravity;
+        yield return null;
     }
 }

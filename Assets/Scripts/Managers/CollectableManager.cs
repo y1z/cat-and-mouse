@@ -7,24 +7,25 @@ using FishNet.Object;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public sealed class CollectableManager : NetworkBehaviour 
+public sealed class CollectableManager : NetworkBehaviour
 {
-    
     public static CollectableManager instance;
 
     /// <summary>
     /// Takes care of spawning and despawning collectables 
     /// </summary>
     public CollectableSpawner spawner;
-    
+
     private List<CollectableBase> _collectables = new List<CollectableBase>();
 
     private int totalCollected = 0;
+
     void Awake()
     {
         instance = this;
-        
-        Assert.IsNotNull(spawner ,"Please assign an instance of " +nameof(CollectableSpawner) + "\nto spawner variable");
+
+        Assert.IsNotNull(spawner,
+            "Please assign an instance of " + nameof(CollectableSpawner) + "\nto spawner variable");
     }
 
     void Update()
@@ -36,25 +37,23 @@ public sealed class CollectableManager : NetworkBehaviour
             Debug.Log("total collected = " + totalCollected);
         }
 #endif
-        
     }
 
 
     [ServerRpc(RequireOwnership = false)]
     public void GetEveryCollectable()
     {
-       GameObject[] objects = GameObject.FindGameObjectsWithTag("Collectable");
+        GameObject[] objects = GameObject.FindGameObjectsWithTag("Collectable");
 
-       foreach (var obj in objects)
-       {
-           if (obj.TryGetComponent(out CollectableBase collectable))
-           {
-               _collectables.Add(collectable);
-           }
+        foreach (var obj in objects)
+        {
+            if (obj.TryGetComponent(out CollectableBase collectable))
+            {
+                _collectables.Add(collectable);
+            }
+        }
 
-       }
-        
-       //Debug.Log("Collectables found = " + _collectables.Count);
+        //Debug.Log("Collectables found = " + _collectables.Count);
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -62,7 +61,7 @@ public sealed class CollectableManager : NetworkBehaviour
     {
         if (!base.IsServer)
             return;
-        
+
         foreach (var collectable in _collectables)
         {
             if (collectable.isCollected)
@@ -71,11 +70,8 @@ public sealed class CollectableManager : NetworkBehaviour
                 InstanceFinder.ServerManager.Despawn(collectable.gameObject);
                 totalCollected += 1;
             }
-            
         }
     }
-
-
 
 
     public int CollectableCount => spawner.CollectableCount;

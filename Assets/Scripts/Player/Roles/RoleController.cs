@@ -9,19 +9,18 @@ using UnityEngine;
  */
 public sealed class RoleController : MonoBehaviour
 {
-
     private RoleBase _roleBase;
-    
-    public bool IsInitialized { get; private set; } 
 
-   [SerializeField] private GeneralPlayer _player_ref;
+    public bool IsInitialized { get; private set; }
 
-   private void Start()
-   {
-       IsInitialized = false;
-   }
+    [SerializeField] private GeneralPlayer _player_ref;
 
-   void Update()
+    private void Start()
+    {
+        IsInitialized = false;
+    }
+
+    void Update()
     {
         if (!IsInitialized)
         {
@@ -30,13 +29,12 @@ public sealed class RoleController : MonoBehaviour
 
         _roleBase.OnUpdate(_player_ref);
 
-            if (Input.GetButtonDown("Fire1"))
-            {
-                _roleBase.DoRoleSpecialAction(_player_ref);
-            }
-
+        if (Input.GetButtonDown("Fire1"))
+        {
+            _roleBase.DoRoleSpecialAction(_player_ref);
+        }
     }
-    
+
     public bool Initialize(GeneralPlayer player, RoleBase startingRoleBase)
     {
         _player_ref = player;
@@ -51,7 +49,7 @@ public sealed class RoleController : MonoBehaviour
     {
         _roleBase = null;
         _player_ref = null;
-        IsInitialized= false;
+        IsInitialized = false;
     }
 
     public string getRoleName()
