@@ -56,7 +56,7 @@ public sealed class CatRole : RoleBase
             }
         }
 
-        _sphereDrawer.StartDraw(1.0f, ray_end_pos, 1.0f, Color.red);
+        _sphereDrawer.StartDraw(0.5f, ray_end_pos, 1.0f, Color.red);
     }
 
     public override bool OnEnd(GeneralPlayer player)

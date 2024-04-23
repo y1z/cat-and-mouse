@@ -7,13 +7,13 @@ using Object = UnityEngine.Object;
 public class SphereDrawer : MonoBehaviour
 {
     [Tooltip("controls where to sphere is drawn ")]
-    public Vector3 gizmoPosition;
+    public Vector3 widgetPosition;
 
     [Tooltip("controls the size of the sphere")]
-    public float gizmoSize;
+    public float widgetSize;
 
     [Tooltip("controls color of the sphere")]
-    public Color gizmoColor;
+    public Color widgetColor;
 
     [Tooltip("Controls how long to draw the object")]
     public float duration;
@@ -21,32 +21,79 @@ public class SphereDrawer : MonoBehaviour
     [Tooltip("keeps track of how long it's been drawing")]
     public float timeDrawing = 0.0f;
 
+    [Tooltip("Tells the script if it can draw or not")]
     public bool canDraw = false;
 
+    [Tooltip("Tells the script how many time per second to draw")] [Range(1.0f,60.0f)]
+    public float howManyTimesPerSecondToDraw = 5;
+
+    // controls how much the coroutine waits for 
+    private WaitForSeconds _howMuchToWaitFor;
+
     private GameObject _objToDraw;
+
+    // keeps track of where to store the object when not in use
+    private Vector3 storagePosition;
 
     public static readonly Color GIZMO_COLOR_DEFAULT = Color.red;
 
     private void Start()
     {
         _objToDraw = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        _objToDraw.GetComponent<SphereCollider>().isTrigger = true;
+        storagePosition =  Vector3.left * 1337.0f;
+        _objToDraw.transform.position = storagePosition;
+
     }
 
-    public void StartDraw(float _duration, Vector3 position, float size = 1.0f, Color? color = null)
+    public void StartDraw(float _duration, Vector3 position, float size = 1.0f, Color? color =  null)
     {
         canDraw = true;
-        gizmoPosition = position;
         duration = _duration;
-
+        widgetPosition = position;
         if (color == null)
         {
             color = GIZMO_COLOR_DEFAULT;
         }
 
-        gizmoColor = color.Value;
-        gizmoSize = size;
+        float waitTimeValue = Mathf.Clamp(1.0f / howManyTimesPerSecondToDraw,float.Epsilon,_duration);
+        _howMuchToWaitFor = new WaitForSeconds(waitTimeValue);
+        widgetColor = color.Value;
+        widgetSize = size;
+        timeDrawing = 0.0f;
+        StartCoroutine(drawSphere());
     }
 
+    IEnumerator drawSphere()
+    {
+        Vector3 scale = _objToDraw.transform.localScale;
+        Vector3 original_scale = new Vector3(scale.x,scale.y,scale.z);
+        while (duration > timeDrawing)
+        {
+            _objToDraw.transform.position = widgetPosition;
+            _objToDraw.transform.localScale = new Vector3(original_scale.x * widgetSize, original_scale.y * widgetSize,
+                original_scale.z * widgetSize);
+
+            Debug.Log(Utility.StringUtil.addColorToString("This string is Green", Color.green));
+
+            yield return _howMuchToWaitFor;
+        }
+
+        _objToDraw.transform.localScale = original_scale;
+        _objToDraw.transform.position = storagePosition;
+        endDraw();
+    }
+
+    private void Update()
+    {
+        if (!canDraw)
+        {
+            return;
+        }
+
+
+        timeDrawing += Time.deltaTime;
+    }
 
     private void OnDrawGizmos()
     {
@@ -56,15 +103,15 @@ public class SphereDrawer : MonoBehaviour
         Debug.Log($" duration ");
 
         Color initial_color = Gizmos.color;
-        Gizmos.color = gizmoColor;
+        Gizmos.color = widgetColor;
         //Gizmos.DrawWireSphere();
-        Gizmos.DrawSphere(gizmoPosition, gizmoSize);
+        Gizmos.DrawSphere(widgetPosition, widgetSize);
 
         Gizmos.color = initial_color;
         timeDrawing += Time.deltaTime;
     }
 
-    public void endDraw()
+    private void endDraw()
     {
         canDraw = false;
         timeDrawing = 0.0f;
