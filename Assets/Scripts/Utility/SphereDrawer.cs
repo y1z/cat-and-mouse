@@ -35,6 +35,8 @@ public class SphereDrawer : MonoBehaviour
     // keeps track of where to store the object when not in use
     private Vector3 storagePosition;
 
+    private Coroutine currentCoroutine;
+
     public static readonly Color GIZMO_COLOR_DEFAULT = Color.red;
 
     private void Start()
@@ -43,7 +45,7 @@ public class SphereDrawer : MonoBehaviour
         _objToDraw.GetComponent<SphereCollider>().isTrigger = true;
         storagePosition =  Vector3.left * 1337.0f;
         _objToDraw.transform.position = storagePosition;
-
+        currentCoroutine = null;
     }
 
     public void StartDraw(float _duration, Vector3 position, float size = 1.0f, Color? color =  null)
@@ -61,7 +63,10 @@ public class SphereDrawer : MonoBehaviour
         widgetColor = color.Value;
         widgetSize = size;
         timeDrawing = 0.0f;
-        StartCoroutine(drawSphere());
+        if (currentCoroutine == null)
+        {
+            currentCoroutine = StartCoroutine(drawSphere());
+        }
     }
 
     IEnumerator drawSphere()
@@ -74,11 +79,11 @@ public class SphereDrawer : MonoBehaviour
             _objToDraw.transform.localScale = new Vector3(original_scale.x * widgetSize, original_scale.y * widgetSize,
                 original_scale.z * widgetSize);
 
-            Debug.Log(Utility.StringUtil.addColorToString("This string is Green", Color.green));
 
             yield return _howMuchToWaitFor;
         }
 
+         //Debug.Log(Utility.StringUtil.addColorToString("This string is Green", Color.green),this);
         _objToDraw.transform.localScale = original_scale;
         _objToDraw.transform.position = storagePosition;
         endDraw();
@@ -115,5 +120,6 @@ public class SphereDrawer : MonoBehaviour
     {
         canDraw = false;
         timeDrawing = 0.0f;
+        currentCoroutine = null;
     }
 }
