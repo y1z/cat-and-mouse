@@ -1114,6 +1114,7 @@ MonoBehaviour:
   _orientation: {fileID: 8698892174270032360}
   _sphereColliderObj: {fileID: 922193361103196921}
   _sphereCollider: {fileID: 0}
+  _sphereDrawer: {fileID: 0}
   _camera: {fileID: 6385845721195824233}
   height: 0
   health: 100
@@ -1142,7 +1143,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfabeeb6ffa3c4042ac3683ac50ef2dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isInitialized: 0
   _player_ref: {fileID: 0}
 --- !u!114 &2122605220625004940
 MonoBehaviour:
@@ -1172,9 +1172,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ad53f6517830a8439b553382d703814, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dashForce: 50
+  dashForce: 30
   dashTime: 1
   dashCooldown: 5
+  currentDashCooldown: 0
 --- !u!54 &8524332830327777415
 Rigidbody:
   m_ObjectHideFlags: 0
