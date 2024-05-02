@@ -3,7 +3,7 @@ using FishNet.Observing;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PredictionManager : MonoBehaviour
+public sealed class PredictionManager : MonoBehaviour
 {
     // if you want this to work for 3d just remove the "2D" part of the code
     Scene currentScene;

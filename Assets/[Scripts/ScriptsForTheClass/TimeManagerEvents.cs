@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FishNet;
 
-public class TimeManagerEvents : MonoBehaviour
+public sealed class TimeManagerEvents : MonoBehaviour
 {
     private Queue<Vector3> historialPosiciones = new Queue<Vector3>(10);
 
