@@ -77,6 +77,7 @@ public sealed class PartidasManager : MonoBehaviour
         }
 
         nm.ClientManager.StartConnection();
+        cargandoGo.SetActive(true);
         // TODO : Mostrar un cargando/conectando
     }
 }

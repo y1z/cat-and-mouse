@@ -8,7 +8,7 @@ using UnityEngine;
 public sealed class PlayflowClientRequest : MonoBehaviour
 {
     private const string ApiUrl = "https://api.cloud.playflow.app/";
-    private const string Token = "ddcb7e6fa32cf4a7cfcc78883a517bdd";
+    public const string Token = "ddcb7e6fa32cf4a7cfcc78883a517bdd";
     private const string Version = "2";
 
 
