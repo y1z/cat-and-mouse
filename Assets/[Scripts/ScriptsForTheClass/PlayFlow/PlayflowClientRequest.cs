@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class PlayflowClientRequest : MonoBehaviour
+public sealed class PlayflowClientRequest : MonoBehaviour
 {
     private const string ApiUrl = "https://api.cloud.playflow.app/";
     private const string Token = "ddcb7e6fa32cf4a7cfcc78883a517bdd";

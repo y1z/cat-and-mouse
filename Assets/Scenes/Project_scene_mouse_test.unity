@@ -4957,7 +4957,7 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 1191628969}
   _networkObjectCache: {fileID: 1191628969}
-  _howManyTimesPerSecondUseUpdateLoop: 4
+  _howManyTimesPerSecondUseUpdateLoop: 3
 --- !u!114 &1191628968
 MonoBehaviour:
   m_ObjectHideFlags: 0

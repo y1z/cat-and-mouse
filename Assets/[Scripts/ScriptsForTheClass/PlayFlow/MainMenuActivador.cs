@@ -3,7 +3,7 @@ using FishNet.Transporting;
 using UnityEngine;
 using Unity;
 
-public class MainMenuActivador : MonoBehaviour
+public sealed class MainMenuActivador : MonoBehaviour
 {
     private void Start()
     {

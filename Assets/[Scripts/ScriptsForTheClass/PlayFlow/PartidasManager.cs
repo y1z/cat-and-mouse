@@ -3,7 +3,7 @@ using FishNet.Managing;
 using FishNet.Transporting;
 using UnityEngine;
 
-public class PartidasManager : MonoBehaviour
+public sealed class PartidasManager : MonoBehaviour
 {
     [SerializeField] private PlayflowClientRequest _playflowClientRequest;
 

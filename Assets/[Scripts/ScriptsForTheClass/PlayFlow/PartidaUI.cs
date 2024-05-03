@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PartidaUI : MonoBehaviour
+public sealed class PartidaUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI nombrePartidaText;
     [SerializeField] private Image estadoServidorImage;
