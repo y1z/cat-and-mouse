@@ -5,11 +5,19 @@ using FishNet.Connection;
 using FishNet.Object;
 using UnityEngine;
 
+namespace Managers
+{
+    
 /**
  * 
  */
 public class GameManager : MonoBehaviour
 {
+        public CollectableManager collectableManager;
+
+        public PlayerManager playerManager;
+
+    public static GameManager instance;
     private int _playerCount = 0;
 
     private bool _initalize_game = false;
@@ -36,4 +44,6 @@ public class GameManager : MonoBehaviour
     {
         _playerCount = InstanceFinder.NetworkManager.ServerManager.Clients.Count;
     }
+}
+    
 }

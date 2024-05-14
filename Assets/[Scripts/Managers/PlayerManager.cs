@@ -20,6 +20,7 @@ namespace Managers
     {
         public static PlayerManager instance;
 
+
         // used to keep track of  stats for the players
         [SyncObject]
         public readonly SyncDictionary<NetworkConnection, PlayerData> _players =
@@ -52,8 +53,8 @@ namespace Managers
             }
 
 #if UNITY_EDITOR
-            var clinet_count = _clientManager.Clients.Count;
-            if (clinet_count > 1)
+            var client_count = _clientManager.Clients.Count;
+            if (client_count > 1)
             {
                 string all_ids = "";
                 foreach (var client in _clientManager.Clients)
