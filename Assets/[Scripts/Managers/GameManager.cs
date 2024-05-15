@@ -1,49 +1,58 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using FishNet;
 using FishNet.Connection;
 using FishNet.Object;
 using UnityEngine;
+using Utility;
 
 namespace Managers
 {
-    
-/**
+    /**
  * 
  */
-public class GameManager : MonoBehaviour
-{
+    public class GameManager : NetworkBehaviour
+    {
         public CollectableManager collectableManager;
 
         public PlayerManager playerManager;
 
-    public static GameManager instance;
-    private int _playerCount = 0;
+        public static GameManager instance;
 
-    private bool _initalize_game = false;
+        public float _howManyTimesPerSecond = 3.0f;
+        private int _playerCount = 0;
 
-    void Start()
-    {
-    }
+        private bool _initalize_game = false;
 
-    void Update()
-    {
-        UpdatePlayerCount();
-        var clients = InstanceFinder.NetworkManager.ServerManager.Clients;
-        //Debug.Log("player count = " + _playerCount);
-        string result = "";
-        foreach (var client in clients)
+        private Coroutine _coroutine;
+
+        void Start()
         {
-            result += $" {client}, ";
         }
 
-        Debug.Log(result, this);
-    }
+        public override void OnStartServer()
+        {
+            base.OnStartServer();
+            
+            collectableManager = GetComponent<CollectableManager>();
+            playerManager = GetComponent<PlayerManager>();
+            _coroutine = StartCoroutine(UpdatePlayerCount(_howManyTimesPerSecond));
+            Debug.Log("Started : " + nameof(GameManager),this);
+        }
 
-    void UpdatePlayerCount()
-    {
-        _playerCount = InstanceFinder.NetworkManager.ServerManager.Clients.Count;
+
+        IEnumerator UpdatePlayerCount(float howManyTimesPreSecond)
+        {
+            float inverse_time = 1.0f / howManyTimesPreSecond;
+            WaitForSeconds timeToWait = new WaitForSeconds(inverse_time);
+            while (true)
+            {
+                // _playerCount = InstanceFinder.NetworkManager.ServerManager.Clients.Count;
+                Debug.Log(Utility.StringUtil.addColorToString(inverse_time.ToString(), Color.magenta), this);
+                yield return timeToWait;
+            }
+            yield return new WaitForSeconds(0.1f);
+        }
     }
-}
-    
 }
