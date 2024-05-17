@@ -220,6 +220,45 @@ public class GeneralPlayer : NetworkBehaviour
         return result;
     }
 
+    [ObserversRpc(RunLocally = true)]
+    public void TeleportToLocation(Vector3 location)
+    {
+        TeleportToLocationRpc(location);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void TeleportToLocationRpc(Vector3 location)
+    {
+        this.transform.position = location;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void InitCatRole()
+    {
+        InitCatRoleRPC();
+    }
+
+    [ObserversRpc(RunLocally = true)]
+    private void InitCatRoleRPC()
+    {
+        var temp = new CatRole();
+        _roleController.Initialize(this, temp);
+    }
+    
+    [ServerRpc(RequireOwnership = false)]
+    public void InitMouseRole()
+    {
+        InitMouseRoleRPC();
+    }
+
+    [ObserversRpc(RunLocally = true)]
+    private void InitMouseRoleRPC()
+    {
+        var temp = new MouseRole();
+        _roleController.Initialize(this, temp);
+    }
+    
+
     public NetworkConnection Connection => base.Owner;
 
     public Transform CameraTransform => _camera.transform;

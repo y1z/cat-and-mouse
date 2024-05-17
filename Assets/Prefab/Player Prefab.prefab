@@ -1310,7 +1310,7 @@ MonoBehaviour:
   _synchronizePosition: 1
   _positionSnapping:
     X: 1
-    Y: 0
+    Y: 1
     Z: 1
   _synchronizeRotation: 1
   _rotationSnapping:

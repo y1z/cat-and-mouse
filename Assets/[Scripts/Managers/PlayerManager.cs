@@ -16,7 +16,7 @@ namespace Managers
     /**
      * Keeps track of all relevant data of the players of the game 
      */
-    public class PlayerManager : NetworkBehaviour
+    public sealed class PlayerManager : NetworkBehaviour
     {
         public static PlayerManager instance;
 
