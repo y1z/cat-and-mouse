@@ -51,17 +51,15 @@ public sealed class CatRole : RoleBase
                 float damage = Globals.DEFAULT_PLAYER_DAMAGE * 1.0f;
                 
                 player_ref.LoseHealth(damage);
-                
-                EDebug.Log($"Current health = {player_ref.health}");
+
+                //string temp = $"Current health = " + player_ref.health.ToString();
+                //EDebug.Log($"Current health = {player_ref.health}");
                 
                 var server_player_data = PlayerManager.instance.FindPlayer(player_ref.Connection);
-                
-                EDebug.Log("reached code here in " + nameof(CatRole));
 
                 server_player_data.Item2.health += damage;
                 PlayerManager.instance.SetPlayerHealth(player_ref, server_player_data.Item2.health);
 
-                //Debug.Log("Player health = " + player_ref.health);
             }
         }
 
