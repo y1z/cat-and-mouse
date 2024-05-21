@@ -257,6 +257,18 @@ public class GeneralPlayer : NetworkBehaviour
         var temp = new MouseRole();
         _roleController.Initialize(this, temp);
     }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void LoseHealth(float amount_to_lose)
+    {
+        LoseHealthRPC(amount_to_lose);
+    }
+
+    [ObserversRpc]
+    private void LoseHealthRPC(float amount_to_lose)
+    {
+        health = health - amount_to_lose;
+    }
     
 
     public NetworkConnection Connection => base.Owner;
