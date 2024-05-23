@@ -9,8 +9,6 @@ public sealed class PlayerMovement : NetworkBehaviour
     [Tooltip("Controls how fast the characters moves")] [Header("Movement")]
     public float movementSpeed;
 
-    public float dashSpeed;
-
     [Tooltip("Controls the orientation of our movement")] [SerializeField]
     private Transform orientation;
 
