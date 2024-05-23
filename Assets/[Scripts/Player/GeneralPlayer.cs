@@ -244,7 +244,7 @@ public class GeneralPlayer : NetworkBehaviour
         var temp = new CatRole();
         _roleController.Initialize(this, temp);
     }
-    
+
     [ServerRpc(RequireOwnership = false)]
     public void InitMouseRole()
     {
@@ -269,7 +269,7 @@ public class GeneralPlayer : NetworkBehaviour
     {
         health = health - amount_to_lose;
     }
-    
+
 
     public NetworkConnection Connection => base.Owner;
 

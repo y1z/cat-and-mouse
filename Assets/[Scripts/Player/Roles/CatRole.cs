@@ -47,19 +47,18 @@ public sealed class CatRole : RoleBase
             if (collider.CompareTag("Player"))
             {
                 GeneralPlayer player_ref = collider.GetComponent<GeneralPlayer>();
-                
+
                 float damage = Globals.DEFAULT_PLAYER_DAMAGE * 1.0f;
-                
+
                 player_ref.LoseHealth(damage);
 
                 //string temp = $"Current health = " + player_ref.health.ToString();
                 //EDebug.Log($"Current health = {player_ref.health}");
-                
+
                 var server_player_data = PlayerManager.instance.FindPlayer(player_ref.Connection);
 
                 server_player_data.Item2.health += damage;
                 PlayerManager.instance.SetPlayerHealth(player_ref, server_player_data.Item2.health);
-
             }
         }
 

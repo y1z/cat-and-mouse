@@ -22,8 +22,7 @@ namespace Managers
 
 
         // used to keep track of  stats for the players
-        [SyncObject]
-        public readonly SyncDictionary<NetworkConnection, PlayerData> _players =
+        [SyncObject] public readonly SyncDictionary<NetworkConnection, PlayerData> _players =
             new SyncDictionary<NetworkConnection, PlayerData>();
 
         //contains 

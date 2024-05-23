@@ -7,20 +7,18 @@ namespace Utility
      */
     public static class EDebug
     {
-    
-    public static void Log(object message, Object context)
-    {
+        public static void Log(object message, Object context)
+        {
 #if UNITY_EDITOR
-        Debug.Log(message, context);
+            Debug.Log(message, context);
 #endif
-    }
-    
-    public static void Log(object message)
-    {
+        }
+
+        public static void Log(object message)
+        {
 #if UNITY_EDITOR
-        Debug.Log(message);
+            Debug.Log(message);
 #endif
-    }
-        
+        }
     }
 }

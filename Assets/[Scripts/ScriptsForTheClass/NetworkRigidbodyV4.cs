@@ -7,7 +7,7 @@ using FishNet.Object.Synchronizing;
 using UnityEngine;
 
 
-public class NetworkRigibodyV4 : NetworkBehaviour
+public class NetworkRigidbodyV4 : NetworkBehaviour
 {
     public Vector2 Direction;
     public float force;

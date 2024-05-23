@@ -73,7 +73,7 @@ public sealed class CollectableManager : NetworkBehaviour
             {
                 continue;
             }
-            
+
             result = false;
             break;
         }
