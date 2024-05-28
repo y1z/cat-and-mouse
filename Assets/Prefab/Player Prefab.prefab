@@ -1087,7 +1087,6 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 2209050743684622611}
   _networkObjectCache: {fileID: 2209050743684622611}
   movementSpeed: 20
-  dashSpeed: 20
   orientation: {fileID: 8698892174270032360}
   moveDirection: {x: 0, y: 0, z: 0}
   _body: {fileID: 0}
@@ -1118,6 +1117,9 @@ MonoBehaviour:
   _camera: {fileID: 6385845721195824233}
   height: 0
   health: 100
+  audiosClips:
+  - {fileID: 8300000, guid: b8c2033fda0a72f469f82e735c1ba76a, type: 3}
+  - {fileID: 8300000, guid: 399bb8a1275ff2849963c910791bb598, type: 3}
 --- !u!114 &-3912274991577368952
 MonoBehaviour:
   m_ObjectHideFlags: 0

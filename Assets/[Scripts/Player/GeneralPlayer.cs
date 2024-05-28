@@ -44,7 +44,10 @@ public class GeneralPlayer : NetworkBehaviour
 
     [SyncVar(OnChange = nameof(OnChange_health))]
     public float health = 100.0f;
+    
+    public AudioClip[] audiosClips;
 
+    
     protected void Awake()
     {
         if (Mathf.Abs(_jumpForce) < float.Epsilon)

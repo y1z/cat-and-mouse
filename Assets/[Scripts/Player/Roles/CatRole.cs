@@ -10,6 +10,7 @@ using Utility;
 public sealed class CatRole : RoleBase
 {
     private SphereDrawer _sphereDrawer;
+    public AudioSource _audio;
 
 
     public override bool OnInit(GeneralPlayer player)
@@ -42,6 +43,7 @@ public sealed class CatRole : RoleBase
             player._sphereCollider.radius,
             Globals.PLAYER_MASK);
 
+        bool has_hit_player = false;
         foreach (var collider in result)
         {
             if (collider.CompareTag("Player"))
@@ -57,12 +59,21 @@ public sealed class CatRole : RoleBase
 
                 var server_player_data = PlayerManager.instance.FindPlayer(player_ref.Connection);
 
-                server_player_data.Item2.health += damage;
+                server_player_data.Item2.health += damage * -1.0f;
                 PlayerManager.instance.SetPlayerHealth(player_ref, server_player_data.Item2.health);
+                has_hit_player = true;
             }
         }
 
         _sphereDrawer.StartDraw(0.5f, ray_end_pos, 1.0f, Color.red);
+
+        if (has_hit_player)
+        {
+            Managers.SoundFXManager.instance.PlaySoundFXClip(player.audiosClips[0], player.transform, 0.75f);
+            return;
+        }
+
+        Managers.SoundFXManager.instance.PlaySoundFXClip(player.audiosClips[1], player.transform, 0.75f);
     }
 
     public override bool OnEnd(GeneralPlayer player)
