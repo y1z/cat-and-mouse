@@ -57,10 +57,10 @@ public sealed class CatRole : RoleBase
                 //string temp = $"Current health = " + player_ref.health.ToString();
                 //EDebug.Log($"Current health = {player_ref.health}");
 
-                var server_player_data = PlayerManager.instance.FindPlayer(player_ref.Connection);
+                //var server_player_data = PlayerManager.instance.FindPlayer(player_ref.Connection);
 
-                server_player_data.Item2.health += damage * -1.0f;
-                PlayerManager.instance.SetPlayerHealth(player_ref, server_player_data.Item2.health);
+                //server_player_data.Item2.health += damage * -1.0f;
+                //PlayerManager.instance.SetPlayerHealth(player_ref, server_player_data.Item2.health);
                 has_hit_player = true;
             }
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Text;
 using FishNet;
 using FishNet.Component.Spawning;
 using FishNet.Connection;
@@ -8,6 +9,7 @@ using FishNet.Object.Synchronizing;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Managers;
+using UnityEngine.PlayerLoop;
 using util = Utility;
 
 /**
@@ -47,6 +49,7 @@ public class GeneralPlayer : NetworkBehaviour
     
     public AudioClip[] audiosClips;
 
+    public TextController textController;
     
     protected void Awake()
     {
@@ -62,14 +65,13 @@ public class GeneralPlayer : NetworkBehaviour
         _groundCheck = GetComponent<GroundCheck>();
         _sphereDrawer = gameObject.AddComponent<SphereDrawer>();
         _roleController.Initialize(this, new UndecidedRole());
+        textController = GetComponent<TextController>();
+        
         height = size.y;
         Assert.IsNotNull(_body, "_body != null");
         Assert.IsNotNull(_sphereCollider, "_sphereCollider should NOT be null");
         Assert.IsNotNull(_sphereColliderObj, "_sphereColliderObj should NOT be null");
-    }
-
-    private void Start()
-    {
+        Assert.IsNotNull(_sphereColliderObj, "_sphereColliderObj should NOT be null");
     }
 
     public override void OnStartClient()
@@ -131,7 +133,43 @@ public class GeneralPlayer : NetworkBehaviour
 
 #endif // UNITY_EDITOR
 
+        UpdateText();
+
         DoPlayerJump();
+    }
+
+    [ServerRpc]
+    public void UpdateText()
+    {
+        UpdateTextRPC();
+    }
+
+    [ObserversRpc]
+    public void UpdateTextRPC()
+    {
+        const string start = "[ ";
+        float invert_default_health = 1.0f / Globals.DEFAULT_PLAYER_HEALTH;
+
+        const int HOW_MANY_BARS_MAX_HEALTH = 4;
+        
+        int how_many_bars_to_generate = Mathf.FloorToInt( health * invert_default_health * HOW_MANY_BARS_MAX_HEALTH);
+        StringBuilder sb = new StringBuilder(start, 1);
+
+        string red_hex_color = ColorUtility.ToHtmlStringRGBA(Color.red);
+
+        sb.Append($"<color=#{red_hex_color}>");
+        //sb.Append("▉");
+        for (int i = 0; i < how_many_bars_to_generate; ++i)
+        {
+            //$"<color=#{color_str}> {input} </color>" 
+            // ▉
+            sb.Append("█ ");
+        }
+        
+        sb.Append("</color>");
+        sb.Append("]");
+        textController.changeText(sb.ToString());
+
     }
 
 
@@ -155,6 +193,7 @@ public class GeneralPlayer : NetworkBehaviour
             _body.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
         }
     }
+    
 
 
     private bool IsPlayerInSpawn(Transform[] valid_spawn_points)
