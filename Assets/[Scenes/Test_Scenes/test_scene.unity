@@ -345,6 +345,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 135821369}
+  - component: {fileID: 135821370}
   m_Layer: 0
   m_Name: Camera_holder
   m_TagString: Untagged
@@ -368,6 +369,39 @@ Transform:
   - {fileID: 141681921}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &135821370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 135821368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <IsNested>k__BackingField: 0
+  <ComponentIndex>k__BackingField: 0
+  <PredictedSpawn>k__BackingField: {fileID: 0}
+  _networkBehaviours:
+  - {fileID: 141681924}
+  <ParentNetworkObject>k__BackingField: {fileID: 0}
+  <ChildNetworkObjects>k__BackingField: []
+  SerializedTransformProperties:
+    Position: {x: 6.6498456, y: 8.956237, z: 2.952557}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    LocalScale: {x: 1, y: 1, z: 1}
+  _isNetworked: 1
+  _isGlobal: 0
+  _initializeOrder: 0
+  _defaultDespawnType: 0
+  NetworkObserver: {fileID: 0}
+  <PrefabId>k__BackingField: 0
+  <SpawnableCollectionId>k__BackingField: 0
+  _scenePathHash: 1563405897
+  <SceneId>k__BackingField: 6714777198099871932
+  <AssetPathHash>k__BackingField: 0
 --- !u!1 &141681918
 GameObject:
   m_ObjectHideFlags: 0
@@ -456,7 +490,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 141681918}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.04763198, y: -0.000000001870919, z: 8.921684e-11, w: 0.99886495}
+  m_LocalRotation: {x: 0.04763198, y: 0.0000000018709192, z: -8.9216856e-11, w: 0.99886495}
   m_LocalPosition: {x: -6.6498456, y: -6.956237, z: -9.952557}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -618,11 +652,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1123ed93a4fae4418df5a17fc245317, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 0
+  _addedNetworkObject: {fileID: 135821370}
+  _networkObjectCache: {fileID: 135821370}
   orientation: {fileID: 2031568954}
   player: {fileID: 689656034}
   playerObject: {fileID: 117661354}
   _body: {fileID: 689656033}
   _rotationSpeed: 1
+  _camera: {fileID: 0}
+  _cinemachine: {fileID: 0}
 --- !u!1 &203177664
 GameObject:
   m_ObjectHideFlags: 3
@@ -648,7 +687,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 203177664}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.091372184, y: -0.0000000018404609, z: 3.4785316e-10, w: 0.9958169}
+  m_LocalRotation: {x: 0.091372184, y: 0.0000000018404617, z: -3.4785333e-10, w: 0.9958169}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -806,6 +845,8 @@ GameObject:
   m_Component:
   - component: {fileID: 689656034}
   - component: {fileID: 689656033}
+  - component: {fileID: 689656036}
+  - component: {fileID: 689656035}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -857,6 +898,58 @@ Transform:
   - {fileID: 2031568954}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &689656035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 689656032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <IsNested>k__BackingField: 0
+  <ComponentIndex>k__BackingField: 0
+  <PredictedSpawn>k__BackingField: {fileID: 0}
+  _networkBehaviours:
+  - {fileID: 689656036}
+  <ParentNetworkObject>k__BackingField: {fileID: 0}
+  <ChildNetworkObjects>k__BackingField: []
+  SerializedTransformProperties:
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    LocalScale: {x: 1, y: 1, z: 1}
+  _isNetworked: 1
+  _isGlobal: 0
+  _initializeOrder: 0
+  _defaultDespawnType: 0
+  NetworkObserver: {fileID: 0}
+  <PrefabId>k__BackingField: 0
+  <SpawnableCollectionId>k__BackingField: 0
+  _scenePathHash: 1563405897
+  <SceneId>k__BackingField: 6714777200044981193
+  <AssetPathHash>k__BackingField: 0
+--- !u!114 &689656036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 689656032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cac8e3832e5b924abd38dd1a68464e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 0
+  _addedNetworkObject: {fileID: 689656035}
+  _networkObjectCache: {fileID: 689656035}
+  _movementSpeed: 5
+  _rotationSpeed: {x: 3, y: 3}
+  _cam_ref: {fileID: 141681920}
+  _rotations: {x: 0, y: 0}
 --- !u!1 &1062115450
 GameObject:
   m_ObjectHideFlags: 3
@@ -1053,7 +1146,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1609595140}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.04498833, y: 0.000000015993301, z: -0.0000000022587574, w: 0.99898756}
+  m_LocalRotation: {x: 0.04498833, y: -0.000000015993303, z: 0.0000000022587572, w: 0.99898756}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1132,7 +1225,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1705689242}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0000000037252903, y: -0.000000003729091, z: 3.5646222e-10, w: 1}
+  m_LocalRotation: {x: -0.0000000037252903, y: 0.000000003729092, z: -3.5646236e-10, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

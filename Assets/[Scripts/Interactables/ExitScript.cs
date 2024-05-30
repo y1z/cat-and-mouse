@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using FishNet;
+using FishNet.Managing.Server;
 using FishNet.Object;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -34,9 +36,9 @@ public class ExitScript : NetworkBehaviour
 
         float final_seconds = 1.0f / _howManyTimesPerSecondUseUpdateLoop;
 
-        string msg = "Start Coroutine in :" + nameof(Start) + nameof(ExitScript);
+        string msg = "Start Coroutine in :" + nameof(OnStartServer) + nameof(ExitScript);
         Debug.Log(StringUtil.addColorToString(msg, Color.yellow));
-        Debug.Log(StringUtil.addColorToString("wating for this many second=" + final_seconds, Color.yellow));
+        Debug.Log(StringUtil.addColorToString("waiting for this many second=" + final_seconds, Color.yellow));
 
         StartCoroutine(UpdateLoop(final_seconds));
     }
@@ -64,7 +66,9 @@ public class ExitScript : NetworkBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            _loaderScript.loadScene();
+            other.GetComponent<NetworkBehaviour>().NetworkManager.ClientManager.Connection.Disconnect(false);
+            //InstanceFinder.ClientManager.
+            //_loaderScript.loadScene();
         }
     }
 }

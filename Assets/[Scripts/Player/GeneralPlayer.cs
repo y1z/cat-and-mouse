@@ -72,6 +72,7 @@ public class GeneralPlayer : NetworkBehaviour
         Assert.IsNotNull(_sphereCollider, "_sphereCollider should NOT be null");
         Assert.IsNotNull(_sphereColliderObj, "_sphereColliderObj should NOT be null");
         Assert.IsNotNull(_sphereColliderObj, "_sphereColliderObj should NOT be null");
+        
     }
 
     public override void OnStartClient()

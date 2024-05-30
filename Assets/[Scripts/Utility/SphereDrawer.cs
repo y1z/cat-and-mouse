@@ -104,9 +104,7 @@ public class SphereDrawer : MonoBehaviour
     {
         if (!canDraw && duration > timeDrawing)
             return;
-
-        Debug.Log($" duration ");
-
+        
         Color initial_color = Gizmos.color;
         Gizmos.color = widgetColor;
         //Gizmos.DrawWireSphere();
