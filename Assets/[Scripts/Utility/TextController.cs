@@ -5,7 +5,7 @@ using UnityEngine;
 
 public sealed class TextController : MonoBehaviour
 {
-    [SerializeField] private TextMeshPro _meshPro;
+    [SerializeField] public TextMeshPro _meshPro;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,11 +21,5 @@ public sealed class TextController : MonoBehaviour
     {
         _meshPro.text = new_text;
     }
-    
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
