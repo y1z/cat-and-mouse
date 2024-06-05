@@ -9,7 +9,6 @@ using FishNet.Object.Synchronizing;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Managers;
-using UnityEngine.PlayerLoop;
 using util = Utility;
 
 /**
@@ -214,15 +213,16 @@ public class GeneralPlayer : NetworkBehaviour
         return result;
     }
 
-    [ObserversRpc(RunLocally = true)]
+    [ServerRpc(RequireOwnership = false)]
     private void MoveToSpawnPoint()
     {
         //if (!base.IsServer)
         //return;
+        
         MoveToSpawnPointRPC();
     }
 
-    //[ServerRpc(RequireOwnership = false)]
+    [ObserversRpc(RunLocally = true)]
     private void MoveToSpawnPointRPC()
     {
         //if (!base.IsServer)
@@ -233,7 +233,7 @@ public class GeneralPlayer : NetworkBehaviour
         transform.position = valid_spawn_points[spawn_point_index].position;
         //_body.transform.Translate(valid_spawn_points[spawn_point_index].position);
 #if UNITY_EDITOR
-        print("player move to spawn point");
+        util.EDebug.Log($"Function {nameof(MoveToSpawnPointRPC)} has been called");
 #endif
     }
 

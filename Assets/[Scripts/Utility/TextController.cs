@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+/**
+ * Helps control text in world space (NOT UI)
+ */
 public sealed class TextController : MonoBehaviour
 {
     [SerializeField] public TextMeshPro _meshPro;

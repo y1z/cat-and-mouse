@@ -8,16 +8,13 @@ using FishNet.Object;
 using GameKit.Utilities;
 using TMPro;
 using UnityEngine;
-using Utility;
 using Random = UnityEngine.Random;
-using Vector3 = UnityEngine.Vector3;
-using UnityEngine.SceneManagement;
 
 namespace Managers
 {
     /**
- * 
- */
+     * manages the state of the game
+     */
     public sealed class GameManager : NetworkBehaviour
     {
         public static GameManager instance;
@@ -41,15 +38,19 @@ namespace Managers
 
         [SerializeField] private GameObject objectToDespawn;
 
+        [SerializeField] private bool isBeingTested = false;
+
         void Start()
         {
+            instance = this;
         }
 
         private void Update()
         {
-            if (!_initalize_game)
+            if (!_initalize_game && !isBeingTested)
                 return;
 
+            //Utility.EDebug.Log($" {nameof(GameManager)}",this);
             _textMeshPro.text = initTime.ToString("F");
 
             initTime = initTime - Time.deltaTime;
@@ -81,7 +82,10 @@ namespace Managers
             {
                 _playerCount = InstanceFinder.NetworkManager.ServerManager.Clients.Count;
 #if UNITY_EDITOR
-                Debug.Log(Utility.StringUtil.addColorToString($"player_count =" + _playerCount, Color.magenta), this);
+                {
+                    string debugMsg = Utility.StringUtil.addColorToString($"player_count =" + _playerCount, Color.magenta);
+                    Debug.Log(debugMsg, this);
+                }
 #endif
 
                 if (_playerCount > 2)
@@ -143,6 +147,21 @@ namespace Managers
         {
             //Debug.Log(nameof(moveAllPlayer) ,this);
             moveAllPlayerRpc();
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void UpdateGameLoop()
+        {
+            UpdateGameLoopRFC();
+        }
+
+        [ObserversRpc(RunLocally = true)]
+        private void UpdateGameLoopRFC()
+        {
+            
+            _textMeshPro.text = initTime.ToString("F");
+
+            initTime = initTime - Time.deltaTime;
         }
     }
 }
