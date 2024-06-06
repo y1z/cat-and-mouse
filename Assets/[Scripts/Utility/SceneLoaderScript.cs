@@ -6,8 +6,9 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// This script is used for loading new scenes
 /// </summary>
-public class SceneLoaderScript : MonoBehaviour
+public sealed class SceneLoaderScript : MonoBehaviour
 {
+    [Tooltip("The name of the scene to be loaded")]
     public string sceneName;
 
     // Update is called once per frame

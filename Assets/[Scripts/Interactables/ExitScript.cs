@@ -9,7 +9,7 @@ using UnityEngine;
 using StringUtil = Utility.StringUtil;
 
 [RequireComponent(typeof(Collider))]
-public class ExitScript : NetworkBehaviour
+public sealed class ExitScript : NetworkBehaviour
 {
     private SceneLoaderScript _loaderScript;
     private Collider _collider = null;

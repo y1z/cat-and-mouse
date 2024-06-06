@@ -18,6 +18,7 @@ namespace Managers
     public sealed class GameManager : NetworkBehaviour
     {
         public static GameManager instance;
+
         public CollectableManager collectableManager;
 
         public PlayerManager playerManager;
