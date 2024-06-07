@@ -4804,7 +4804,6 @@ GameObject:
   m_Component:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
-  - component: {fileID: 963194226}
   - component: {fileID: 963194230}
   - component: {fileID: 963194232}
   - component: {fileID: 963194233}
@@ -4815,14 +4814,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!81 &963194226
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
 --- !u!20 &963194227
 Camera:
   m_ObjectHideFlags: 0
@@ -4867,8 +4858,8 @@ Camera:
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 1
+  m_HDR: 0
+  m_AllowMSAA: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
@@ -6041,8 +6032,8 @@ GameObject:
   - component: {fileID: 1191628965}
   - component: {fileID: 1191628964}
   - component: {fileID: 1191628963}
-  - component: {fileID: 1191628968}
   - component: {fileID: 1191628967}
+  - component: {fileID: 1191628970}
   - component: {fileID: 1191628969}
   m_Layer: 0
   m_Name: Exit
@@ -6153,19 +6144,6 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 1191628969}
   _networkObjectCache: {fileID: 1191628969}
   _howManyTimesPerSecondUseUpdateLoop: 3
---- !u!114 &1191628968
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1191628962}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbe3f30fcb377904b9c5ed175f7b3d00, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneName: Error_scene
 --- !u!114 &1191628969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6199,6 +6177,19 @@ MonoBehaviour:
   _scenePathHash: 3633633274
   <SceneId>k__BackingField: 15606336078485336074
   <AssetPathHash>k__BackingField: 0
+--- !u!114 &1191628970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1191628962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbe3f30fcb377904b9c5ed175f7b3d00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneName: You_Win_Scene
 --- !u!1 &1198687207
 GameObject:
   m_ObjectHideFlags: 0

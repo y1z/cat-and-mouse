@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
+[Flags]
 public enum RolePermissons : byte
 {
     NONE = 0b00_00_00_00,

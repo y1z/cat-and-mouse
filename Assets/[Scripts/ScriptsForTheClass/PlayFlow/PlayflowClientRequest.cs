@@ -60,8 +60,6 @@ public sealed class PlayflowClientRequest : MonoBehaviour
 
     async Task<string> GetServersAsync()
     {
-        string result = "";
-
         string url = $"{ApiUrl}/list_servers";
 
         using var client = new HttpClient();

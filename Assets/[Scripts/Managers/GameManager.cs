@@ -58,9 +58,39 @@ namespace Managers
 
             if (initTime < float.Epsilon)
             {
-                //SceneManager   SceneManager.name;
-                String scene_name = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-                UnityEngine.SceneManagement.SceneManager.LoadScene(scene_name);
+                EndGame(true);
+            }
+        }
+
+        private void EndGame(bool did_cats_win)
+        {
+            const string WINNER_SCENE = "You_Win_Scene";
+            const string LOSER_SCENE = "You_Lose_Scene";
+            var catPlayers = PlayerManager.instance.GetAllCatPlayers();
+            var mousePlayers = PlayerManager.instance.GetAllMousePlayers();
+            if (did_cats_win)
+            {
+                foreach (var cat in catPlayers)
+                {
+                    cat.GetComponent<GeneralPlayer>().LoadSceneFromName(WINNER_SCENE);
+                }
+
+                foreach (var mousePlayer in mousePlayers)
+                {
+                    mousePlayer.GetComponent<GeneralPlayer>().LoadSceneFromName(LOSER_SCENE);
+                }
+            }
+            else
+            {
+                foreach (var cat in catPlayers)
+                {
+                    cat.GetComponent<GeneralPlayer>().LoadSceneFromName(LOSER_SCENE);
+                }
+
+                foreach (var mousePlayer in mousePlayers)
+                {
+                    mousePlayer.GetComponent<GeneralPlayer>().LoadSceneFromName(WINNER_SCENE);
+                }
             }
         }
 
@@ -84,7 +114,8 @@ namespace Managers
                 _playerCount = InstanceFinder.NetworkManager.ServerManager.Clients.Count;
 #if UNITY_EDITOR
                 {
-                    string debugMsg = Utility.StringUtil.addColorToString($"player_count =" + _playerCount, Color.magenta);
+                    string debugMsg =
+                        Utility.StringUtil.addColorToString($"player_count =" + _playerCount, Color.magenta);
                     Debug.Log(debugMsg, this);
                 }
 #endif
@@ -159,10 +190,14 @@ namespace Managers
         [ObserversRpc(RunLocally = true)]
         private void UpdateGameLoopRFC()
         {
-            
             _textMeshPro.text = initTime.ToString("F");
 
             initTime = initTime - Time.deltaTime;
+        }
+
+        public void SetInit(bool isInit)
+        {
+            _initalize_game = isInit;
         }
     }
 }

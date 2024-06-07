@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using FishNet;
 using FishNet.Managing.Server;
 using FishNet.Object;
+using Managers;
 using Unity.VisualScripting;
 using UnityEngine;
 using StringUtil = Utility.StringUtil;
@@ -21,6 +22,11 @@ public sealed class ExitScript : NetworkBehaviour
     public override void OnStartServer()
     {
         base.OnStartServer();
+    }
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
 
         _loaderScript = GetComponent<SceneLoaderScript>();
         _collider = GetComponent<Collider>();
@@ -64,11 +70,25 @@ public sealed class ExitScript : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        const string WINNER_SCENE = "You_Win_Scene";
+        const string LOSER_SCENE = "You_Lose_Scene";
         if (other.CompareTag("Player"))
         {
-            other.GetComponent<NetworkBehaviour>().NetworkManager.ClientManager.Connection.Disconnect(false);
-            //InstanceFinder.ClientManager.
-            //_loaderScript.loadScene();
+            GameManager.instance.SetInit(false);
+            bool isMouse = other.GetComponent<GeneralPlayer>().isMouse;
+
+            Debug.Log(StringUtil.addColorToString($"isMouse = {isMouse}", Color.red));
+            if (!isMouse)
+            {
+                _loaderScript.sceneName = LOSER_SCENE; // LOSER_SCENE;
+                _loaderScript.loadScene();
+            }
+
+            _loaderScript.sceneName = WINNER_SCENE;
+            _loaderScript.loadScene();
+
+            //var catPlayers = PlayerManager.instance.GetAllCatPlayers();
+            //var mousePlayers = PlayerManager.instance.GetAllMousePlayers();
         }
     }
 }

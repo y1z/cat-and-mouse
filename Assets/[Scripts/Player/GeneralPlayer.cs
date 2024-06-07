@@ -9,6 +9,7 @@ using FishNet.Object.Synchronizing;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Managers;
+using UnityEngine.SceneManagement;
 using util = Utility;
 
 /**
@@ -16,7 +17,7 @@ using util = Utility;
      * entity in this project.
      */
 [RequireComponent(typeof(Rigidbody))]
-public class GeneralPlayer : NetworkBehaviour
+public sealed class GeneralPlayer : NetworkBehaviour
 {
     [Tooltip("Controls how heigh the entity jumps")] [SerializeField]
     protected float _jumpForce;
@@ -45,11 +46,15 @@ public class GeneralPlayer : NetworkBehaviour
 
     [SyncVar(OnChange = nameof(OnChange_health))]
     public float health = 100.0f;
-    
+
     public AudioClip[] audiosClips;
 
     public TextController textController;
-    
+
+
+    [SyncVar(OnChange = nameof(OnChange_hasWon))]
+    public bool hasWon = false;
+
     protected void Awake()
     {
         if (Mathf.Abs(_jumpForce) < float.Epsilon)
@@ -65,13 +70,12 @@ public class GeneralPlayer : NetworkBehaviour
         _sphereDrawer = gameObject.AddComponent<SphereDrawer>();
         _roleController.Initialize(this, new UndecidedRole());
         textController = GetComponent<TextController>();
-        
+
         height = size.y;
         Assert.IsNotNull(_body, "_body != null");
         Assert.IsNotNull(_sphereCollider, "_sphereCollider should NOT be null");
         Assert.IsNotNull(_sphereColliderObj, "_sphereColliderObj should NOT be null");
         Assert.IsNotNull(_sphereColliderObj, "_sphereColliderObj should NOT be null");
-        
     }
 
     public override void OnStartClient()
@@ -144,6 +148,9 @@ public class GeneralPlayer : NetworkBehaviour
         UpdateTextRPC();
     }
 
+    /// <summary>
+    /// Update the health bar above the players head
+    /// </summary>
     [ObserversRpc]
     public void UpdateTextRPC()
     {
@@ -151,8 +158,8 @@ public class GeneralPlayer : NetworkBehaviour
         float invert_default_health = 1.0f / Globals.DEFAULT_PLAYER_HEALTH;
 
         const int HOW_MANY_BARS_MAX_HEALTH = 4;
-        
-        int how_many_bars_to_generate = Mathf.FloorToInt( health * invert_default_health * HOW_MANY_BARS_MAX_HEALTH);
+
+        int how_many_bars_to_generate = Mathf.FloorToInt(health * invert_default_health * HOW_MANY_BARS_MAX_HEALTH);
         StringBuilder sb = new StringBuilder(start, 1);
 
         string red_hex_color = ColorUtility.ToHtmlStringRGBA(Color.red);
@@ -165,11 +172,10 @@ public class GeneralPlayer : NetworkBehaviour
             // ▉
             sb.Append("█ ");
         }
-        
+
         sb.Append("</color>");
         sb.Append("]");
         textController.changeText(sb.ToString());
-
     }
 
 
@@ -193,7 +199,6 @@ public class GeneralPlayer : NetworkBehaviour
             _body.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
         }
     }
-    
 
 
     private bool IsPlayerInSpawn(Transform[] valid_spawn_points)
@@ -218,7 +223,7 @@ public class GeneralPlayer : NetworkBehaviour
     {
         //if (!base.IsServer)
         //return;
-        
+
         MoveToSpawnPointRPC();
     }
 
@@ -249,6 +254,14 @@ public class GeneralPlayer : NetworkBehaviour
         print("player health = " + next);
 
 #endif
+    }
+
+    void OnChange_hasWon(bool prev, bool next, bool as_server)
+    {
+        if (next)
+        {
+            Debug.Log("Player" + base.Owner.ClientId + " has won");
+        }
     }
 
     public bool CanCurrentRoleCollect()
@@ -313,6 +326,13 @@ public class GeneralPlayer : NetworkBehaviour
         health = health - amount_to_lose;
     }
 
+    public void LoadSceneFromName(string scene_name)
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(scene_name);
+    }
+
+
+    public bool isMouse => _roleController.isMouseRole;
 
     public NetworkConnection Connection => base.Owner;
 

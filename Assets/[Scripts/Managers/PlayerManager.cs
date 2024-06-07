@@ -98,30 +98,6 @@ namespace Managers
         }
 
 
-        /// <summary>
-        /// Called with one player damaged another 
-        /// </summary>
-        /// <param name="attacking_player"> The player doing the damage</param>
-        /// <param name="victim_player"> the player receiving the damage</param>
-        public void PlayerDamage(GeneralPlayer attacking_player, GeneralPlayer victim_player, float damage_amount)
-        {
-            if (!base.IsServer)
-                return;
-
-            foreach (var network_connection in _players.Keys)
-            {
-                if (network_connection == victim_player.Connection)
-                {
-                    //victim_player.takeDamage();
-
-
-                    break;
-                }
-            }
-
-
-            //attacking_player;
-        }
 
         /// <summary>
         /// function that is called when _players variable is modified 
@@ -179,7 +155,7 @@ namespace Managers
         /// 
         /// </summary>
         /// <param name="player_connection"></param>
-        /// <returns>A pair that contains the player networkconnection and data</returns>
+        /// <returns>A pair that contains the player network-connection and data</returns>
         public (NetworkConnection, PlayerData) FindPlayer(NetworkConnection player_connection)
         {
             NetworkConnection nc = null;
@@ -212,5 +188,42 @@ namespace Managers
             player_dict.Item2.health = health;
             player.health = player_dict.Item2.health;
         }
+
+        /// <summary>
+        /// get all the players with the Mouse role
+        /// </summary>
+        /// <returns>all players with mouse roles</returns>
+        public List<NetworkObject> GetAllMousePlayers()
+        {
+            List<NetworkObject> result = new List<NetworkObject>();
+            GameObject[] go = GameObject.FindGameObjectsWithTag("Player");
+            foreach (var player in go)
+            {
+                if (player.GetComponent<GeneralPlayer>().isMouse)
+                {
+                    result.Add(player.GetComponent<NetworkObject>());
+                }
+            }
+
+            return result;
+        }
+
+
+        public List<NetworkObject> GetAllCatPlayers()
+        {
+            List<NetworkObject> result = new List<NetworkObject>();
+            GameObject[] go = GameObject.FindGameObjectsWithTag("Player");
+            foreach (var player in go)
+            {
+                if (!player.GetComponent<GeneralPlayer>().isMouse)
+                {
+                    result.Add(player.GetComponent<NetworkObject>());
+                }
+            }
+
+            return result;
+            
+        }
+        
     }
 }

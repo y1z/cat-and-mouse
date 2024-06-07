@@ -63,4 +63,7 @@ public sealed class RoleController : MonoBehaviour
     {
         _roleBase = newRoleBase;
     }
+
+    public bool isMouseRole => (_roleBase.Permissons & RolePermissons.CAN_COLLECT_CHEESE) == RolePermissons.CAN_COLLECT_CHEESE;
+
 }
