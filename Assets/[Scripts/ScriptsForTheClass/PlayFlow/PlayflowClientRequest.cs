@@ -4,7 +4,11 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using UnityEngine;
+using util = Utility;
 
+/**
+ * Communicates with the server to start play sessions
+ */
 public sealed class PlayflowClientRequest : MonoBehaviour
 {
     private const string ApiUrl = "https://api.cloud.playflow.app/";
@@ -16,7 +20,7 @@ public sealed class PlayflowClientRequest : MonoBehaviour
     {
         string result = "";
 
-        string url = $"{ApiUrl}/start_game_server";
+        string url = $"{ApiUrl}start_game_server";
 
         using var client = new HttpClient();
         using var formData = new MultipartFormDataContent();
@@ -43,8 +47,10 @@ public sealed class PlayflowClientRequest : MonoBehaviour
 
         ServerList serverlist = JsonUtility.FromJson<ServerList>(responds);
 
-        Debug.Log("Cantidad de servidores " + serverlist.total_servers);
-        Debug.Log("servidores: " + serverlist.servers.Length);
+        util.EDebug.ColorLog("Cantidad de servidores " + serverlist.total_servers, Color.magenta);
+        
+        util.EDebug.ColorLog("servidores: " + serverlist.servers.Length, Color.magenta);
+        //Debug.Log("Cantidad de servidores " + serverlist.total_servers);
 
         if (serverlist.total_servers > 0)
         {
@@ -60,7 +66,7 @@ public sealed class PlayflowClientRequest : MonoBehaviour
 
     async Task<string> GetServersAsync()
     {
-        string url = $"{ApiUrl}/list_servers";
+        string url = $"{ApiUrl}list_servers";
 
         using var client = new HttpClient();
         using var formData = new MultipartFormDataContent();

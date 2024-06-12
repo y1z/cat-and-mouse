@@ -20,5 +20,12 @@ namespace Utility
             Debug.Log(message);
 #endif
         }
+
+        public static void ColorLog(object message, Color color)
+        {
+#if UNITY_EDITOR
+          EDebug.Log( StringUtil.addColorToString(message.ToString(), color) );
+#endif
+        }
     }
 }

@@ -8,7 +8,7 @@ public sealed class PartidasManager : MonoBehaviour
     [SerializeField] private PlayflowClientRequest _playflowClientRequest;
 
     [SerializeField] private Transform servidoresContent;
-    [SerializeField] private Transform servidoreUiPrefab;
+    [SerializeField] private GameObject servidoreUiPrefab;
 
     [SerializeField] private GameObject cargandoGo;
 
@@ -53,11 +53,12 @@ public sealed class PartidasManager : MonoBehaviour
 
     void OnListaDeSererFetch(PlayflowClientRequest.ServerList serverList)
     {
+
         for (int i = servidoresContent.childCount - 1; i >= 0; --i)
         {
             Destroy(servidoresContent.GetChild(i).gameObject);
         }
-
+        
 
         foreach (var server in serverList.servers)
         {

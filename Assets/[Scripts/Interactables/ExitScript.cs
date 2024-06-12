@@ -77,7 +77,9 @@ public sealed class ExitScript : NetworkBehaviour
             GameManager.instance.SetInit(false);
             bool isMouse = other.GetComponent<GeneralPlayer>().isMouse;
 
+            #if UNITY_EDITOR
             Debug.Log(StringUtil.addColorToString($"isMouse = {isMouse}", Color.red));
+            #endif
             if (!isMouse)
             {
                 _loaderScript.sceneName = LOSER_SCENE; // LOSER_SCENE;
