@@ -35,7 +35,7 @@ public sealed class CollectableManager : NetworkBehaviour
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.K))
         {
-            Debug.Log("total collected = " + totalCollected);
+            Debug.Log("total collected = " + _collectables.Count);
         }
 #endif
     }
@@ -44,10 +44,12 @@ public sealed class CollectableManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void GetEveryCollectable()
     {
-        GameObject[] objects = GameObject.FindGameObjectsWithTag("Collectable");
+        var objects = GameObject.FindGameObjectsWithTag("Collectable");
 
+        totalCollected = objects.Length;
         foreach (var obj in objects)
         {
+            //obj.GetComponent()
             if (obj.TryGetComponent(out CollectableBase collectable))
             {
                 _collectables.Add(collectable);
@@ -100,5 +102,7 @@ public sealed class CollectableManager : NetworkBehaviour
     }
 
 
-    public int CollectableCount => spawner.CollectableCount;
+    public int CollectableCount => _collectables.Count;
+
+    public int total => totalCollected;
 }

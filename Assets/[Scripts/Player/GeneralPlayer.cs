@@ -137,6 +137,17 @@ public sealed class GeneralPlayer : NetworkBehaviour
 
 #endif // UNITY_EDITOR
 
+
+        if (health < 0.01)
+        {
+            Transform[] valid_spawn_points = InstanceFinder.NetworkManager.GetComponent<PlayerSpawner>().Spawns;
+            int total_spawn_points = valid_spawn_points.Length;
+            var spawn_point_index = UnityEngine.Random.Range(0, total_spawn_points);
+
+            transform.position = valid_spawn_points[spawn_point_index].position;
+            SetHealth(Globals.DEFAULT_PLAYER_HEALTH);
+        }
+        
         UpdateText();
 
         DoPlayerJump();
@@ -230,6 +241,7 @@ public sealed class GeneralPlayer : NetworkBehaviour
     [ObserversRpc(RunLocally = true)]
     private void MoveToSpawnPointRPC()
     {
+        print($"{nameof(MoveToSpawnPointRPC)}");
         //if (!base.IsServer)
         //   return;
         Transform[] valid_spawn_points = InstanceFinder.NetworkManager.GetComponent<PlayerSpawner>().Spawns;
@@ -246,13 +258,12 @@ public sealed class GeneralPlayer : NetworkBehaviour
     {
         if (next < 0.01f)
         {
-            MoveToSpawnPoint();
+            
             PlayerManager.instance.SetPlayerHealth(this, Globals.DEFAULT_PLAYER_HEALTH);
         }
 
 #if UNITY_EDITOR
         print("player health = " + next);
-
 #endif
     }
 
@@ -276,14 +287,14 @@ public sealed class GeneralPlayer : NetworkBehaviour
         return result;
     }
 
-    [ObserversRpc(RunLocally = true)]
+    [ServerRpc(RequireOwnership = false)]
     public void TeleportToLocation(Vector3 location)
     {
         TeleportToLocationRpc(location);
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    public void TeleportToLocationRpc(Vector3 location)
+    [ObserversRpc(RunLocally = true)]
+    private void TeleportToLocationRpc(Vector3 location)
     {
         this.transform.position = location;
     }
@@ -324,6 +335,18 @@ public sealed class GeneralPlayer : NetworkBehaviour
     private void LoseHealthRPC(float amount_to_lose)
     {
         health = health - amount_to_lose;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void SetHealth(float newHealth)
+    {
+        SetHealthRPC(newHealth);
+    }
+
+    [ObserversRpc]
+    private void SetHealthRPC(float newHealth)
+    {
+        health = newHealth;
     }
 
     public void LoadSceneFromName(string scene_name)

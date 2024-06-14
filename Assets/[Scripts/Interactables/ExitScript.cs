@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using FishNet;
 using FishNet.Managing.Server;
 using FishNet.Object;
+using FishNet.Object.Synchronizing;
 using Managers;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -12,8 +13,12 @@ using StringUtil = Utility.StringUtil;
 [RequireComponent(typeof(Collider))]
 public sealed class ExitScript : NetworkBehaviour
 {
-    private SceneLoaderScript _loaderScript;
+    [SerializeField] private SceneLoaderScript _loaderScript;
     private Collider _collider = null;
+
+    [SerializeField] private List<Cheese> cheeseList = new List<Cheese>();
+
+    [SyncVar] private bool isTriggable = false;
 
     [Tooltip("how many time per second to update the Update Loop")] [Range(0.0f, 10.0f)] [SerializeField]
     private float _howManyTimesPerSecondUseUpdateLoop;
@@ -24,12 +29,16 @@ public sealed class ExitScript : NetworkBehaviour
         base.OnStartServer();
     }
 
+    public void Awake()
+    {
+        _loaderScript = GetComponent<SceneLoaderScript>();
+        _collider = GetComponent<Collider>();
+    }
+
     public override void OnStartClient()
     {
         base.OnStartClient();
 
-        _loaderScript = GetComponent<SceneLoaderScript>();
-        _collider = GetComponent<Collider>();
         Debug.Assert(_loaderScript != null, "_loaderScript != null");
         Debug.Assert(_collider != null, "_collider != null");
 
@@ -46,6 +55,9 @@ public sealed class ExitScript : NetworkBehaviour
         Debug.Log(StringUtil.addColorToString(msg, Color.yellow));
         Debug.Log(StringUtil.addColorToString("waiting for this many second=" + final_seconds, Color.yellow));
 
+        CollectableManager instance = CollectableManager.instance;
+        instance.GetEveryCollectable();
+
         StartCoroutine(UpdateLoop(final_seconds));
     }
 
@@ -53,14 +65,30 @@ public sealed class ExitScript : NetworkBehaviour
     IEnumerator UpdateLoop(float seconds)
     {
         WaitForSeconds delay = new WaitForSeconds(seconds);
+        CollectableManager instance = CollectableManager.instance;
+        yield return delay;
+        instance.GetEveryCollectable();
         while (true)
         {
-            CollectableManager instance = CollectableManager.instance;
-            var CollectableCount = instance.CollectableCount;
-            bool has_less_than_one = CollectableCount < 1;
-            Debug.Log(StringUtil.addColorToString("collectableCount =" + CollectableCount.ToString(), Color.green));
+            int total_collected = 0;
+            foreach (var chees in cheeseList)
+            {
+                if (chees.isCollected)
+                {
+                    total_collected++;
+                }
+            }
 
-            _collider.isTrigger = has_less_than_one;
+            //var CollectableCount = instance.CollectableCount;
+            //bool has_less_than_one = CollectableCount < 1;
+            //Debug.Log(StringUtil.addColorToString("collectableCount =" + CollectableCount.ToString(), Color.green));
+            //Debug.Log(StringUtil.addColorToString("total =" + instance.total , Color.green));
+
+            isTriggable = total_collected >= cheeseList.Count;
+
+            Debug.Log($"FOUND_ALL = {isTriggable}");
+
+            _collider.isTrigger = isTriggable;
 
             yield return delay;
         }
@@ -72,22 +100,25 @@ public sealed class ExitScript : NetworkBehaviour
     {
         const string WINNER_SCENE = "You_Win_Scene";
         const string LOSER_SCENE = "You_Lose_Scene";
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && isTriggable)
         {
             GameManager.instance.SetInit(false);
             bool isMouse = other.GetComponent<GeneralPlayer>().isMouse;
 
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             Debug.Log(StringUtil.addColorToString($"isMouse = {isMouse}", Color.red));
-            #endif
+#endif
             if (!isMouse)
             {
                 _loaderScript.sceneName = LOSER_SCENE; // LOSER_SCENE;
                 _loaderScript.loadScene();
+                
             }
 
-            _loaderScript.sceneName = WINNER_SCENE;
-            _loaderScript.loadScene();
+            GameManager.instance.EndGame(false);
+
+            //_loaderScript.sceneName = WINNER_SCENE;
+            //_loaderScript.loadScene();
 
             //var catPlayers = PlayerManager.instance.GetAllCatPlayers();
             //var mousePlayers = PlayerManager.instance.GetAllMousePlayers();

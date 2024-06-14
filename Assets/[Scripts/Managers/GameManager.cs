@@ -5,6 +5,7 @@ using System.Numerics;
 using FishNet;
 using FishNet.Connection;
 using FishNet.Object;
+using FishNet.Object.Synchronizing;
 using GameKit.Utilities;
 using TMPro;
 using UnityEngine;
@@ -25,6 +26,7 @@ namespace Managers
 
         public float _howManyTimesPerSecond = 3.0f;
 
+        [SyncVar]
         public float initTime = 40.0f;
 
         private int _playerCount = 0;
@@ -41,9 +43,22 @@ namespace Managers
 
         [SerializeField] private bool isBeingTested = false;
 
-        void Start()
+        private void Awake()
         {
             instance = this;
+        }
+        
+        void Start()
+        {
+        }
+
+        public override void OnStartClient()
+        {
+            base.OnStartClient();
+            collectableManager = GetComponent<CollectableManager>();
+            playerManager = GetComponent<PlayerManager>();
+            _coroutine = StartCoroutine(UpdatePlayerCount(_howManyTimesPerSecond));
+            Debug.Log("Started : " + nameof(GameManager), this);
         }
 
         private void Update()
@@ -54,15 +69,20 @@ namespace Managers
             //Utility.EDebug.Log($" {nameof(GameManager)}",this);
             _textMeshPro.text = initTime.ToString("F");
 
-            initTime = initTime - Time.deltaTime;
 
             if (initTime < float.Epsilon)
             {
                 EndGame(true);
             }
+
+            if (base.IsServer)
+            {
+                initTime = initTime - Time.deltaTime;
+            }
+            
         }
 
-        private void EndGame(bool did_cats_win)
+        public void EndGame(bool did_cats_win)
         {
             const string WINNER_SCENE = "You_Win_Scene";
             const string LOSER_SCENE = "You_Lose_Scene";
@@ -94,15 +114,6 @@ namespace Managers
             }
         }
 
-        public override void OnStartServer()
-        {
-            base.OnStartServer();
-
-            collectableManager = GetComponent<CollectableManager>();
-            playerManager = GetComponent<PlayerManager>();
-            _coroutine = StartCoroutine(UpdatePlayerCount(_howManyTimesPerSecond));
-            Debug.Log("Started : " + nameof(GameManager), this);
-        }
 
 
         IEnumerator UpdatePlayerCount(float howManyTimesPreSecond)
@@ -111,7 +122,8 @@ namespace Managers
             WaitForSeconds timeToWait = new WaitForSeconds(inverse_time);
             while (true)
             {
-                _playerCount = InstanceFinder.NetworkManager.ServerManager.Clients.Count;
+                _playerCount = InstanceFinder.ClientManager.Clients.Count;// InstanceFinder.NetworkManager.ServerManager.Clients.Count;
+                
 #if UNITY_EDITOR
                 {
                     string debugMsg =
@@ -162,7 +174,7 @@ namespace Managers
                 player.TeleportToLocation(spawnLocations[index].position);
             }*/
             objectToDespawn.SetActive(false);
-            collectableManager.spawner.SpawnCollectables();
+            //collectableManager.spawner.SpawnCollectables();
 
             for (int i = players.Length - 1; i > 0; --i)
             {

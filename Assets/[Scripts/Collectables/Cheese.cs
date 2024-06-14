@@ -6,26 +6,35 @@ using FishNet.Object;
 using UnityEngine;
 using UnityEngine.Assertions;
 
+[RequireComponent(typeof(Rigidbody))]
 public sealed class Cheese : CollectableBase
 {
     [SerializeField] [Tooltip("The collider for the cheese")]
     private SphereCollider _Collider;
 
+    private Rigidbody _rigidbody;
+
     private void Start()
     {
+        _rigidbody = GetComponent<Rigidbody>();
         if (_Collider == null)
         {
             _Collider = GetComponent<SphereCollider>();
         }
-
         Assert.IsNotNull(_Collider);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out GeneralPlayer player))
+        if (other.CompareTag("Player"))
         {
-            DisappearObject(player);
+            isCollected = true;
+        }
+
+        if (other.CompareTag("Player"))
+        {
+            var player = other.GetComponent<GeneralPlayer>();
+            DisappearObject( player);
         }
     }
 

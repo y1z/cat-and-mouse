@@ -2,18 +2,20 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public sealed class PartidaUI : MonoBehaviour
+public sealed class PartidaUILoadScene : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI nombrePartidaText;
     [SerializeField] private Image estadoServidorImage;
+    [SerializeField] private SceneLoaderScript _loaderScript;
 
 
     private string ip;
     private string port;
     public PartidasManager partidasManager;
-
+    
     public void Setup(PlayflowClientRequest.Server server, PartidasManager pm)
     {
+        _loaderScript = GetComponent<SceneLoaderScript>();
         nombrePartidaText.SetText(server.match_id);
         switch (server.status)
         {
@@ -34,5 +36,7 @@ public sealed class PartidaUI : MonoBehaviour
     public void Unir()
     {
         partidasManager.UnirPartida(ip, port);
+        _loaderScript.sceneName = "Project_scene_mouse_test";
+        _loaderScript.loadScene();
     }
 }

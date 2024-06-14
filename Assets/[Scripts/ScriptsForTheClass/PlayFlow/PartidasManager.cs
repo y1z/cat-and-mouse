@@ -2,6 +2,8 @@
 using FishNet.Managing;
 using FishNet.Transporting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public sealed class PartidasManager : MonoBehaviour
 {
@@ -10,11 +12,14 @@ public sealed class PartidasManager : MonoBehaviour
     [SerializeField] private Transform servidoresContent;
     [SerializeField] private GameObject servidoreUiPrefab;
 
-    [SerializeField] private GameObject cargandoGo;
+    public SceneLoaderScript sceneLoader;
+
+    [FormerlySerializedAs("cargandoGo")] [SerializeField] private GameObject loadingScreen;
 
     private void Start()
     {
         FishNet.InstanceFinder.ClientManager.OnClientConnectionState += OnLocalClientConnectionState;
+        sceneLoader = GetComponent<SceneLoaderScript>();
     }
 
     void OnLocalClientConnectionState(ClientConnectionStateArgs _clientState)
@@ -23,18 +28,15 @@ public sealed class PartidasManager : MonoBehaviour
         {
             /*
             case LocalConnectionState.Starting:
-                break;
-            
-            case LocalConnectionState.Stopped:
-                break;
-                */
-
             case LocalConnectionState.Stopping:
                 gameObject.SetActive(true);
                 break;
+                */
 
+
+            case LocalConnectionState.Stopped:
             case LocalConnectionState.Started:
-                this.cargandoGo.SetActive(false);
+                //this.loadingScreen.SetActive(false);
                 break;
         }
     }
@@ -48,10 +50,10 @@ public sealed class PartidasManager : MonoBehaviour
 
     public void RefrescarListaPartidas()
     {
-        _playflowClientRequest.GetServers(OnListaDeSererFetch);
+        _playflowClientRequest.GetServers(OnServerListFetch);
     }
 
-    void OnListaDeSererFetch(PlayflowClientRequest.ServerList serverList)
+    void OnServerListFetch(PlayflowClientRequest.ServerList serverList)
     {
 
         for (int i = servidoresContent.childCount - 1; i >= 0; --i)
@@ -60,15 +62,27 @@ public sealed class PartidasManager : MonoBehaviour
         }
         
 
-        foreach (var server in serverList.servers)
+        foreach (PlayflowClientRequest.Server server in serverList.servers)
         {
-            var serverUiGo = Instantiate(servidoreUiPrefab);
+            var serverUiGo = Instantiate(servidoreUiPrefab, servidoresContent);
             serverUiGo.GetComponent<PartidaUI>().Setup(server, this);
+            //serverUiGo.transform.SetParent(servidoresContent);
         }
     }
 
     public void UnirPartida(string _ip, string _port)
     {
+        //TurnOn
+        GameObject[] gos = GameObject.FindGameObjectsWithTag("TurnOn");
+
+        print(nameof(UnirPartida));
+        foreach (var thing in gos)
+        {
+            thing.SetActive(true);
+            print(thing.name);
+            print("==============================================================");
+        }
+        
         // Opcion 1: el Ui esta n la misma escena que el networManager
         NetworkManager nm = FishNet.InstanceFinder.NetworkManager;
         nm.TransportManager.Transport.SetClientAddress(_ip);
@@ -78,7 +92,12 @@ public sealed class PartidasManager : MonoBehaviour
         }
 
         nm.ClientManager.StartConnection();
-        cargandoGo.SetActive(true);
+        loadingScreen.SetActive(true);
         // TODO : Mostrar un cargando/conectando
+//[Scenes/
+
+        sceneLoader.loadScene();
+        //sceneLoader.LoadSceneGlobal();
+        //SceneManager.LoadScene();
     }
-}
+} 
