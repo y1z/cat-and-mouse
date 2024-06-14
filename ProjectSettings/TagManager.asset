@@ -7,6 +7,8 @@ TagManager:
   - Ground
   - Collectable
   - WorldText
+  - CanvasMenu
+  - TurnOn
   layers:
   - Default
   - TransparentFX
