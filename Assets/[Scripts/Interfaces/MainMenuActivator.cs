@@ -18,7 +18,7 @@ public class MainMenuActivator : MonoBehaviour
 
     private void OnDestroy()
     {
-        //FishNet.InstanceFinder.ClientManager.OnClientConnectionState -= OnLocalClientConnectionState;
+        FishNet.InstanceFinder.ClientManager.OnClientConnectionState -= OnLocalClientConnectionState;
     }
 
     void OnLocalClientConnectionState(ClientConnectionStateArgs _clientState)
@@ -27,10 +27,21 @@ public class MainMenuActivator : MonoBehaviour
         {
             
             case LocalConnectionState.Stopped:
-                //gameObject.SetActive(true);
+                print("true");
+                
+                if( gameObject != null )
+                {
+                    gameObject.SetActive(true);
+                }
                 break;
             case LocalConnectionState.Started :
-                //gameObject.SetActive(false);
+                
+                print("false");
+                if (gameObject != null)
+                {
+                    
+                    gameObject.SetActive(false);
+                }
                 break;
         }
 

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
-public sealed class PartidasManager : MonoBehaviour
+public sealed class SessionManager : MonoBehaviour
 {
     [SerializeField] private PlayflowClientRequest _playflowClientRequest;
 
@@ -24,6 +24,8 @@ public sealed class PartidasManager : MonoBehaviour
 
     void OnLocalClientConnectionState(ClientConnectionStateArgs _clientState)
     {
+        
+        
         switch (_clientState.ConnectionState)
         {
             /*
@@ -36,7 +38,7 @@ public sealed class PartidasManager : MonoBehaviour
 
             case LocalConnectionState.Stopped:
             case LocalConnectionState.Started:
-                //this.loadingScreen.SetActive(false);
+                //this.loadingScreen?.SetActive(false);
                 break;
         }
     }

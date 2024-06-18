@@ -1,5 +1,6 @@
 ﻿using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public sealed class PartidaUI : MonoBehaviour
@@ -10,9 +11,9 @@ public sealed class PartidaUI : MonoBehaviour
 
     private string ip;
     private string port;
-    public PartidasManager partidasManager;
+    [FormerlySerializedAs("partidasManager")] public SessionManager sessionManager;
 
-    public void Setup(PlayflowClientRequest.Server server, PartidasManager pm)
+    public void Setup(PlayflowClientRequest.Server server, SessionManager pm)
     {
         nombrePartidaText.SetText(server.match_id);
         switch (server.status)
@@ -27,12 +28,12 @@ public sealed class PartidaUI : MonoBehaviour
 
         ip = server.ip;
         port = server.ports;
-        partidasManager = pm;
+        sessionManager = pm;
     }
 
 
     public void Unir()
     {
-        partidasManager.UnirPartida(ip, port);
+        sessionManager.UnirPartida(ip, port);
     }
 }

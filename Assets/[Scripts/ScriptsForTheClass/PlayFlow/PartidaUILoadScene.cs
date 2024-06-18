@@ -1,5 +1,6 @@
 ﻿using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public sealed class PartidaUILoadScene : MonoBehaviour
@@ -11,9 +12,9 @@ public sealed class PartidaUILoadScene : MonoBehaviour
 
     private string ip;
     private string port;
-    public PartidasManager partidasManager;
+    [FormerlySerializedAs("partidasManager")] public SessionManager sessionManager;
     
-    public void Setup(PlayflowClientRequest.Server server, PartidasManager pm)
+    public void Setup(PlayflowClientRequest.Server server, SessionManager pm)
     {
         _loaderScript = GetComponent<SceneLoaderScript>();
         nombrePartidaText.SetText(server.match_id);
@@ -29,13 +30,13 @@ public sealed class PartidaUILoadScene : MonoBehaviour
 
         ip = server.ip;
         port = server.ports;
-        partidasManager = pm;
+        sessionManager = pm;
     }
 
 
     public void Unir()
     {
-        partidasManager.UnirPartida(ip, port);
+        sessionManager.UnirPartida(ip, port);
         _loaderScript.sceneName = "Project_scene_mouse_test";
         _loaderScript.loadScene();
     }
